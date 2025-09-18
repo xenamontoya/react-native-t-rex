@@ -23,9 +23,10 @@ npm start      # Expo Development Server with QR code
 ## ✨ Features
 
 ### Responsive Navigation System
-- **Mobile Navigation** - Bottom tab bar with Home, Reservations, Training, Logbook, More
-- **Tablet Navigation** - Sidebar drawer with expanded menu access
+- **Mobile Navigation** - Bottom tab bar with Home, Reservations, Training, Profile, More
+- **Tablet Navigation** - Sidebar drawer with expanded menu access including logbook
 - **Responsive Breakpoint** - Automatically switches at 768px width
+- **Profile Screen** - Comprehensive pilot profile with progress, achievements, and quick actions
 - **More Page** - Categorized menu items (Logbook, Careers, Account, Safety)
 - **Role Switching** - Student/Instructor/Prospective experience modes
 
@@ -40,7 +41,8 @@ npm start      # Expo Development Server with QR code
 ### Core Functionality
 - **Reservations** - Aircraft booking and lesson scheduling
 - **Training** - Lesson progress, scheduling, and completion tracking
-- **Logbook** - Flight time recording and statistics
+- **Profile** - Pilot information, achievements, progress tracking, and quick actions
+- **Logbook** - Flight time recording and statistics (accessible via More/sidebar)
 - **More** - Extended menu with careers, settings, and account features
 
 ### Design System
