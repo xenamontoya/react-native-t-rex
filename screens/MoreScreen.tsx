@@ -59,6 +59,11 @@ export default function MoreScreen() {
           description: 'View your pilot endorsements and qualifications' 
         },
         { 
+          icon: '📖', 
+          title: 'My Logbook', 
+          description: 'View and manage your flight logbook entries' 
+        },
+        { 
           icon: '📤', 
           title: 'Import Flights', 
           description: 'Import flights from external logbooks and apps' 

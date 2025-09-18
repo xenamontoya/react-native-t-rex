@@ -9,6 +9,7 @@ import MoreScreen from './screens/MoreScreen';
 import ReservationsScreen from './screens/ReservationsScreen';
 import TrainingScreen from './screens/TrainingScreen';
 import LogbookScreen from './screens/LogbookScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 // Import custom drawer content
 import CustomDrawerContent from './components/CustomDrawerContent';
@@ -318,11 +319,11 @@ function MobileTabNavigator() {
         }}
       />
       <Tab.Screen 
-        name="Logbook" 
-        component={LogbookScreen}
+        name="Profile" 
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24, color }}>📖</Text>
+            <Text style={{ fontSize: 24, color }}>👤</Text>
           ),
         }}
       />
