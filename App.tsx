@@ -10,6 +10,9 @@ import ReservationsScreen from './screens/ReservationsScreen';
 import TrainingScreen from './screens/TrainingScreen';
 import LogbookScreen from './screens/LogbookScreen';
 
+// Import custom drawer content
+import CustomDrawerContent from './components/CustomDrawerContent';
+
 // Project T-Rex Brand Colors
 const Colors = {
   primary: {
@@ -340,108 +343,31 @@ function MobileTabNavigator() {
 function TabletDrawerNavigator() {
   return (
     <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         drawerStyle: {
           backgroundColor: Colors.primary.white,
           width: 280,
         },
-        drawerActiveTintColor: Colors.primary.black,
-        drawerInactiveTintColor: Colors.neutral.gray500,
-        drawerLabelStyle: {
-          fontSize: 16,
-          fontWeight: '500',
-          marginLeft: -20,
-        },
-        drawerItemStyle: {
-          marginVertical: 4,
-          paddingHorizontal: 12,
-          borderRadius: 12,
-        },
-        drawerActiveBackgroundColor: 'rgba(254, 101, 42, 0.1)',
+        drawerType: 'permanent', // Always visible on tablet
+        overlayColor: 'transparent', // No overlay since it's permanent
       }}
     >
-      <Drawer.Screen 
-        name="Home" 
-        component={HomeScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>🏠</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Reservations" 
-        component={ReservationsScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>📅</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Training" 
-        component={TrainingScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>🎓</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Logbook" 
-        component={LogbookScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>📖</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Analytics" 
-        component={MoreScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>📊</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Reports" 
-        component={MoreScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>📈</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Endorsements" 
-        component={MoreScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>📋</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Careers" 
-        component={MoreScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>💼</Text>
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name="Settings" 
-        component={MoreScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Text style={{ fontSize: 20, color }}>⚙️</Text>
-          ),
-        }}
-      />
+      <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Reservations" component={ReservationsScreen} />
+      <Drawer.Screen name="Training" component={TrainingScreen} />
+      <Drawer.Screen name="Logbook" component={LogbookScreen} />
+      {/* Additional screens for sidebar navigation */}
+      <Drawer.Screen name="Analytics" component={MoreScreen} />
+      <Drawer.Screen name="Reports" component={MoreScreen} />
+      <Drawer.Screen name="Endorsements" component={MoreScreen} />
+      <Drawer.Screen name="Careers" component={MoreScreen} />
+      <Drawer.Screen name="Settings" component={MoreScreen} />
+      <Drawer.Screen name="Profile" component={MoreScreen} />
+      <Drawer.Screen name="Billing" component={MoreScreen} />
+      <Drawer.Screen name="Help" component={MoreScreen} />
+      <Drawer.Screen name="IncidentReport" component={MoreScreen} />
     </Drawer.Navigator>
   );
 }
