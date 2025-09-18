@@ -1,0 +1,6 @@
+{
+  "name": "project-t-rex-storybook",
+  "buildCommand": "npm run storybook:build",
+  "outputDirectory": "storybook-static",
+  "framework": null
+}

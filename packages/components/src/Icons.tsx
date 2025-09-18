@@ -57,7 +57,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 
 // Add icons to the library
-library.add(
+(library.add as any)(
   // Regular icons
   faHome,
   faCalendarDays,
@@ -175,7 +175,7 @@ export const IconNames = {
 };
 
 // Reusable Icon Component
-interface IconProps {
+export interface IconProps {
   name: keyof typeof IconNames;
   size?: number;
   color?: string;
@@ -190,7 +190,7 @@ export const Icon: React.FC<IconProps> = ({
 }) => {
   return (
     <FontAwesomeIcon
-      icon={IconNames[name]}
+      icon={IconNames[name] as any}
       size={size}
       color={color}
       style={style}
@@ -199,7 +199,7 @@ export const Icon: React.FC<IconProps> = ({
 };
 
 // Navigation Icon Component (with active states)
-interface NavIconProps {
+export interface NavIconProps {
   name: 'home' | 'calendar' | 'graduation' | 'user' | 'bell' | 'plane' | 'star' | 'heart' | 'more';
   isActive?: boolean;
   size?: number;
@@ -223,7 +223,7 @@ export const NavIcon: React.FC<NavIconProps> = ({
   
   return (
     <FontAwesomeIcon
-      icon={IconNames[iconName]}
+      icon={IconNames[iconName] as any}
       size={size}
       color={iconColor}
       style={style}

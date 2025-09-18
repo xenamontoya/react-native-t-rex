@@ -1,141 +1,157 @@
-# Project T-Rex React Native Mobile App
+# 🎨 Project T-Rex Monorepo
 
-A mobile-first React Native application for flight training management, ported from the original React web application.
+**Your Design System & Mobile App in Perfect Harmony!**
 
-## 🚀 Quick Start
+This is your **design playground** where you can experiment with UI ideas and build a professional component library at the same time. Think of it like having your Figma files and final product working together automatically! 
 
-```bash
-# Install dependencies
-npm install
+## 🏗️ How It's Organized
 
-# Start development server
-npm run web    # Web browser (for testing)
-npm run ios    # iOS Simulator  
-npm run android # Android Emulator
-npm start      # Expo Development Server with QR code
+```
+project-t-rex-monorepo/
+├── 📦 packages/components/     # Your Component Library (Storybook)
+└── 📱 packages/mobile-app/     # Your Design Playground (App)
 ```
 
-## 📱 Live Demo
+## 🎯 Designer-Friendly Commands
 
-- **Live App**: https://react-native-t-rex.vercel.app
-- **Source Code**: https://github.com/xenamontoya/react-native-t-rex
-
-## ✨ Features
-
-### Responsive Navigation System
-- **Mobile Navigation** - Bottom tab bar with Home, Reservations, Training, Profile, More
-- **Tablet Navigation** - Sidebar drawer with expanded menu access including logbook
-- **Responsive Breakpoint** - Automatically switches at 768px width
-- **Profile Screen** - Comprehensive pilot profile with progress, achievements, and quick actions
-- **More Page** - Categorized menu items (Logbook, Careers, Account, Safety)
-- **Role Switching** - Student/Instructor/Prospective experience modes
-
-### Student Dashboard
-- **Welcome Header** - Profile avatar, notifications, training progress
-- **Progress Tracking** - Visual progress bars and completion statistics
-- **What's Next** - AI-powered lesson preparation and scheduled lessons
-- **Career Progress** - Milestone tracking towards pilot licenses
-- **Recent Activity** - Completed lessons and achievements
-- **Flight Statistics** - Detailed flight time breakdown
-
-### Core Functionality
-- **Reservations** - Aircraft booking and lesson scheduling
-- **Training** - Lesson progress, scheduling, and completion tracking
-- **Profile** - Pilot information, achievements, progress tracking, and quick actions
-- **Logbook** - Flight time recording and statistics (accessible via More/sidebar)
-- **More** - Extended menu with careers, settings, and account features
-
-### Design System
-- **Brand Colors** - Primary black (#212121), electric blue (#00FFF2), orange gradients
-- **Typography** - Degular font family with appropriate weights
-- **Professional Icons** - Font Awesome Pro with regular and solid variants
-- **Mobile-First** - Optimized for touch interactions and mobile screens
-- **Consistent UI** - Cards, badges, buttons following design system
-
-### Technical Stack
-- **React Native** - Cross-platform mobile development
-- **React Navigation** - Professional navigation with tabs and drawer
-- **Font Awesome Pro** - Professional icon system with regular and solid styles
-- **Expo** - Development tooling and deployment
-- **TypeScript** - Type-safe development
-- **StyleSheet** - Native styling with brand colors
-
-## 🎨 UI Components
-
-### Welcome Section
-- Profile avatar with initials
-- Training progress visualization
-- Real-time statistics grid
-
-### Interactive Cards
-- **What's Next** - Highlighted with electric blue border
-- **AI Wingman** - Black card with electric blue accents
-- **Career Progress** - Milestone tracking with progress bars
-- **Recent Lessons** - Status badges and completion indicators
-
-### Navigation
-- Touch-friendly button sizes
-- Proper spacing for mobile interaction
-- Visual feedback on touch
-
-## 🔄 Original React App Compatibility
-
-This React Native app maintains **exact visual parity** with the original React web application:
-- Same color scheme and branding
-- Identical layout structure and information hierarchy  
-- Matching typography and spacing
-- Consistent user experience across platforms
-
-## 📋 Development Status
-
-✅ **Completed**
-- Core React Native foundation
-- Complete UI port from React app
-- All brand colors and styling
-- Interactive navigation
-- Mobile-optimized components
-- GitHub repository and deployment
-
-🔄 **Next Steps**
-- Real data integration
-- Navigation between screens
-- User authentication
-- Flight logging functionality
-- Lesson booking system
-
-## 🤝 Team Review
-
-This prototype demonstrates:
-1. **React Native feasibility** for Project T-Rex mobile
-2. **UI/UX consistency** with existing React app
-3. **Mobile-first design** principles
-4. **Technical architecture** for cross-platform development
-
-## 📱 Testing
-
-**Web Browser** (Development)
+### **🎨 Design Playground Mode**
 ```bash
-npm run web
-# Open http://localhost:8081
-# Use mobile responsive mode
+npm run 🎨\ design-playground
+```
+- Opens your mobile app prototype 
+- Experiment with layouts, colors, interactions
+- See changes instantly in the browser
+- Perfect for testing new ideas!
+
+### **🧩 Component Library Mode**  
+```bash
+npm run 🧩\ component-library
+```
+- Opens Storybook with all your components
+- Test icons, colors, and design tokens
+- Perfect isolated component environment
+- Great for accessibility testing!
+
+### **📦 Install Everything**
+```bash
+npm run 📦\ install-all
+```
+- Installs all dependencies for both projects
+- Run this first when you clone the repo
+- Run this after adding new packages
+
+## ✨ Your Magic Workflow
+
+### **1. 🎨 Experiment** (in Design Playground)
+- Try new layouts in your mobile app
+- Test different color combinations  
+- Experiment with user flows
+- Use existing components from your library
+
+### **2. 🧩 Extract** (to Component Library)
+- Move successful patterns to the component library
+- Make them reusable and documented
+- Test them in isolation in Storybook
+
+### **3. 🔄 Auto-Sync**
+- Changes in your component library automatically appear in your app!
+- No publishing or installing needed
+- Live updates as you code
+
+### **4. 🚀 Share**
+- Component library can be published to NPM
+- Others can install your design system
+- Storybook can be deployed as a public style guide
+
+## 🎨 What's Already Built
+
+### **Icons System**
+- ✅ Font Awesome Pro icons (regular & solid)
+- ✅ Navigation icons with active states
+- ✅ Centralized icon system
+- ✅ Easy to add new icons
+
+### **Design Tokens**
+- ✅ Project T-Rex brand colors
+- ✅ Typography system (Degular fonts)
+- ✅ Spacing scale
+- ✅ Border radius values
+- ✅ Shadow system
+
+### **Mobile App**
+- ✅ Responsive navigation (mobile tabs, tablet sidebar)
+- ✅ Professional FontAwesome icons throughout
+- ✅ Complete dashboard UI
+- ✅ Profile, Training, Reservations screens
+
+## 🚀 Getting Started
+
+1. **Install everything:**
+   ```bash
+   npm run 📦\ install-all
+   ```
+
+2. **Start your design playground:**
+   ```bash
+   npm run 🎨\ design-playground
+   ```
+   Open http://localhost:8081 in your browser
+
+3. **Open component library in another terminal:**
+   ```bash
+   npm run 🧩\ component-library  
+   ```
+   Open http://localhost:19006 in your browser
+
+4. **Start designing!** 🎨
+
+## 💡 Pro Tips for Designers
+
+### **🎨 When Working in Design Playground:**
+- Make UI changes directly in the app
+- Test on mobile (responsive mode) and tablet breakpoints
+- Try different color combinations
+- Experiment with layouts and spacing
+
+### **🧩 When Working in Component Library:**
+- Focus on individual components
+- Test accessibility features
+- Document usage patterns
+- Perfect micro-interactions
+
+### **🔄 Moving Between Both:**
+- Copy successful patterns from app to library
+- Import refined components from library to app
+- Everything stays in sync automatically!
+
+## 🛠️ File Structure
+
+```
+packages/
+├── components/                 # 🧩 Component Library
+│   ├── src/
+│   │   ├── tokens.ts          # 🎨 Colors, spacing, typography
+│   │   ├── Icons.tsx          # 🎯 FontAwesome Pro icons
+│   │   └── index.ts           # 📦 Main exports
+│   ├── stories/               # 📚 Storybook stories
+│   └── App.tsx                # 🧩 Storybook app
+│
+└── mobile-app/                # 📱 Design Playground  
+    ├── App.tsx                # 📱 Main app
+    ├── screens/               # 📄 App screens
+    └── components/            # 🧩 App-specific components
 ```
 
-**Mobile Device** (Recommended)
-```bash
-npm start
-# Scan QR code with Expo Go app
-```
+## 🎯 Next Steps
 
-**iOS Simulator**
-```bash
-npm run ios
-```
-
-**Android Emulator** 
-```bash
-npm run android
-```
+1. **Build More Components** - Create Button, Card, Input components
+2. **Add Stories** - Document each component in Storybook
+3. **Test Accessibility** - Use Storybook's accessibility addon
+4. **Deploy Style Guide** - Share Storybook publicly
+5. **Publish to NPM** - Let others use your design system
 
 ---
 
-*Built with React Native + Expo for cross-platform mobile development*
+**Happy Designing! 🎨✨**
+
+*This monorepo gives you the best of both worlds - rapid prototyping AND professional component development!*
