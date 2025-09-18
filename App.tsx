@@ -14,6 +14,9 @@ import ProfileScreen from './screens/ProfileScreen';
 // Import custom drawer content
 import CustomDrawerContent from './components/CustomDrawerContent';
 
+// Import icon components
+import { NavIcon } from './components/Icons';
+
 // Project T-Rex Brand Colors
 const Colors = {
   primary: {
@@ -295,8 +298,14 @@ function MobileTabNavigator() {
         name="Home" 
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24, color }}>🏠</Text>
+          tabBarIcon: ({ focused, color }) => (
+            <NavIcon 
+              name="home" 
+              isActive={focused}
+              size={24}
+              color={color}
+              activeColor={Colors.primary.black}
+            />
           ),
         }}
       />
@@ -304,8 +313,14 @@ function MobileTabNavigator() {
         name="Reservations" 
         component={ReservationsScreen}
         options={{
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24, color }}>📅</Text>
+          tabBarIcon: ({ focused, color }) => (
+            <NavIcon 
+              name="calendar" 
+              isActive={focused}
+              size={24}
+              color={color}
+              activeColor={Colors.primary.black}
+            />
           ),
         }}
       />
@@ -313,8 +328,14 @@ function MobileTabNavigator() {
         name="Training" 
         component={TrainingScreen}
         options={{
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24, color }}>🎓</Text>
+          tabBarIcon: ({ focused, color }) => (
+            <NavIcon 
+              name="graduation" 
+              isActive={focused}
+              size={24}
+              color={color}
+              activeColor={Colors.primary.black}
+            />
           ),
         }}
       />
@@ -322,8 +343,14 @@ function MobileTabNavigator() {
         name="Profile" 
         component={ProfileScreen}
         options={{
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24, color }}>👤</Text>
+          tabBarIcon: ({ focused, color }) => (
+            <NavIcon 
+              name="user" 
+              isActive={focused}
+              size={24}
+              color={color}
+              activeColor={Colors.primary.black}
+            />
           ),
         }}
       />
@@ -332,7 +359,11 @@ function MobileTabNavigator() {
         component={MoreScreen}
         options={{
           tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24, color }}>⋯</Text>
+            <NavIcon 
+              name="more" 
+              size={24}
+              color={color}
+            />
           ),
         }}
       />

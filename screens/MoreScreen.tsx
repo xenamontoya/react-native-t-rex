@@ -8,6 +8,7 @@ import {
   Alert,
   Image 
 } from 'react-native';
+import { Icon } from '../components/Icons';
 
 // Project T-Rex Brand Colors
 const Colors = {
@@ -44,27 +45,27 @@ export default function MoreScreen() {
       title: 'LOGBOOK',
       items: [
         { 
-          icon: '📊', 
+          icon: 'chartBar', 
           title: 'Analytics', 
           description: 'View comprehensive flight statistics and trends' 
         },
         { 
-          icon: '📈', 
+          icon: 'chartLine', 
           title: 'Reports', 
           description: 'Generate custom flight reports and summaries' 
         },
         { 
-          icon: '📋', 
+          icon: 'clipboard', 
           title: 'Endorsements', 
           description: 'View your pilot endorsements and qualifications' 
         },
         { 
-          icon: '📖', 
+          icon: 'book', 
           title: 'My Logbook', 
           description: 'View and manage your flight logbook entries' 
         },
         { 
-          icon: '📤', 
+          icon: 'upload', 
           title: 'Import Flights', 
           description: 'Import flights from external logbooks and apps' 
         }
@@ -74,27 +75,27 @@ export default function MoreScreen() {
       title: 'CAREERS',
       items: [
         { 
-          icon: '💼', 
+          icon: 'briefcase', 
           title: 'Job Dashboard', 
           description: 'Explore career opportunities and track progress' 
         },
         { 
-          icon: '👨‍💼', 
+          icon: 'userTie', 
           title: 'Career Coaching', 
           description: 'One-on-one personalized career guidance' 
         },
         { 
-          icon: '📝', 
+          icon: 'fileText', 
           title: 'Resume & Cover Letter', 
           description: 'Professional writing services for aviation careers' 
         },
         { 
-          icon: '🗣️', 
+          icon: 'comments', 
           title: 'Interview Preparation', 
           description: 'Customized prep for airline and corporate interviews' 
         },
         { 
-          icon: '👥', 
+          icon: 'users', 
           title: 'Community', 
           description: 'Connect with pilots and stay updated with industry news' 
         }
@@ -104,17 +105,17 @@ export default function MoreScreen() {
       title: 'ACCOUNT',
       items: [
         { 
-          icon: '💳', 
+          icon: 'creditCard', 
           title: 'Billing', 
           description: 'Manage your training package and financing' 
         },
         { 
-          icon: '⚙️', 
+          icon: 'cog', 
           title: 'Settings', 
           description: 'Manage your account and app preferences' 
         },
         { 
-          icon: '❓', 
+          icon: 'questionCircle', 
           title: 'Help & Support', 
           description: 'Get help and contact support' 
         }
@@ -124,7 +125,7 @@ export default function MoreScreen() {
       title: 'SAFETY',
       items: [
         { 
-          icon: '⚠️', 
+          icon: 'exclamationTriangle', 
           title: 'Submit an Incident Report', 
           description: 'Anonymously report an incident or safety issue' 
         }
@@ -178,9 +179,13 @@ export default function MoreScreen() {
                   onPress={() => handleMenuPress(item.title)}
                 >
                   <View style={styles.menuItemContent}>
-                    <View style={styles.menuItemIcon}>
-                      <Text style={styles.menuItemIconText}>{item.icon}</Text>
-                    </View>
+                  <View style={styles.menuItemIcon}>
+                    <Icon
+                      name={item.icon as any}
+                      size={16}
+                      color={Colors.neutral.gray500}
+                    />
+                  </View>
                     <View style={styles.menuItemText}>
                       <Text style={styles.menuItemTitle}>{item.title}</Text>
                       <Text style={styles.menuItemDescription}>{item.description}</Text>
@@ -207,7 +212,11 @@ export default function MoreScreen() {
             >
               <View style={styles.experienceOptionContent}>
                 <View style={styles.experienceIcon}>
-                  <Text style={styles.experienceIconText}>🎓</Text>
+                  <Icon
+                    name="graduation"
+                    size={20}
+                    color="#3b82f6"
+                  />
                 </View>
                 <View style={styles.experienceTextContent}>
                   <Text style={styles.experienceOptionTitle}>Student Pilot</Text>
@@ -226,7 +235,11 @@ export default function MoreScreen() {
             >
               <View style={styles.experienceOptionContent}>
                 <View style={[styles.experienceIcon, styles.experienceIconInactive]}>
-                  <Text style={styles.experienceIconText}>👨‍🏫</Text>
+                  <Icon
+                    name="userTie"
+                    size={20}
+                    color={Colors.neutral.gray500}
+                  />
                 </View>
                 <View style={styles.experienceTextContent}>
                   <Text style={styles.experienceOptionTitle}>Flight Instructor</Text>
@@ -245,7 +258,11 @@ export default function MoreScreen() {
             >
               <View style={styles.experienceOptionContent}>
                 <View style={[styles.experienceIcon, styles.experienceIconInactive]}>
-                  <Text style={styles.experienceIconText}>🔍</Text>
+                  <Icon
+                    name="search"
+                    size={20}
+                    color={Colors.neutral.gray500}
+                  />
                 </View>
                 <View style={styles.experienceTextContent}>
                   <Text style={styles.experienceOptionTitle}>Prospective Student</Text>
@@ -383,9 +400,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 12,
   },
-  menuItemIconText: {
-    fontSize: 16,
-  },
   menuItemText: {
     flex: 1,
   },
@@ -452,9 +466,6 @@ const styles = StyleSheet.create({
   },
   experienceIconInactive: {
     backgroundColor: Colors.neutral.gray200,
-  },
-  experienceIconText: {
-    fontSize: 20,
   },
   experienceTextContent: {
     flex: 1,

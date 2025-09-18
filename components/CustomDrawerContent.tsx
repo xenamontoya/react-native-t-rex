@@ -8,6 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
+import { Icon, NavIcon } from './Icons';
 
 // Project T-Rex Brand Colors
 const Colors = {
@@ -56,9 +57,9 @@ export default function CustomDrawerContent({ navigation, state }: CustomDrawerC
 
   // Main navigation items
   const mainNavigation = [
-    { name: 'Home', label: 'Dashboard', icon: '🏠' },
-    { name: 'Reservations', label: 'Reservations', icon: '📅' },
-    { name: 'Training', label: 'Training', icon: '🎓' },
+    { name: 'Home', label: 'Dashboard', icon: 'home' },
+    { name: 'Reservations', label: 'Reservations', icon: 'calendar' },
+    { name: 'Training', label: 'Training', icon: 'graduation' },
   ];
 
   // Organized navigation sections
@@ -66,35 +67,35 @@ export default function CustomDrawerContent({ navigation, state }: CustomDrawerC
     {
       title: 'LOGBOOK',
       items: [
-        { name: 'Logbook', label: 'My Flights', icon: '📖' },
-        { name: 'Analytics', label: 'Analytics', icon: '📊' },
-        { name: 'Reports', label: 'Reports', icon: '📈' },
-        { name: 'Endorsements', label: 'Endorsements', icon: '📋' },
-        { name: 'ImportFlights', label: 'Import Flights', icon: '📤' },
+        { name: 'Logbook', label: 'My Flights', icon: 'book' },
+        { name: 'Analytics', label: 'Analytics', icon: 'chartBar' },
+        { name: 'Reports', label: 'Reports', icon: 'chartLine' },
+        { name: 'Endorsements', label: 'Endorsements', icon: 'clipboard' },
+        { name: 'ImportFlights', label: 'Import Flights', icon: 'upload' },
       ]
     },
     {
       title: 'CAREERS',
       items: [
-        { name: 'Careers', label: 'Job Dashboard', icon: '💼' },
-        { name: 'CareerCoaching', label: 'Career Coaching', icon: '👨‍💼' },
-        { name: 'ResumeServices', label: 'Resume & Cover Letter', icon: '📝' },
-        { name: 'InterviewPrep', label: 'Interview Preparation', icon: '🗣️' },
-        { name: 'Community', label: 'Community', icon: '👥' },
+        { name: 'Careers', label: 'Job Dashboard', icon: 'briefcase' },
+        { name: 'CareerCoaching', label: 'Career Coaching', icon: 'userTie' },
+        { name: 'ResumeServices', label: 'Resume & Cover Letter', icon: 'fileText' },
+        { name: 'InterviewPrep', label: 'Interview Preparation', icon: 'comments' },
+        { name: 'Community', label: 'Community', icon: 'users' },
       ]
     },
     {
       title: 'ACCOUNT',
       items: [
-        { name: 'Billing', label: 'Billing', icon: '💳' },
-        { name: 'Settings', label: 'Settings', icon: '⚙️' },
-        { name: 'Help', label: 'Help & Support', icon: '❓' },
+        { name: 'Billing', label: 'Billing', icon: 'creditCard' },
+        { name: 'Settings', label: 'Settings', icon: 'cog' },
+        { name: 'Help', label: 'Help & Support', icon: 'questionCircle' },
       ]
     },
     {
       title: 'SAFETY',
       items: [
-        { name: 'IncidentReport', label: 'Submit an Incident Report', icon: '⚠️' },
+        { name: 'IncidentReport', label: 'Submit an Incident Report', icon: 'exclamationTriangle' },
       ]
     }
   ];
@@ -111,12 +112,22 @@ export default function CustomDrawerContent({ navigation, state }: CustomDrawerC
         ]}
         onPress={() => handleNavigation(item.name)}
       >
-        <Text style={[
-          styles.navIcon,
-          active && styles.navIconActive
-        ]}>
-          {item.icon}
-        </Text>
+        {isMainNav ? (
+          <NavIcon
+            name={item.icon as any}
+            isActive={active}
+            size={16}
+            color={active ? Colors.primary.black : Colors.neutral.gray500}
+            style={styles.navIcon}
+          />
+        ) : (
+          <Icon
+            name={item.icon as any}
+            size={16}
+            color={active ? Colors.primary.black : Colors.neutral.gray500}
+            style={styles.navIcon}
+          />
+        )}
         <Text style={[
           styles.navLabel,
           active && styles.navLabelActive,
@@ -185,7 +196,12 @@ export default function CustomDrawerContent({ navigation, state }: CustomDrawerC
       <View style={styles.brandFooter}>
         <View style={styles.brandContent}>
           <View style={styles.brandLogo}>
-            <Text style={styles.brandLogoText}>✈️</Text>
+            <Icon
+              name="plane"
+              size={16}
+              color={Colors.neutral.gray500}
+              style={{ opacity: 0.6 }}
+            />
           </View>
           <Text style={styles.brandText}>Pilotbase</Text>
           <Text style={styles.versionText}>© 2024 · v1.0.2</Text>
@@ -286,14 +302,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(254, 101, 42, 0.2)',
   },
   navIcon: {
-    fontSize: 16,
     marginRight: 12,
     width: 20,
-    textAlign: 'center',
-    color: Colors.neutral.gray500,
-  },
-  navIconActive: {
-    color: Colors.primary.black,
   },
   navLabel: {
     fontSize: 13,
@@ -337,10 +347,6 @@ const styles = StyleSheet.create({
   },
   brandLogo: {
     marginBottom: 8,
-  },
-  brandLogoText: {
-    fontSize: 16,
-    opacity: 0.6,
   },
   brandText: {
     fontSize: 12,
