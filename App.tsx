@@ -1,5 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image, useWindowDimensions } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+// Import screens
+import MoreScreen from './screens/MoreScreen';
+import ReservationsScreen from './screens/ReservationsScreen';
+import TrainingScreen from './screens/TrainingScreen';
+import LogbookScreen from './screens/LogbookScreen';
 
 // Project T-Rex Brand Colors
 const Colors = {
@@ -19,12 +28,18 @@ const Colors = {
   },
   neutral: {
     gray50: '#f9fafb',
+    gray200: '#e5e7eb',
     gray500: '#6b7280',
     gray600: '#4b5563',
   },
 };
 
-export default function App() {
+// Create navigators
+const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
+// Home Screen Component (our existing dashboard)
+function HomeScreen() {
   const handleButtonPress = (action: string) => {
     Alert.alert('Action', `You pressed: ${action}`);
   };
@@ -243,6 +258,204 @@ export default function App() {
         </View>
       </ScrollView>
     </View>
+  );
+}
+
+// Bottom Tab Navigator for Mobile
+function MobileTabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: Colors.primary.black,
+        tabBarInactiveTintColor: Colors.neutral.gray500,
+        tabBarStyle: {
+          backgroundColor: Colors.primary.white,
+          borderTopWidth: 1,
+          borderTopColor: Colors.neutral.gray200,
+          height: 100,
+          paddingBottom: 20,
+          paddingTop: 10,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+          marginTop: 4,
+        },
+        tabBarIconStyle: {
+          marginBottom: 4,
+        },
+      }}
+    >
+      <Tab.Screen 
+        name="Home" 
+        component={HomeScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 24, color }}>🏠</Text>
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="Reservations" 
+        component={ReservationsScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 24, color }}>📅</Text>
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="Training" 
+        component={TrainingScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 24, color }}>🎓</Text>
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="Logbook" 
+        component={LogbookScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 24, color }}>📖</Text>
+          ),
+        }}
+      />
+      <Tab.Screen 
+        name="More" 
+        component={MoreScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 24, color }}>⋯</Text>
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+}
+
+// Drawer Navigator for Tablet
+function TabletDrawerNavigator() {
+  return (
+    <Drawer.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerStyle: {
+          backgroundColor: Colors.primary.white,
+          width: 280,
+        },
+        drawerActiveTintColor: Colors.primary.black,
+        drawerInactiveTintColor: Colors.neutral.gray500,
+        drawerLabelStyle: {
+          fontSize: 16,
+          fontWeight: '500',
+          marginLeft: -20,
+        },
+        drawerItemStyle: {
+          marginVertical: 4,
+          paddingHorizontal: 12,
+          borderRadius: 12,
+        },
+        drawerActiveBackgroundColor: 'rgba(254, 101, 42, 0.1)',
+      }}
+    >
+      <Drawer.Screen 
+        name="Home" 
+        component={HomeScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>🏠</Text>
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Reservations" 
+        component={ReservationsScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>📅</Text>
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Training" 
+        component={TrainingScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>🎓</Text>
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Logbook" 
+        component={LogbookScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>📖</Text>
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Analytics" 
+        component={MoreScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>📊</Text>
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Reports" 
+        component={MoreScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>📈</Text>
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Endorsements" 
+        component={MoreScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>📋</Text>
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Careers" 
+        component={MoreScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>💼</Text>
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Settings" 
+        component={MoreScreen}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Text style={{ fontSize: 20, color }}>⚙️</Text>
+          ),
+        }}
+      />
+    </Drawer.Navigator>
+  );
+}
+
+// Main App Component with Responsive Navigation
+export default function App() {
+  const { width } = useWindowDimensions();
+  const isTablet = width >= 768; // Use drawer navigation on tablet sizes
+
+  return (
+    <NavigationContainer>
+      <StatusBar style="auto" />
+      {isTablet ? <TabletDrawerNavigator /> : <MobileTabNavigator />}
+    </NavigationContainer>
   );
 }
 
