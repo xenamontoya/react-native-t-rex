@@ -22,6 +22,13 @@ npm start      # Expo Development Server with QR code
 
 ## ✨ Features
 
+### Responsive Navigation System
+- **Mobile Navigation** - Bottom tab bar with Home, Reservations, Training, Logbook, More
+- **Tablet Navigation** - Sidebar drawer with expanded menu access
+- **Responsive Breakpoint** - Automatically switches at 768px width
+- **More Page** - Categorized menu items (Logbook, Careers, Account, Safety)
+- **Role Switching** - Student/Instructor/Prospective experience modes
+
 ### Student Dashboard
 - **Welcome Header** - Profile avatar, notifications, training progress
 - **Progress Tracking** - Visual progress bars and completion statistics
@@ -29,6 +36,12 @@ npm start      # Expo Development Server with QR code
 - **Career Progress** - Milestone tracking towards pilot licenses
 - **Recent Activity** - Completed lessons and achievements
 - **Flight Statistics** - Detailed flight time breakdown
+
+### Core Functionality
+- **Reservations** - Aircraft booking and lesson scheduling
+- **Training** - Lesson progress, scheduling, and completion tracking
+- **Logbook** - Flight time recording and statistics
+- **More** - Extended menu with careers, settings, and account features
 
 ### Design System
 - **Brand Colors** - Primary black (#212121), electric blue (#00FFF2), orange gradients
@@ -38,6 +51,7 @@ npm start      # Expo Development Server with QR code
 
 ### Technical Stack
 - **React Native** - Cross-platform mobile development
+- **React Navigation** - Professional navigation with tabs and drawer
 - **Expo** - Development tooling and deployment
 - **TypeScript** - Type-safe development
 - **StyleSheet** - Native styling with brand colors
