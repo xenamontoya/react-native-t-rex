@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "project-t-rex-clean",
+    "slug": "project-t-rex-clean",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "fonts": [
+      "./assets/fonts/Degular-Thin.otf",
+      "./assets/fonts/Degular-ThinItalic.otf",
+      "./assets/fonts/Degular-Light.otf",
+      "./assets/fonts/Degular-LightItalic.otf",
+      "./assets/fonts/Degular-Regular.otf",
+      "./assets/fonts/Degular-Italic.otf",
+      "./assets/fonts/Degular-Medium.otf",
+      "./assets/fonts/Degular-MediumItalic.otf",
+      "./assets/fonts/Degular-Semibold.otf",
+      "./assets/fonts/Degular-SemiboldItalic.otf",
+      "./assets/fonts/Degular-Bold.otf",
+      "./assets/fonts/Degular-BoldItalic.otf",
+      "./assets/fonts/Degular-Black.otf",
+      "./assets/fonts/Degular-BlackItalic.otf",
+      "./assets/fonts/DegularMono-Thin.otf",
+      "./assets/fonts/DegularMono-ThinItalic.otf",
+      "./assets/fonts/DegularMono-Light.otf",
+      "./assets/fonts/DegularMono-LightItalic.otf",
+      "./assets/fonts/DegularMono-Regular.otf",
+      "./assets/fonts/DegularMono-Italic.otf",
+      "./assets/fonts/DegularMono-Medium.otf",
+      "./assets/fonts/DegularMono-MediumItalic.otf",
+      "./assets/fonts/DegularMono-Semibold.otf",
+      "./assets/fonts/DegularMono-SemiboldItalic.otf",
+      "./assets/fonts/DegularMono-Bold.otf",
+      "./assets/fonts/DegularMono-BoldItalic.otf",
+      "./assets/fonts/DegularMono-Black.otf",
+      "./assets/fonts/DegularMono-BlackItalic.otf"
+    ]
+  }
+}

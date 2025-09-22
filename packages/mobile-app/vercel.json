@@ -1,0 +1,9 @@
+{
+  "name": "project-t-rex-playground",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "buildCommand": "npm run web && npx expo export --platform web",
+  "outputDirectory": "dist",
+  "framework": null
+}

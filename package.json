@@ -1,0 +1,25 @@
+{
+  "name": "project-t-rex-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Project T-Rex Design System & Mobile App Monorepo",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "🎨 design-playground": "cd packages/mobile-app && npm run web",
+    "🧩 component-library": "cd packages/components && npm run storybook",
+    "📦 install-all": "npm install",
+    "🚀 build-components": "cd packages/components && npm run build",
+    "📱 mobile-app": "cd packages/mobile-app && npm run start"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "zustand": "^5.0.8"
+  }
+}
