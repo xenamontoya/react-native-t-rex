@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd packages/mobile-app && npm ci && npx expo export --platform web",
+  "outputDirectory": "packages/mobile-app/dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
