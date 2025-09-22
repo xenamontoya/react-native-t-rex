@@ -16,6 +16,7 @@ const config: StorybookConfig = {
       ...config.resolve.alias,
       'react-native$': 'react-native-web',
       'react-native-svg': 'react-native-svg-web',
+      'react-native/Libraries/ReactNative/ReactNative': 'react-native-web',
     };
 
     config.resolve.extensions = [
@@ -29,21 +30,24 @@ const config: StorybookConfig = {
       '.js',
     ];
 
-    // Configure esbuild to handle Flow syntax
-    config.esbuild = {
-      loader: 'tsx',
-      include: /\.(tsx?|jsx?)$/,
-      exclude: [],
-    };
-
-    // Exclude react-native modules from pre-bundling
+    // Exclude React Native modules completely from Vite processing
     config.optimizeDeps = {
       ...config.optimizeDeps,
       exclude: [
         ...(config.optimizeDeps?.exclude || []),
         'react-native',
         'react-native-web',
+        'react-native-svg',
+        '@react-native-community/datetimepicker',
+        'expo-document-picker',
+        'expo-linear-gradient',
       ],
+    };
+
+    // Configure Vite to ignore React Native imports in node_modules
+    config.define = {
+      ...config.define,
+      global: 'globalThis',
     };
 
     return config;
