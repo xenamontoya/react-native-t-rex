@@ -8,7 +8,9 @@ import {
   Alert,
   Image 
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Icon, Colors } from '../../components/src';
+import { AdaptiveAIModal } from '../components';
 
 // Mock stores for mobile (to match web app structure)
 const useRoleStore = () => ({
@@ -160,7 +162,8 @@ const studentData = {
   ]
 };
 
-export default function TrainingScreen({ navigation }: any) {
+export default function TrainingScreen() {
+  const navigation = useNavigation();
   const { setRole } = useRoleStore();
   const { getLessonUpdate, addDummyDebriefData } = useLessonStore();
   const [student, setStudent] = useState(studentData);
@@ -172,7 +175,12 @@ export default function TrainingScreen({ navigation }: any) {
   }, [setRole, addDummyDebriefData]);
 
   const handleLessonClick = (lesson: any) => {
-    Alert.alert('Lesson Details', `View details for ${lesson.title}`);
+    // Navigate to lesson details with lesson data
+    const lessonDataParam = encodeURIComponent(JSON.stringify(lesson));
+    navigation.navigate('LessonDetails' as never, {
+      id: lesson.id,
+      lessonData: lessonDataParam
+    } as never);
   };
 
   const getStatusBadge = (status: string) => {
@@ -506,6 +514,15 @@ export default function TrainingScreen({ navigation }: any) {
       >
         <Icon name="checkCircle" size={24} color={Colors.primary.white} />
       </TouchableOpacity>
+
+      {/* AI Insights Modal */}
+      <AdaptiveAIModal
+        isOpen={showAIInsightsModal}
+        onClose={() => setShowAIInsightsModal(false)}
+        lessonTitle="Training Session"
+        mode="insights"
+        tabletLayout="fullScreen"
+      />
     </View>
   );
 }

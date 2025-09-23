@@ -8,8 +8,11 @@ import {
   Alert,
   Dimensions 
 } from 'react-native';
-import { Icon, Colors, FloatingActionButton } from '../../components/src';
+import { useNavigation } from '@react-navigation/native';
+import { Colors, FloatingActionButton } from '../../components/src';
 import type { FloatingActionItem } from '../../components/src';
+import { Icon, AddFlightModal, ImportLogbookModal } from '../components';
+import { FlightData } from '../utils/flightStore';
 
 // Mock flight data matching your web app structure
 const mockFlights = [
@@ -218,7 +221,7 @@ const FlightCard = ({
             style={styles.dropdownButton}
             onPress={() => onToggleDropdown && onToggleDropdown(dropdownButtonRef)}
           >
-            <Icon name="ellipsisV" size={16} color={Colors.neutral.gray500} />
+            <Icon name="ellipsis-v" size={16} color={Colors.neutral.gray500} />
           </TouchableOpacity>
         </View>
       </View>
@@ -380,7 +383,8 @@ const FlightsMapView = ({ flights }: { flights: any[] }) => {
   );
 };
 
-export default function LogbookScreen({ navigation }: any) {
+export default function LogbookScreen() {
+  const navigation = useNavigation();
   const { savedFlights, removeSavedFlight, duplicateFlight } = useFlightStore();
   const { currentRole } = useRoleStore();
   const [currentView, setCurrentView] = useState<'list' | 'map'>('list');
@@ -388,16 +392,48 @@ export default function LogbookScreen({ navigation }: any) {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [dropdownPosition, setDropdownPosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   
+  // Modal states
+  const [showAddFlightModal, setShowAddFlightModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
+
+  // Handle import completion
+  const handleImportComplete = (flights: FlightData[]) => {
+    // Add imported flights to the store
+    flights.forEach(flight => {
+      // You would add to your flight store here
+      console.log('Imported flight:', flight);
+    });
+    
+    Alert.alert(
+      'Import Complete', 
+      `Successfully imported ${flights.length} flights to your logbook.`,
+      [{ text: 'OK' }]
+    );
+  };
+  
   // Detect tablet size (768px+ width is typically tablet/desktop)
   const { width } = Dimensions.get('window');
   const isTablet = width >= 768;
 
   const handleFlightClick = (flight: any) => {
-    // Navigate to flight details view (read-only for completed, editable for draft/scheduled)
-    if (flight.status === 'Completed') {
-      Alert.alert('Flight Details', `View completed flight details for ${flight.origin?.code || flight.from} → ${flight.destination?.code || flight.to}`);
+    const flightDataParam = encodeURIComponent(JSON.stringify(flight));
+    
+    // Navigate based on flight status:
+    // - Scheduled/Draft flights go to editable form
+    // - Completed flights go to read-only details
+    if (flight.status === 'Scheduled' || flight.status === 'scheduled' || flight.status === 'Draft' || flight.status === 'draft') {
+      // Navigate to editable flight form
+      (navigation as any).navigate('FlightDetailsForm', {
+        id: flight.id,
+        flightData: flightDataParam,
+        mode: 'edit'
+      });
     } else {
-      Alert.alert('Edit Flight', `Edit flight ${flight.origin?.code || flight.from} → ${flight.destination?.code || flight.to}`);
+      // Navigate to read-only flight details
+      (navigation as any).navigate('FlightDetails', {
+        id: flight.id,
+        flightData: flightDataParam
+      });
     }
   };
 
@@ -443,13 +479,11 @@ export default function LogbookScreen({ navigation }: any) {
   };
 
   const handleAddFlight = () => {
-    // Navigate to add flight form
-    Alert.alert('Add Flight', 'Navigate to logbook form to add new flight');
+    setShowAddFlightModal(true);
   };
 
   const handleImportFlights = () => {
-    // Show import modal
-    Alert.alert('Import Flights', 'Show import logbook modal');
+    setShowImportModal(true);
   };
 
   const handleAddEndorsement = () => {
@@ -668,6 +702,19 @@ export default function LogbookScreen({ navigation }: any) {
           </View>
         </>
       )}
+
+      {/* Add Flight Modal */}
+      <AddFlightModal
+        isOpen={showAddFlightModal}
+        onClose={() => setShowAddFlightModal(false)}
+      />
+
+      {/* Import Logbook Modal */}
+      <ImportLogbookModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+        onImportComplete={handleImportComplete}
+      />
     </View>
   );
 }

@@ -10,34 +10,14 @@ import {
 } from 'react-native';
 import { Icon, Colors } from '../../components/src';
 
+// Import stores
+import { useRoleStore, roleConfig } from '../utils/roleStore';
+
 // Mock theme store for mobile
 const useThemeStore = () => ({
   isDark: false,
   toggleTheme: () => {}
 });
-
-// Mock role store for mobile  
-const useRoleStore = () => ({
-  currentRole: 'student' as 'student' | 'instructor' | 'prospective',
-  setRole: (role: 'student' | 'instructor' | 'prospective') => {},
-  initializeStore: () => {},
-  isInitialized: true
-});
-
-const roleConfig = {
-  student: {
-    title: 'Student Pilot',
-    description: 'Learning to fly and building hours'
-  },
-  instructor: {
-    title: 'Flight Instructor', 
-    description: 'Teaching students and building hours'
-  },
-  prospective: {
-    title: 'Prospective Student',
-    description: 'Exploring flight training options'
-  }
-};
 
 export default function MoreScreen({ navigation }: any) {
   const { isDark } = useThemeStore();
@@ -80,7 +60,8 @@ export default function MoreScreen({ navigation }: any) {
 
   const handleRoleSwitch = (role: 'student' | 'instructor' | 'prospective') => {
     setRole(role);
-    // In mobile, we don't navigate to different pages, just update the role
+    // Navigate back to Home to show the new dashboard
+    navigation.navigate('Home');
     Alert.alert('Role Changed', `Switched to ${roleConfig[role].title} experience`);
   };
 

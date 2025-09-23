@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
-import { Icon, NavIcon, Colors } from '../../components/src';
+import { Icon, Colors } from '../../components/src';
 
 interface CustomDrawerContentProps {
   navigation: any;
@@ -19,8 +19,8 @@ export default function CustomDrawerContent({ navigation, state }: CustomDrawerC
   const handleNavigation = (screenName: string) => {
     if (screenName === 'Profile') {
       Alert.alert('Navigation', 'Profile page - coming soon!');
-    } else if (['Analytics', 'Reports', 'Endorsements', 'Careers', 'Settings'].includes(screenName)) {
-      Alert.alert('Navigation', `${screenName} page - coming soon!`);
+    } else if (screenName === 'ImportFlights') {
+      Alert.alert('Navigation', 'Import Flights feature - coming soon!');
     } else {
       navigation.navigate(screenName);
     }
@@ -88,9 +88,8 @@ export default function CustomDrawerContent({ navigation, state }: CustomDrawerC
         onPress={() => handleNavigation(item.name)}
       >
         {isMainNav ? (
-          <NavIcon
+          <Icon
             name={item.icon as any}
-            isActive={active}
             size={16}
             color={active ? Colors.primary.black : Colors.neutral.gray500}
             style={styles.navIcon}

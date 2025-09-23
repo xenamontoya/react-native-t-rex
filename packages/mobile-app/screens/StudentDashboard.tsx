@@ -15,6 +15,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Icon } from '../components/Icons';
+import { AdaptiveAIModal } from '../components';
 import { 
   Colors, 
   Typography, 
@@ -56,6 +57,7 @@ export default function StudentDashboard({ navigation }: any) {
     enrollmentDate: '2023-09-15',
     lessons: []
   });
+  const [showAIInsightsModal, setShowAIInsightsModal] = useState(false);
 
   // Mock data
   const unreadCount = 3;
@@ -87,7 +89,7 @@ export default function StudentDashboard({ navigation }: any) {
   ];
 
   const handleAIInsights = () => {
-    Alert.alert('AI Wingman', 'AI preparation insights coming soon!');
+    setShowAIInsightsModal(true);
   };
 
   const handleNotifications = () => {
@@ -351,6 +353,15 @@ export default function StudentDashboard({ navigation }: any) {
         {/* Bottom Padding for Tab Navigation */}
         <View style={styles.bottomPadding} />
       </ScrollView>
+
+      {/* AI Insights Modal */}
+      <AdaptiveAIModal
+        isOpen={showAIInsightsModal}
+        onClose={() => setShowAIInsightsModal(false)}
+        lessonTitle={nextLesson.title}
+        mode="preparation"
+        tabletLayout="fullScreen"
+      />
     </SafeAreaView>
   );
 }

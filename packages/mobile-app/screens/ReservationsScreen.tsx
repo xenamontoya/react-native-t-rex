@@ -7,7 +7,10 @@ import {
   TouchableOpacity, 
   Alert 
 } from 'react-native';
-import { Icon, Colors } from '../../components/src';
+import { useNavigation } from '@react-navigation/native';
+import { Icon, Colors, FloatingActionButton } from '../../components/src';
+import type { FloatingActionItem } from '../../components/src';
+import { NewReservationModal, showSuccessToast } from '../components';
 
 // Mock stores for mobile (to match web app structure)
 const useRoleStore = () => ({
@@ -88,10 +91,12 @@ const CalendarView = ({ reservations }: { reservations: any[] }) => {
   );
 };
 
-export default function ReservationsScreen({ navigation }: any) {
+export default function ReservationsScreen() {
+  const navigation = useNavigation();
   const { setRole } = useRoleStore();
   const { reservations, isInitialized, initializeStore } = useReservationStore();
   const [currentView, setCurrentView] = useState<'list' | 'calendar'>('list');
+  const [showNewReservationModal, setShowNewReservationModal] = useState(false);
 
   useEffect(() => {
     setRole('student');
@@ -104,14 +109,39 @@ export default function ReservationsScreen({ navigation }: any) {
   }, [isInitialized, initializeStore]);
 
   const handleReservationClick = (reservation: any) => {
-    // Navigate to reservation details
-    Alert.alert('Reservation Details', `View details for ${reservation.aircraft} on ${reservation.date}`);
+    // Navigate to reservation details with data
+    const reservationDataParam = encodeURIComponent(JSON.stringify(reservation));
+    navigation?.navigate('ReservationDetails' as never, {
+      id: reservation.id,
+      reservationData: reservationDataParam
+    } as never);
   };
 
   const handlePreflightClick = () => {
     // Navigate to preflight checklist
     navigation?.navigate('PreflightChecklistScreen');
   };
+
+  const handleNewReservation = () => {
+    setShowNewReservationModal(true);
+  };
+
+  const handleReservationComplete = () => {
+    showSuccessToast({
+      title: 'Reservation Created',
+      message: 'Your reservation has been successfully created.'
+    });
+  };
+
+  // Define floating action items
+  const floatingActionItems: FloatingActionItem[] = [
+    {
+      id: 'new-reservation',
+      icon: 'plus',
+      label: 'New Reservation',
+      onPress: handleNewReservation,
+    },
+  ];
 
   return (
     <View style={styles.container}>
@@ -268,7 +298,7 @@ export default function ReservationsScreen({ navigation }: any) {
             <Text style={styles.emptyDescription}>
               You don't have any flight lessons scheduled yet. Book your next training session to continue your progress.
             </Text>
-            <TouchableOpacity style={styles.scheduleButton}>
+            <TouchableOpacity style={styles.scheduleButton} onPress={handleNewReservation}>
               <Text style={styles.scheduleButtonText}>Schedule a Lesson</Text>
             </TouchableOpacity>
           </View>
@@ -277,6 +307,19 @@ export default function ReservationsScreen({ navigation }: any) {
         {/* Bottom Padding */}
         <View style={styles.bottomPadding} />
       </ScrollView>
+
+      {/* Floating Action Button */}
+      <FloatingActionButton
+        items={floatingActionItems}
+        mainIcon="plus"
+      />
+
+      {/* New Reservation Modal */}
+      <NewReservationModal
+        isOpen={showNewReservationModal}
+        onClose={() => setShowNewReservationModal(false)}
+        onComplete={handleReservationComplete}
+      />
     </View>
   );
 }

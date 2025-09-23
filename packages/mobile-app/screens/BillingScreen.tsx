@@ -7,66 +7,176 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { useNavigation } from '@react-navigation/native';
+import { Icon, Colors, Typography } from '../../components/src';
 
-export default function BillingScreen({ navigation }: any) {
-  const handleBackPress = () => {
-    navigation?.goBack();
-  };
+// BillingOverviewCard Component
+const BillingOverviewCard: React.FC = () => {
+  const loanAmount = "+$350.00";
+  const totalPackageCost = "$10,264.80";
+  const packageName = "Zero to Hero";
+  const loanProgress = 65;
+  const minLoanAmount = "$3,281.00";
+  const maxLoanAmount = "$50,000.00";
+  const showWarning = true;
+  const warningText = "Based on your previous flight frequency and projected hours, you may be needing more money in about one month.";
+  
+  const packageItems = [
+    { name: "Flight Instruction", completed: 50, total: 200, unit: "hrs" },
+    { name: "Ground Instruction", completed: 25, total: 100, unit: "hrs" },
+    { name: "ASEL Rental", completed: 50, total: 200, unit: "hrs" },
+    { name: "AMEL Rental", completed: 40, total: 40, unit: "hrs" },
+    { name: "Flight Simulator", completed: 10, total: 15, unit: "hrs" }
+  ];
 
   return (
-    <View style={styles.container}>
-      {/* Sticky Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-        <View>
-          <Text style={styles.headerTitle}>Billing</Text>
-          <Text style={styles.headerSubtitle}>Payment history and invoices</Text>
+    <View style={styles.billingOverviewCard}>
+      {/* Loan Details Section */}
+      <View style={styles.loanDetailsSection}>
+        <View style={styles.loanDetailsHeader}>
+          <Text style={styles.sectionLabel}>LOAN DETAILS</Text>
+          <TouchableOpacity onPress={() => Alert.alert('View Application', 'View loan application details')}>
+            <Text style={styles.viewApplicationText}>View Application</Text>
+          </TouchableOpacity>
+        </View>
+        
+        <View style={styles.loanAmountContainer}>
+          <Text style={styles.loanAmount}>{loanAmount}</Text>
+        </View>
+
+        {/* Progress Bar */}
+        <View style={styles.progressBarContainer}>
+          <View style={styles.progressBarBackground}>
+            <View 
+              style={[
+                styles.progressBarFill,
+                { width: `${loanProgress}%` }
+              ]}
+            />
+          </View>
+        </View>
+        
+        <View style={styles.progressLabels}>
+          <Text style={styles.progressLabel}>{minLoanAmount}</Text>
+          <Text style={styles.progressLabel}>{maxLoanAmount}</Text>
         </View>
       </View>
 
-      {/* Scrollable Content */}
-      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
-        {/* Coming Soon Card */}
-        <View style={styles.comingSoonCard}>
-          <View style={styles.iconContainer}>
-            <Icon name="creditCard" size={32} color={Colors.tertiary.denimBlue} />
+      {/* Warning Section */}
+      {showWarning && (
+        <View style={styles.warningSection}>
+          <View style={styles.warningContent}>
+            <Icon name="alert-circle" size={18} color="#FF9500" style={styles.warningIcon} />
+            <View style={styles.warningTextContainer}>
+              <Text style={styles.warningText}>{warningText}</Text>
+              <TouchableOpacity 
+                style={styles.startApplicationButton}
+                onPress={() => Alert.alert('Start Application', 'Start new loan application')}
+              >
+                <Text style={styles.startApplicationText}>Start Application</Text>
+                <Icon name="chevron-right" size={12} color="#007AFF" />
+              </TouchableOpacity>
+            </View>
           </View>
-          <Text style={styles.comingSoonTitle}>Coming Soon</Text>
-          <Text style={styles.comingSoonDescription}>
-            We're building a comprehensive billing system to manage your payments, view invoices, and track your training costs.
-          </Text>
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>Billing management coming soon</Text>
+        </View>
+      )}
+
+      {/* Package Details Section */}
+      <View style={styles.packageDetailsSection}>
+        <View style={styles.packageDetailsHeader}>
+          <Text style={styles.sectionLabel}>PACKAGE DETAILS</Text>
+          <View style={styles.packageTitleContainer}>
+            <Text style={styles.packageName}>{packageName}</Text>
+            <Text style={styles.packageCost}>{totalPackageCost}</Text>
           </View>
         </View>
 
-        {/* Feature Preview */}
-        <View style={styles.featurePreview}>
-          <View style={styles.previewItem}>
-            <View style={styles.previewIcon} />
-            <View style={styles.previewContent}>
-              <View style={styles.previewTitle} />
-              <View style={styles.previewSubtitle} />
+        {/* Package Items */}
+        <View style={styles.packageItems}>
+          {packageItems.map((item, index) => (
+            <View key={index} style={styles.packageItem}>
+              <Text style={styles.packageItemName}>{item.name}</Text>
+              <View style={styles.packageItemProgress}>
+                <Text style={styles.packageItemCompleted}>{item.completed} {item.unit}</Text>
+                <Text style={styles.packageItemTotal}> / {item.total} {item.unit}</Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.previewItem}>
-            <View style={styles.previewIcon} />
-            <View style={styles.previewContent}>
-              <View style={styles.previewTitle} />
-              <View style={styles.previewSubtitle} />
-            </View>
-          </View>
-          <View style={styles.previewItem}>
-            <View style={styles.previewIcon} />
-            <View style={styles.previewContent}>
-              <View style={styles.previewTitle} />
-              <View style={styles.previewSubtitle} />
-            </View>
-          </View>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default function BillingScreen() {
+  const navigation = useNavigation();
+
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
+  const billingActions = [
+    {
+      id: 'payment-history',
+      title: 'Payment History',
+      subtitle: 'View past invoices and payments',
+      icon: 'file-text',
+      onPress: () => Alert.alert('Payment History', 'Payment history feature coming soon')
+    },
+    {
+      id: 'payment-methods',
+      title: 'Payment Methods',
+      subtitle: 'Manage cards and payment options',
+      icon: 'credit-card',
+      onPress: () => Alert.alert('Payment Methods', 'Payment methods management coming soon')
+    },
+    {
+      id: 'spending-analytics',
+      title: 'Spending Analytics',
+      subtitle: 'Track your training costs and progress',
+      icon: 'trending-up',
+      onPress: () => Alert.alert('Spending Analytics', 'Spending analytics coming soon')
+    }
+  ];
+
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+          <Icon name="arrow-left" size={16} color={Colors.neutral.gray600} />
+        </TouchableOpacity>
+        <View style={styles.headerInfo}>
+          <Text style={styles.headerTitle}>Billing Overview</Text>
+          <Text style={styles.headerSubtitle}>Manage your training package and financing</Text>
+        </View>
+      </View>
+
+      {/* Content */}
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
+        {/* Billing Overview Card */}
+        <BillingOverviewCard />
+
+        {/* Additional Billing Actions */}
+        <View style={styles.billingActions}>
+          {billingActions.map((action) => (
+            <TouchableOpacity
+              key={action.id}
+              style={styles.actionItem}
+              onPress={action.onPress}
+            >
+              <View style={styles.actionContent}>
+                <View style={styles.actionIconContainer}>
+                  <Icon name={action.icon} size={20} color={Colors.neutral.gray600} />
+                </View>
+                <View style={styles.actionTextContainer}>
+                  <Text style={styles.actionTitle}>{action.title}</Text>
+                  <Text style={styles.actionSubtitle}>{action.subtitle}</Text>
+                </View>
+              </View>
+              <Icon name="chevron-right" size={16} color={Colors.neutral.gray400} />
+            </TouchableOpacity>
+          ))}
         </View>
       </ScrollView>
     </View>
@@ -76,117 +186,236 @@ export default function BillingScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primary.white,
+    backgroundColor: Colors.neutral.gray50,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
+    backgroundColor: Colors.primary.white,
     borderBottomWidth: 1,
     borderBottomColor: Colors.neutral.gray200,
-    backgroundColor: Colors.primary.white,
   },
   backButton: {
-    width: 48,
-    height: 48,
+    width: 32,
+    height: 32,
     backgroundColor: Colors.neutral.gray100,
-    borderRadius: 24,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: 16,
+  },
+  headerInfo: {
+    flex: 1,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: Typography.fontFamily.semibold,
-    color: Colors.neutral.gray900,
+    color: '#212121',
+    marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 14,
     fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
+    color: Colors.neutral.gray600,
   },
   content: {
     flex: 1,
   },
   contentContainer: {
-    padding: 24,
-    paddingBottom: 128,
+    padding: 16,
+    gap: 24,
   },
-  comingSoonCard: {
+  billingOverviewCard: {
     backgroundColor: Colors.primary.white,
-    borderRadius: 12,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: Colors.neutral.gray200,
-    padding: 32,
-    alignItems: 'center',
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
-  iconContainer: {
-    width: 64,
-    height: 64,
-    backgroundColor: Colors.tertiary.denimBlue + '20',
-    borderRadius: 32,
+  loanDetailsSection: {
+    marginBottom: 24,
+  },
+  loanDetailsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
     marginBottom: 16,
   },
-  comingSoonTitle: {
-    fontSize: 20,
+  sectionLabel: {
+    fontSize: 12,
+    fontFamily: Typography.fontFamily.medium,
+    color: Colors.neutral.gray500,
+    letterSpacing: 0.5,
+  },
+  viewApplicationText: {
+    fontSize: 14,
     fontFamily: Typography.fontFamily.semibold,
-    color: Colors.neutral.gray900,
+    color: '#007AFF',
+  },
+  loanAmountContainer: {
+    alignItems: 'flex-end',
+    marginBottom: 16,
+  },
+  loanAmount: {
+    fontSize: 24,
+    fontFamily: Typography.fontFamily.medium,
+    color: '#008333',
+    letterSpacing: 0.5,
+  },
+  progressBarContainer: {
     marginBottom: 8,
   },
-  comingSoonDescription: {
-    fontSize: 16,
+  progressBarBackground: {
+    width: '100%',
+    height: 12,
+    backgroundColor: Colors.neutral.gray300,
+    borderRadius: 6,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#F6A345', // Gradient approximation
+    borderRadius: 6,
+  },
+  progressLabels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  progressLabel: {
+    fontSize: 12,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray500,
+  },
+  warningSection: {
+    backgroundColor: '#FFECAB',
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 24,
+  },
+  warningContent: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  warningIcon: {
+    marginTop: 2,
+  },
+  warningTextContainer: {
+    flex: 1,
+  },
+  warningText: {
+    fontSize: 14,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
-    textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+  startApplicationButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  startApplicationText: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.semibold,
+    color: '#007AFF',
+  },
+  packageDetailsSection: {
+    borderTopWidth: 1,
+    borderTopColor: Colors.neutral.gray200,
+    paddingTop: 16,
+  },
+  packageDetailsHeader: {
     marginBottom: 16,
   },
-  badge: {
-    backgroundColor: Colors.tertiary.denimBlue + '20',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
+  packageTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 16,
   },
-  badgeText: {
-    fontSize: 14,
+  packageName: {
+    fontSize: 18,
     fontFamily: Typography.fontFamily.medium,
-    color: Colors.tertiary.denimBlue,
+    color: '#212121',
   },
-  featurePreview: {
-    marginTop: 24,
-    gap: 16,
+  packageCost: {
+    fontSize: 20,
+    fontFamily: Typography.fontFamily.bold,
+    color: '#212121',
   },
-  previewItem: {
-    backgroundColor: Colors.neutral.gray50,
+  packageItems: {
+    gap: 12,
+  },
+  packageItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  packageItemName: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: '#212121',
+  },
+  packageItemProgress: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  packageItemCompleted: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.bold,
+    color: '#008333',
+  },
+  packageItemTotal: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.bold,
+    color: '#212121',
+  },
+  billingActions: {
+    gap: 12,
+  },
+  actionItem: {
+    backgroundColor: Colors.primary.white,
     borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Colors.neutral.gray200,
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    opacity: 0.6,
+    justifyContent: 'space-between',
   },
-  previewIcon: {
-    width: 40,
-    height: 40,
-    backgroundColor: Colors.neutral.gray200,
-    borderRadius: 8,
-    marginRight: 12,
-  },
-  previewContent: {
+  actionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
   },
-  previewTitle: {
-    height: 16,
-    backgroundColor: Colors.neutral.gray200,
-    borderRadius: 4,
-    width: 128,
-    marginBottom: 4,
+  actionIconContainer: {
+    width: 40,
+    height: 40,
+    backgroundColor: Colors.neutral.gray100,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
   },
-  previewSubtitle: {
-    height: 12,
-    backgroundColor: Colors.neutral.gray200,
-    borderRadius: 4,
-    width: 96,
+  actionTextContainer: {
+    flex: 1,
+  },
+  actionTitle: {
+    fontSize: 16,
+    fontFamily: Typography.fontFamily.medium,
+    color: '#212121',
+    marginBottom: 2,
+  },
+  actionSubtitle: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
   },
 });

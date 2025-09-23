@@ -1,3 +1,4 @@
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image, useWindowDimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -15,9 +16,16 @@ import ProfileScreen from './screens/ProfileScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
 import ReservationDetailsScreen from './screens/ReservationDetailsScreen';
 import LessonDetailsScreen from './screens/LessonDetailsScreen';
+import StudentDetailsScreen from './screens/StudentDetailsScreen';
+import JobDetailsScreen from './screens/JobDetailsScreen';
+import StudentReservationsScreen from './screens/StudentReservationsScreen';
+import InstructorReservationsScreen from './screens/InstructorReservationsScreen';
+import ProspectiveExploreScreen from './screens/ProspectiveExploreScreen';
+import ProspectiveFindSchoolScreen from './screens/ProspectiveFindSchoolScreen';
 import AnalyticsScreen from './screens/AnalyticsScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import HelpScreen from './screens/HelpScreen';
+import { ToastProvider, ActionSheetProvider, ConfirmationModalProvider } from './components';
 import IncidentReportScreen from './screens/IncidentReportScreen';
 import BillingScreen from './screens/BillingScreen';
 import CareersScreen from './screens/CareersScreen';
@@ -27,6 +35,8 @@ import AddFlightScreen from './screens/AddFlightScreen';
 import PreflightChecklistScreen from './screens/PreflightChecklistScreen';
 import WeatherReviewScreen from './screens/WeatherReviewScreen';
 import FlightDetailsFormScreen from './screens/FlightDetailsFormScreen';
+import AudioDebriefScreen from './screens/AudioDebriefScreen';
+import LessonGradingScreen from './screens/LessonGradingScreen';
 import FlightDetailsScreen from './screens/FlightDetailsScreen';
 import WeightBalanceScreen from './screens/WeightBalanceScreen';
 import FRATScreen from './screens/FRATScreen';
@@ -37,13 +47,23 @@ import CareerCoachingScreen from './screens/CareerCoachingScreen';
 import InterviewPrepScreen from './screens/InterviewPrepScreen';
 import ResumeServicesScreen from './screens/ResumeServicesScreen';
 
+// Import new dashboard screens
+import StudentDashboardMain from './screens/StudentDashboardMain';
+import InstructorDashboard from './screens/InstructorDashboard';
+import ProspectiveDashboard from './screens/ProspectiveDashboard';
+import ProspectiveCalculator from './screens/ProspectiveCalculator';
+import InstructorMyFlights from './screens/InstructorMyFlights';
+
 // Import custom drawer content
 import CustomDrawerContent from './components/CustomDrawerContent';
 
 // Import components from new design system  
-import { NavIcon, Colors, Typography } from '../components/src';
+import { Colors, Typography } from '../components/src';
 import { Icon } from './components/Icons';
 import StudentDashboard from './screens/StudentDashboard';
+
+// Import role store
+import { useRoleStore } from './utils/roleStore';
 
 // Create navigators
 const Tab = createBottomTabNavigator();
@@ -126,9 +146,36 @@ const customTabBarStyles = StyleSheet.create({
   },
 });
 
-// Home Screen Component - Using new StudentDashboard  
+// Home Screen Component - Role-aware dashboard switcher
 function HomeScreen({ navigation }: any) {
-  return <StudentDashboard navigation={navigation} />;
+  const { currentRole, initializeStore, isInitialized } = useRoleStore();
+
+  // Initialize role store on first load
+  React.useEffect(() => {
+    if (!isInitialized) {
+      initializeStore();
+    }
+  }, [isInitialized, initializeStore]);
+
+  // Loading state while initializing
+  if (!isInitialized) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  // Return appropriate dashboard based on current role
+  switch (currentRole) {
+    case 'instructor':
+      return <InstructorDashboard />;
+    case 'prospective':
+      return <ProspectiveDashboard />;
+    case 'student':
+    default:
+      return <StudentDashboardMain />;
+  }
 }
 
 // Legacy Home Screen Component (keeping for reference)
@@ -391,8 +438,57 @@ function MobileTabNavigator() {
                }}
              />
              <Tab.Screen 
+               name="FlightDetails" 
+               component={FlightDetailsScreen}
+               options={{
+                 tabBarButton: () => null, // Hide from tab bar
+               }}
+             />
+             <Tab.Screen 
                name="LessonDetails" 
                component={LessonDetailsScreen}
+               options={{
+                 tabBarButton: () => null, // Hide from tab bar
+               }}
+             />
+             <Tab.Screen 
+               name="StudentDetails" 
+               component={StudentDetailsScreen}
+               options={{
+                 tabBarButton: () => null, // Hide from tab bar
+               }}
+             />
+             <Tab.Screen 
+               name="JobDetails" 
+               component={JobDetailsScreen}
+               options={{
+                 tabBarButton: () => null, // Hide from tab bar
+               }}
+             />
+             <Tab.Screen 
+               name="StudentReservations" 
+               component={StudentReservationsScreen}
+               options={{
+                 tabBarButton: () => null, // Hide from tab bar
+               }}
+             />
+             <Tab.Screen 
+               name="InstructorReservations" 
+               component={InstructorReservationsScreen}
+               options={{
+                 tabBarButton: () => null, // Hide from tab bar
+               }}
+             />
+             <Tab.Screen 
+               name="ProspectiveExplore" 
+               component={ProspectiveExploreScreen}
+               options={{
+                 tabBarButton: () => null, // Hide from tab bar
+               }}
+             />
+             <Tab.Screen 
+               name="ProspectiveFindSchool" 
+               component={ProspectiveFindSchoolScreen}
                options={{
                  tabBarButton: () => null, // Hide from tab bar
                }}
@@ -421,13 +517,6 @@ function MobileTabNavigator() {
         <Tab.Screen
           name="FlightDetailsForm"
           component={FlightDetailsFormScreen}
-          options={{
-            tabBarButton: () => null, // Hide from tab bar
-          }}
-        />
-        <Tab.Screen
-          name="FlightDetails"
-          component={FlightDetailsScreen}
           options={{
             tabBarButton: () => null, // Hide from tab bar
           }}
@@ -544,6 +633,34 @@ function MobileTabNavigator() {
             tabBarButton: () => null, // Hide from tab bar
           }}
         />
+        <Tab.Screen
+          name="ProspectiveCalculator"
+          component={ProspectiveCalculator}
+          options={{
+            tabBarButton: () => null, // Hide from tab bar
+          }}
+        />
+        <Tab.Screen
+          name="InstructorMyFlights"
+          component={InstructorMyFlights}
+          options={{
+            tabBarButton: () => null, // Hide from tab bar
+          }}
+        />
+        <Tab.Screen
+          name="AudioDebrief"
+          component={AudioDebriefScreen}
+          options={{
+            tabBarButton: () => null, // Hide from tab bar
+          }}
+        />
+        <Tab.Screen
+          name="LessonGrading"
+          component={LessonGradingScreen}
+          options={{
+            tabBarButton: () => null, // Hide from tab bar
+          }}
+        />
     </Tab.Navigator>
   );
 }
@@ -570,13 +687,20 @@ function TabletDrawerNavigator() {
       <Drawer.Screen name="Profile" component={ProfileScreen} />
       <Drawer.Screen name="More" component={MoreScreen} />
              <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+             {/* Detail screens for navigation */}
              <Drawer.Screen name="ReservationDetails" component={ReservationDetailsScreen} />
+             <Drawer.Screen name="FlightDetails" component={FlightDetailsScreen} />
              <Drawer.Screen name="LessonDetails" component={LessonDetailsScreen} />
+             <Drawer.Screen name="StudentDetails" component={StudentDetailsScreen} />
+             <Drawer.Screen name="JobDetails" component={JobDetailsScreen} />
+             <Drawer.Screen name="StudentReservations" component={StudentReservationsScreen} />
+             <Drawer.Screen name="InstructorReservations" component={InstructorReservationsScreen} />
+             <Drawer.Screen name="ProspectiveExplore" component={ProspectiveExploreScreen} />
+             <Drawer.Screen name="ProspectiveFindSchool" component={ProspectiveFindSchoolScreen} />
              <Drawer.Screen name="AddFlight" component={AddFlightScreen} />
              <Drawer.Screen name="PreflightChecklist" component={PreflightChecklistScreen} />
       <Drawer.Screen name="WeatherReview" component={WeatherReviewScreen} />
       <Drawer.Screen name="FlightDetailsForm" component={FlightDetailsFormScreen} />
-      <Drawer.Screen name="FlightDetails" component={FlightDetailsScreen} />
       <Drawer.Screen name="WeightBalance" component={WeightBalanceScreen} />
       <Drawer.Screen name="FRAT" component={FRATScreen} />
       {/* Additional screens for sidebar navigation */}
@@ -594,6 +718,10 @@ function TabletDrawerNavigator() {
              <Drawer.Screen name="CareerCoaching" component={CareerCoachingScreen} />
              <Drawer.Screen name="InterviewPrep" component={InterviewPrepScreen} />
              <Drawer.Screen name="ResumeServices" component={ResumeServicesScreen} />
+             <Drawer.Screen name="ProspectiveCalculator" component={ProspectiveCalculator} />
+             <Drawer.Screen name="InstructorMyFlights" component={InstructorMyFlights} />
+             <Drawer.Screen name="AudioDebrief" component={AudioDebriefScreen} />
+             <Drawer.Screen name="LessonGrading" component={LessonGradingScreen} />
     </Drawer.Navigator>
   );
 }
@@ -626,10 +754,16 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar style="auto" />
-      {isTablet ? <TabletDrawerNavigator /> : <MobileTabNavigator />}
-    </NavigationContainer>
+    <ToastProvider>
+      <ActionSheetProvider>
+        <ConfirmationModalProvider>
+          <NavigationContainer>
+            <StatusBar style="auto" />
+            {isTablet ? <TabletDrawerNavigator /> : <MobileTabNavigator />}
+          </NavigationContainer>
+        </ConfirmationModalProvider>
+      </ActionSheetProvider>
+    </ToastProvider>
   );
 }
 

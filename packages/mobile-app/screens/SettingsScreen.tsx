@@ -1,594 +1,407 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Switch, SafeAreaView, Alert } from 'react-native';
-import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src/tokens';
+import React, { useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+  Animated,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Icon, Colors, Typography } from '../../components/src';
+import { useThemeStore } from '../utils/themeStore';
 
-export default function SettingsScreen({ navigation }: any) {
-  const [notifications, setNotifications] = useState({
-    flightReminders: true,
-    lessonUpdates: true,
-    weatherAlerts: true,
-    marketingEmails: false,
+export default function SettingsScreen() {
+  const navigation = useNavigation();
+  const { isDark, toggleTheme, initializeStore, isInitialized } = useThemeStore();
+
+  useEffect(() => {
+    if (!isInitialized) {
+      initializeStore();
+    }
+  }, [isInitialized, initializeStore]);
+
+  const handleBackPress = () => {
+    navigation.goBack();
+  };
+
+  const getThemeColors = () => ({
+    background: isDark ? '#1a1a1a' : '#ffffff',
+    cardBackground: isDark ? '#2a2a2a' : '#ffffff',
+    border: isDark ? '#404040' : '#e5e7eb',
+    text: isDark ? '#ffffff' : '#111827',
+    secondaryText: isDark ? '#a0a0a0' : '#6b7280',
+    buttonBackground: isDark ? '#404040' : '#f3f4f6',
   });
 
-  const [privacy, setPrivacy] = useState({
-    shareProgress: true,
-    locationServices: true,
-    analytics: false,
-  });
+  const themeColors = getThemeColors();
 
-  const handleGoBack = () => {
-    navigation?.goBack();
-  };
-
-  const handleNotificationChange = (key: keyof typeof notifications) => {
-    setNotifications(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
-  };
-
-  const handlePrivacyChange = (key: keyof typeof privacy) => {
-    setPrivacy(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
-  };
-
-  const handleMenuPress = (item: string) => {
-    Alert.alert('Settings', `You pressed: ${item}`);
-  };
-
-  const accountSettings = [
-    { icon: 'user', title: 'Personal Information', description: 'Update your profile and contact details' },
-    { icon: 'lock', title: 'Password & Security', description: 'Change password and security settings' },
-    { icon: 'creditCard', title: 'Payment Methods', description: 'Manage your saved payment methods' },
-    { icon: 'fileText', title: 'Documents & Certificates', description: 'Upload and manage your pilot documents' },
+  const privacyItems = [
+    {
+      id: 'privacy-settings',
+      title: 'Privacy Settings',
+      subtitle: 'Control data sharing and visibility',
+      icon: 'lock',
+      isComingSoon: true,
+      onPress: () => Alert.alert('Privacy Settings', 'Privacy settings coming soon')
+    },
+    {
+      id: 'notifications',
+      title: 'Notifications',
+      subtitle: 'Manage push notifications and alerts',
+      icon: 'bell',
+      isComingSoon: true,
+      onPress: () => Alert.alert('Notifications', 'Notification settings coming soon')
+    },
+    {
+      id: 'data-export',
+      title: 'Data Export',
+      subtitle: 'Download your training data',
+      icon: 'download',
+      isComingSoon: true,
+      onPress: () => Alert.alert('Data Export', 'Data export feature coming soon')
+    }
   ];
 
-  const appSettings = [
-    { icon: 'bell', title: 'Notification Preferences', description: 'Customize your notification settings' },
-    { icon: 'mapMarkerAlt', title: 'Location Services', description: 'Manage location and weather preferences' },
-    { icon: 'download', title: 'Data & Storage', description: 'Manage offline data and storage' },
-    { icon: 'cog', title: 'Display & Accessibility', description: 'Customize app appearance and accessibility' },
+  const supportItems = [
+    {
+      id: 'help-center',
+      title: 'Help Center',
+      subtitle: 'FAQs and support articles',
+      icon: 'help-circle',
+      isComingSoon: true,
+      onPress: () => Alert.alert('Help Center', 'Help center coming soon')
+    },
+    {
+      id: 'contact-support',
+      title: 'Contact Support',
+      subtitle: 'Get help from our team',
+      icon: 'message-circle',
+      isComingSoon: true,
+      onPress: () => Alert.alert('Contact Support', 'Contact support coming soon')
+    },
+    {
+      id: 'feedback',
+      title: 'Send Feedback',
+      subtitle: 'Help us improve the app',
+      icon: 'star',
+      isComingSoon: true,
+      onPress: () => Alert.alert('Send Feedback', 'Feedback feature coming soon')
+    }
   ];
 
-  const supportOptions = [
-    { icon: 'questionCircle', title: 'Help Center', description: 'Find answers to common questions' },
-    { icon: 'comments', title: 'Contact Support', description: 'Get help from our support team' },
-    { icon: 'exclamationTriangle', title: 'Report a Problem', description: 'Report bugs or issues with the app' },
-    { icon: 'star', title: 'Rate the App', description: 'Leave a review on the app store' },
-  ];
+  const renderToggle = () => {
+    return (
+      <View style={[
+        styles.toggleContainer,
+        { backgroundColor: isDark ? '#00FFF2' : '#d1d5db' }
+      ]}>
+        <Animated.View 
+          style={[
+            styles.toggleButton,
+            {
+              transform: [{ translateX: isDark ? 24 : 2 }]
+            }
+          ]}
+        />
+      </View>
+    );
+  };
+
+  const renderSettingItem = (item: any, isComingSoon: boolean = false) => (
+    <TouchableOpacity
+      key={item.id}
+      style={[
+        styles.settingItem,
+        { 
+          backgroundColor: themeColors.cardBackground,
+          borderColor: themeColors.border,
+          opacity: isComingSoon ? 0.6 : 1
+        }
+      ]}
+      onPress={item.onPress}
+      disabled={isComingSoon}
+    >
+      <View style={styles.settingContent}>
+        <View style={[
+          styles.settingIconContainer,
+          { backgroundColor: themeColors.buttonBackground }
+        ]}>
+          <Icon 
+            name={item.icon} 
+            size={16} 
+            color={themeColors.secondaryText} 
+          />
+        </View>
+        <View style={styles.settingTextContainer}>
+          <Text style={[styles.settingTitle, { color: themeColors.text }]}>
+            {item.title}
+          </Text>
+          <Text style={[styles.settingSubtitle, { color: themeColors.secondaryText }]}>
+            {item.subtitle}
+          </Text>
+        </View>
+      </View>
+      {isComingSoon && (
+        <View style={[
+          styles.comingSoonBadge,
+          { 
+            backgroundColor: themeColors.buttonBackground,
+            borderColor: themeColors.border
+          }
+        ]}>
+          <Text style={[styles.comingSoonText, { color: themeColors.secondaryText }]}>
+            Coming Soon
+          </Text>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-          <Icon name="arrowLeft" size={24} color={Colors.primary.black} />
+    <View style={[styles.container, { backgroundColor: themeColors.background }]}>
+      {/* Sticky Header */}
+      <View style={[
+        styles.header,
+        { 
+          backgroundColor: themeColors.background,
+          borderBottomColor: themeColors.border
+        }
+      ]}>
+        <TouchableOpacity
+          style={[styles.backButton, { backgroundColor: themeColors.buttonBackground }]}
+          onPress={handleBackPress}
+        >
+          <Icon 
+            name="arrow-left" 
+            size={20} 
+            color={themeColors.secondaryText} 
+          />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Settings</Text>
-        <View style={styles.headerRight} />
+        <View style={styles.headerTextContainer}>
+          <Text style={[styles.headerTitle, { color: themeColors.text }]}>
+            Settings
+          </Text>
+          <Text style={[styles.headerSubtitle, { color: themeColors.secondaryText }]}>
+            App preferences and configuration
+          </Text>
+        </View>
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Profile Section */}
-        <View style={styles.profileCard}>
-          <View style={styles.profileHeader}>
-            <View style={styles.profileAvatar}>
-              <Text style={styles.profileAvatarText}>AJ</Text>
+      {/* Scrollable Content */}
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
+        {/* Appearance Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: themeColors.secondaryText }]}>
+            APPEARANCE
+          </Text>
+          
+          {/* Dark Mode Toggle */}
+          <View style={[
+            styles.settingItem,
+            { 
+              backgroundColor: themeColors.cardBackground,
+              borderColor: themeColors.border
+            }
+          ]}>
+            <View style={styles.settingContent}>
+              <View style={[
+                styles.settingIconContainer,
+                { backgroundColor: themeColors.buttonBackground }
+              ]}>
+                <Icon 
+                  name={isDark ? 'moon' : 'sun'} 
+                  size={16} 
+                  color={isDark ? '#fbbf24' : '#f59e0b'} 
+                />
+              </View>
+              <View style={styles.settingTextContainer}>
+                <Text style={[styles.settingTitle, { color: themeColors.text }]}>
+                  {isDark ? 'Dark Mode' : 'Light Mode'}
+                </Text>
+                <Text style={[styles.settingSubtitle, { color: themeColors.secondaryText }]}>
+                  {isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+                </Text>
+              </View>
             </View>
-            <View style={styles.profileInfo}>
-              <Text style={styles.profileName}>Alex Johnson</Text>
-              <Text style={styles.profileEmail}>alex.johnson@email.com</Text>
-              <Text style={styles.profileRole}>Student Pilot</Text>
-            </View>
-            <TouchableOpacity 
-              style={styles.editProfileButton}
-              onPress={() => handleMenuPress('Edit Profile')}
-            >
-              <Icon name="edit" size={16} color={Colors.neutral.gray600} />
+            <TouchableOpacity onPress={toggleTheme}>
+              {renderToggle()}
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Quick Notifications Toggle */}
-        <View style={styles.quickSettingsCard}>
-          <Text style={styles.h2}>Quick Settings</Text>
-          <View style={styles.quickSettingsList}>
-            <View style={styles.quickSettingItem}>
-              <View style={styles.quickSettingContent}>
-                <Icon name="bell" size={20} color={Colors.neutral.gray600} style={styles.quickSettingIcon} />
-                <Text style={styles.quickSettingTitle}>Flight Reminders</Text>
-              </View>
-              <Switch
-                value={notifications.flightReminders}
-                onValueChange={() => handleNotificationChange('flightReminders')}
-                trackColor={{ false: Colors.neutral.gray300, true: Colors.secondary.electricBlue }}
-                thumbColor={Colors.primary.white}
-              />
-            </View>
-            <View style={styles.quickSettingItem}>
-              <View style={styles.quickSettingContent}>
-                <Icon name="graduationCap" size={20} color={Colors.neutral.gray600} style={styles.quickSettingIcon} />
-                <Text style={styles.quickSettingTitle}>Lesson Updates</Text>
-              </View>
-              <Switch
-                value={notifications.lessonUpdates}
-                onValueChange={() => handleNotificationChange('lessonUpdates')}
-                trackColor={{ false: Colors.neutral.gray300, true: Colors.secondary.electricBlue }}
-                thumbColor={Colors.primary.white}
-              />
-            </View>
-            <View style={styles.quickSettingItem}>
-              <View style={styles.quickSettingContent}>
-                <Icon name="mapMarkerAlt" size={20} color={Colors.neutral.gray600} style={styles.quickSettingIcon} />
-                <Text style={styles.quickSettingTitle}>Location Services</Text>
-              </View>
-              <Switch
-                value={privacy.locationServices}
-                onValueChange={() => handlePrivacyChange('locationServices')}
-                trackColor={{ false: Colors.neutral.gray300, true: Colors.secondary.electricBlue }}
-                thumbColor={Colors.primary.white}
-              />
-            </View>
+        {/* Privacy & Security Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: themeColors.secondaryText }]}>
+            PRIVACY & SECURITY
+          </Text>
+          
+          <View style={styles.sectionItems}>
+            {privacyItems.map(item => renderSettingItem(item, item.isComingSoon))}
           </View>
         </View>
 
-        {/* Account Settings */}
-        <View style={styles.settingsSection}>
-          <Text style={styles.sectionTitle}>ACCOUNT</Text>
-          <View style={styles.settingsList}>
-            {accountSettings.map((setting, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.settingItem}
-                onPress={() => handleMenuPress(setting.title)}
-              >
-                <View style={styles.settingIcon}>
-                  <Icon name={setting.icon as any} size={18} color={Colors.neutral.gray600} />
-                </View>
-                <View style={styles.settingContent}>
-                  <Text style={styles.settingTitle}>{setting.title}</Text>
-                  <Text style={styles.settingDescription}>{setting.description}</Text>
-                </View>
-                <Icon name="chevronRight" size={16} color={Colors.neutral.gray400} />
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        {/* App Settings */}
-        <View style={styles.settingsSection}>
-          <Text style={styles.sectionTitle}>APP SETTINGS</Text>
-          <View style={styles.settingsList}>
-            {appSettings.map((setting, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.settingItem}
-                onPress={() => handleMenuPress(setting.title)}
-              >
-                <View style={styles.settingIcon}>
-                  <Icon name={setting.icon as any} size={18} color={Colors.neutral.gray600} />
-                </View>
-                <View style={styles.settingContent}>
-                  <Text style={styles.settingTitle}>{setting.title}</Text>
-                  <Text style={styles.settingDescription}>{setting.description}</Text>
-                </View>
-                <Icon name="chevronRight" size={16} color={Colors.neutral.gray400} />
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        {/* Detailed Notification Settings */}
-        <View style={styles.notificationsCard}>
-          <Text style={styles.h2}>Notification Settings</Text>
-          <View style={styles.notificationsList}>
-            <View style={styles.notificationItem}>
-              <View style={styles.notificationContent}>
-                <Text style={styles.notificationTitle}>Weather Alerts</Text>
-                <Text style={styles.notificationDescription}>Get notified about weather changes</Text>
-              </View>
-              <Switch
-                value={notifications.weatherAlerts}
-                onValueChange={() => handleNotificationChange('weatherAlerts')}
-                trackColor={{ false: Colors.neutral.gray300, true: Colors.secondary.electricBlue }}
-                thumbColor={Colors.primary.white}
-              />
-            </View>
-            <View style={styles.notificationItem}>
-              <View style={styles.notificationContent}>
-                <Text style={styles.notificationTitle}>Marketing Emails</Text>
-                <Text style={styles.notificationDescription}>Receive updates about new features</Text>
-              </View>
-              <Switch
-                value={notifications.marketingEmails}
-                onValueChange={() => handleNotificationChange('marketingEmails')}
-                trackColor={{ false: Colors.neutral.gray300, true: Colors.secondary.electricBlue }}
-                thumbColor={Colors.primary.white}
-              />
-            </View>
-          </View>
-        </View>
-
-        {/* Privacy Settings */}
-        <View style={styles.privacyCard}>
-          <Text style={styles.h2}>Privacy & Data</Text>
-          <View style={styles.privacyList}>
-            <View style={styles.privacyItem}>
-              <View style={styles.privacyContent}>
-                <Text style={styles.privacyTitle}>Share Progress</Text>
-                <Text style={styles.privacyDescription}>Allow instructors to see your progress</Text>
-              </View>
-              <Switch
-                value={privacy.shareProgress}
-                onValueChange={() => handlePrivacyChange('shareProgress')}
-                trackColor={{ false: Colors.neutral.gray300, true: Colors.secondary.electricBlue }}
-                thumbColor={Colors.primary.white}
-              />
-            </View>
-            <View style={styles.privacyItem}>
-              <View style={styles.privacyContent}>
-                <Text style={styles.privacyTitle}>Analytics & Crash Reports</Text>
-                <Text style={styles.privacyDescription}>Help improve the app with usage data</Text>
-              </View>
-              <Switch
-                value={privacy.analytics}
-                onValueChange={() => handlePrivacyChange('analytics')}
-                trackColor={{ false: Colors.neutral.gray300, true: Colors.secondary.electricBlue }}
-                thumbColor={Colors.primary.white}
-              />
-            </View>
-          </View>
-        </View>
-
-        {/* Support & Help */}
-        <View style={styles.settingsSection}>
-          <Text style={styles.sectionTitle}>SUPPORT & HELP</Text>
-          <View style={styles.settingsList}>
-            {supportOptions.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.settingItem}
-                onPress={() => handleMenuPress(option.title)}
-              >
-                <View style={styles.settingIcon}>
-                  <Icon name={option.icon as any} size={18} color={Colors.neutral.gray600} />
-                </View>
-                <View style={styles.settingContent}>
-                  <Text style={styles.settingTitle}>{option.title}</Text>
-                  <Text style={styles.settingDescription}>{option.description}</Text>
-                </View>
-                <Icon name="chevronRight" size={16} color={Colors.neutral.gray400} />
-              </TouchableOpacity>
-            ))}
+        {/* Support Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: themeColors.secondaryText }]}>
+            SUPPORT & HELP
+          </Text>
+          
+          <View style={styles.sectionItems}>
+            {supportItems.map(item => renderSettingItem(item, item.isComingSoon))}
           </View>
         </View>
 
         {/* App Information */}
-        <View style={styles.appInfoCard}>
-          <Text style={styles.h2}>App Information</Text>
-          <View style={styles.appInfoItem}>
-            <Text style={styles.appInfoLabel}>Version</Text>
-            <Text style={styles.appInfoValue}>1.0.0 (Build 123)</Text>
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: themeColors.secondaryText }]}>
+            ABOUT
+          </Text>
+          
+          <View style={[
+            styles.settingItem,
+            { 
+              backgroundColor: themeColors.cardBackground,
+              borderColor: themeColors.border
+            }
+          ]}>
+            <View style={styles.settingContent}>
+              <View style={[
+                styles.settingIconContainer,
+                { backgroundColor: themeColors.buttonBackground }
+              ]}>
+                <Icon 
+                  name="info" 
+                  size={16} 
+                  color={themeColors.secondaryText} 
+                />
+              </View>
+              <View style={styles.settingTextContainer}>
+                <Text style={[styles.settingTitle, { color: themeColors.text }]}>
+                  App Version
+                </Text>
+                <Text style={[styles.settingSubtitle, { color: themeColors.secondaryText }]}>
+                  1.0.0 (Beta)
+                </Text>
+              </View>
+            </View>
           </View>
-          <View style={styles.appInfoItem}>
-            <Text style={styles.appInfoLabel}>Last Updated</Text>
-            <Text style={styles.appInfoValue}>December 15, 2025</Text>
-          </View>
-          <TouchableOpacity style={styles.checkUpdatesButton} onPress={() => handleMenuPress('Check for Updates')}>
-            <Text style={styles.checkUpdatesText}>Check for Updates</Text>
-          </TouchableOpacity>
         </View>
-
-        {/* Danger Zone */}
-        <View style={styles.dangerCard}>
-          <Text style={styles.h2}>Account Actions</Text>
-          <TouchableOpacity style={styles.dangerButton} onPress={() => handleMenuPress('Sign Out')}>
-            <Icon name="arrowRight" size={16} color={Colors.secondary.orange3} style={styles.dangerIcon} />
-            <Text style={styles.dangerButtonText}>Sign Out</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dangerButton} onPress={() => handleMenuPress('Delete Account')}>
-            <Icon name="trash" size={16} color={Colors.secondary.orange3} style={styles.dangerIcon} />
-            <Text style={styles.dangerButtonText}>Delete Account</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Bottom Padding */}
-        <View style={styles.bottomPadding} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.neutral.gray50,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: Colors.primary.white,
-    paddingTop: 20,
-    paddingBottom: 16,
-    paddingHorizontal: 20,
+    padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
   },
   backButton: {
-    padding: 5,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  headerTextContainer: {
+    flex: 1,
   },
   headerTitle: {
-    fontSize: 20,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.primary.black,
+    fontSize: 18,
+    fontFamily: Typography.fontFamily.semibold,
+    marginBottom: 2,
   },
-  headerRight: {
-    width: 34,
+  headerSubtitle: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
   },
   content: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 16,
   },
-  profileCard: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    elevation: 3,
+  contentContainer: {
+    padding: 24,
+    paddingBottom: 100,
   },
-  profileHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  profileAvatar: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: Colors.primary.black,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 16,
-  },
-  profileAvatarText: {
-    fontSize: 20,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.primary.white,
-  },
-  profileInfo: {
-    flex: 1,
-  },
-  profileName: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.primary.black,
-    marginBottom: 2,
-  },
-  profileEmail: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-    marginBottom: 2,
-  },
-  profileRole: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.secondary.electricBlue,
-  },
-  editProfileButton: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: Colors.neutral.gray50,
-  },
-  quickSettingsCard: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    elevation: 3,
-  },
-  h2: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.primary.black,
-    marginBottom: 16,
-  },
-  quickSettingsList: {
-    gap: 12,
-  },
-  quickSettingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-  },
-  quickSettingContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  quickSettingIcon: {
-    marginRight: 12,
-  },
-  quickSettingTitle: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary.black,
-  },
-  settingsSection: {
+  section: {
     marginBottom: 24,
   },
   sectionTitle: {
     fontSize: 12,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.neutral.gray500,
-    letterSpacing: 1,
+    fontFamily: Typography.fontFamily.medium,
+    letterSpacing: 0.5,
     marginBottom: 12,
   },
-  settingsList: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 16,
-    overflow: 'hidden',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    elevation: 3,
+  sectionItems: {
+    gap: 8,
   },
   settingItem: {
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray100,
+    justifyContent: 'space-between',
   },
-  settingIcon: {
-    width: 32,
-    height: 32,
+  settingContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  settingIconContainer: {
+    width: 40,
+    height: 40,
     borderRadius: 8,
-    backgroundColor: Colors.neutral.gray50,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 12,
   },
-  settingContent: {
+  settingTextContainer: {
     flex: 1,
   },
   settingTitle: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary.black,
-    marginBottom: 2,
-  },
-  settingDescription: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-  },
-  notificationsCard: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    elevation: 3,
-  },
-  notificationsList: {
-    gap: 16,
-  },
-  notificationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  notificationContent: {
-    flex: 1,
-  },
-  notificationTitle: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary.black,
-    marginBottom: 2,
-  },
-  notificationDescription: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-  },
-  privacyCard: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    elevation: 3,
-  },
-  privacyList: {
-    gap: 16,
-  },
-  privacyItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  privacyContent: {
-    flex: 1,
-  },
-  privacyTitle: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary.black,
-    marginBottom: 2,
-  },
-  privacyDescription: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-  },
-  appInfoCard: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    elevation: 3,
-  },
-  appInfoItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  appInfoLabel: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray600,
-  },
-  appInfoValue: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary.black,
-  },
-  checkUpdatesButton: {
-    marginTop: 12,
-    paddingVertical: 12,
-    alignItems: 'center',
-    backgroundColor: Colors.neutral.gray50,
-    borderRadius: 8,
-  },
-  checkUpdatesText: {
     fontSize: 14,
     fontFamily: Typography.fontFamily.semibold,
-    color: Colors.primary.black,
+    marginBottom: 2,
   },
-  dangerCard: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    elevation: 3,
+  settingSubtitle: {
+    fontSize: 12,
+    fontFamily: Typography.fontFamily.regular,
   },
-  dangerButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray100,
+  toggleContainer: {
+    width: 48,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    position: 'relative',
   },
-  dangerIcon: {
-    marginRight: 12,
+  toggleButton: {
+    width: 20,
+    height: 20,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    position: 'absolute',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  dangerButtonText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.secondary.orange3,
+  comingSoonBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
   },
-  bottomPadding: {
-    height: 40,
+  comingSoonText: {
+    fontSize: 12,
+    fontFamily: Typography.fontFamily.regular,
   },
 });
-

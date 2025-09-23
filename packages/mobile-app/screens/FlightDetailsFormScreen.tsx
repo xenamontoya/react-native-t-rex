@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,536 +10,770 @@ import {
   Alert,
   KeyboardAvoidingView,
   Switch,
+  Dimensions,
 } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon, Colors, Typography } from '../../components/src';
 
 interface FlightData {
-  // Aircraft Information
-  tailNumber: string;
-  aircraftType: string;
-  aircraftMake: string;
-  
-  // Route Information
-  departure: string;
-  arrival: string;
-  route: string;
-  
-  // Times (in decimal hours)
-  totalTime: string;
-  picTime: string;
-  dualReceived: string;
-  dualGiven: string;
-  soloTime: string;
-  crossCountry: string;
-  nightTime: string;
-  actualInstrument: string;
-  simulatedInstrument: string;
-  groundTrainer: string;
-  
-  // Date and Times
+  // Flight Details
   date: string;
-  departureTime: string;
-  arrivalTime: string;
+  flightNumber: string;
+  aircraftId: string;
+  aircraftType: string;
+  from: string;
+  to: string;
+  route: string;
+  scheduledOut: string;
+  scheduledIn: string;
+  hobbsOut: string;
+  hobbsIn: string;
+  tachOut: string;
+  tachIn: string;
   
-  // Approaches and Landings
-  approaches: string;
-  dayLandings: string;
-  nightLandings: string;
+  // Time - Basic
+  totalTime: string;
+  dualReceived: string;
+  pic: string;
+  xc: string;
+  night: string;
+  simInst: string;
+  solo: string;
+  actualInst: string;
+  ground: string;
   
-  // Conditions
-  isActualInstrument: boolean;
-  isSimulatedInstrument: boolean;
-  isNight: boolean;
-  isCrossCountry: boolean;
+  // Time - Granular
+  dualDayLocal: string;
+  dualNightLocal: string;
+  soloDayLocal: string;
+  soloNightLocal: string;
+  dualDayXc: string;
+  dualNightXc: string;
+  soloDayXc: string;
+  soloNightXc: string;
+  instrumentActual: string;
+  instrumentHood: string;
+  instrumentXc: string;
   
-  // People
+  // Landings
+  dayLdg: string;
+  nightLdg: string;
+  dualDayLandings: string;
+  dualNightLandings: string;
+  soloDayLandings: string;
+  soloNightLandings: string;
+  
+  // Crew
   instructor: string;
-  safety: string;
+  student: string;
   
-  // Flight Purpose
-  purpose: string;
-  maneuvers: string;
+  // Notes
   remarks: string;
+  photos: any[];
+  signature: string | null;
 }
 
-export default function FlightDetailsFormScreen({ navigation, route }: any) {
-  const prefilledData = route?.params?.flightData || {};
+export default function FlightDetailsFormScreen() {
+  const navigation = useNavigation();
+  const route = useRoute();
   
+  // Parse flight data from route params (same pattern as other screens)
+  let prefilledData: any = {};
+  try {
+    const params = route?.params as any;
+    if (params?.flightData && typeof params.flightData === 'string') {
+      prefilledData = JSON.parse(decodeURIComponent(params.flightData));
+    } else if (params?.flightData) {
+      prefilledData = params.flightData;
+    }
+  } catch (error) {
+    console.error('Error parsing flight data:', error);
+    prefilledData = {};
+  }
+
   const [flightData, setFlightData] = useState<FlightData>({
-    tailNumber: prefilledData.registration || '',
-    aircraftType: prefilledData.aircraft_type || '',
-    aircraftMake: prefilledData.aircraft_manufacturer || '',
-    departure: prefilledData.origin?.code || '',
-    arrival: prefilledData.destination?.code || '',
-    route: '',
-    totalTime: '',
-    picTime: '',
-    dualReceived: '',
-    dualGiven: '',
-    soloTime: '',
-    crossCountry: '',
-    nightTime: '',
-    actualInstrument: '',
-    simulatedInstrument: '',
-    groundTrainer: '',
+    // Flight Details - mapped from original flight data
     date: prefilledData.scheduled_out ? new Date(prefilledData.scheduled_out).toISOString().split('T')[0] : '',
-    departureTime: prefilledData.scheduled_out ? new Date(prefilledData.scheduled_out).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }) : '',
-    arrivalTime: prefilledData.scheduled_in ? new Date(prefilledData.scheduled_in).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }) : '',
-    approaches: '',
-    dayLandings: '',
-    nightLandings: '',
-    isActualInstrument: false,
-    isSimulatedInstrument: false,
-    isNight: false,
-    isCrossCountry: false,
-    instructor: '',
-    safety: '',
-    purpose: 'Training',
-    maneuvers: '',
-    remarks: '',
+    flightNumber: prefilledData.flight_number || prefilledData.ident || '',
+    aircraftId: prefilledData.registration || prefilledData.aircraft_id || '',
+    aircraftType: prefilledData.aircraft_type || '',
+    from: (typeof prefilledData.origin === 'string' ? prefilledData.origin : prefilledData.origin?.code) || '',
+    to: (typeof prefilledData.destination === 'string' ? prefilledData.destination : prefilledData.destination?.code) || '',
+    route: '',
+    scheduledOut: prefilledData.scheduled_out ? new Date(prefilledData.scheduled_out).toISOString().slice(0, 16) : '',
+    scheduledIn: prefilledData.scheduled_in ? new Date(prefilledData.scheduled_in).toISOString().slice(0, 16) : '',
+    hobbsOut: '',
+    hobbsIn: '',
+    tachOut: '',
+    tachIn: '',
+    
+    // Time - Basic
+    totalTime: prefilledData.total_time || '',
+    dualReceived: prefilledData.dual_received || '',
+    pic: prefilledData.pic || '',
+    xc: prefilledData.xc || '',
+    night: prefilledData.night || '',
+    simInst: prefilledData.sim_inst || '',
+    solo: prefilledData.solo || '',
+    actualInst: prefilledData.actual_inst || '',
+    ground: prefilledData.ground || '',
+    
+    // Time - Granular
+    dualDayLocal: prefilledData.dual_day_local || '',
+    dualNightLocal: prefilledData.dual_night_local || '',
+    soloDayLocal: prefilledData.solo_day_local || '',
+    soloNightLocal: prefilledData.solo_night_local || '',
+    dualDayXc: prefilledData.dual_day_xc || '',
+    dualNightXc: prefilledData.dual_night_xc || '',
+    soloDayXc: prefilledData.solo_day_xc || '',
+    soloNightXc: prefilledData.solo_night_xc || '',
+    instrumentActual: prefilledData.instrument_actual || '',
+    instrumentHood: prefilledData.instrument_hood || '',
+    instrumentXc: prefilledData.instrument_xc || '',
+    
+    // Landings
+    dayLdg: prefilledData.day_ldg || '',
+    nightLdg: prefilledData.night_ldg || '',
+    dualDayLandings: prefilledData.dual_day_landings || '',
+    dualNightLandings: prefilledData.dual_night_landings || '',
+    soloDayLandings: prefilledData.solo_day_landings || '',
+    soloNightLandings: prefilledData.solo_night_landings || '',
+    
+    // Crew
+    instructor: prefilledData.instructor || '',
+    student: prefilledData.student || '',
+    
+    // Notes
+    remarks: prefilledData.remarks || '',
+    photos: [],
+    signature: prefilledData.signature || null,
   });
 
   const [currentSection, setCurrentSection] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
+
+  // Get screen dimensions
+  const { width } = Dimensions.get('window');
+  const isTablet = width >= 768;
 
   const sections = [
-    { title: 'Aircraft & Route', icon: 'plane' },
-    { title: 'Flight Times', icon: 'clock' },
-    { title: 'Conditions', icon: 'cloud' },
-    { title: 'People & Notes', icon: 'user' },
+    { title: 'Flight Details', key: 'flight' },
+    { title: 'Time', key: 'time' },
+    { title: 'Landings', key: 'landings' },
+    { title: 'Crew', key: 'crew' },
+    { title: 'Notes', key: 'notes' },
   ];
 
-  const updateField = (field: keyof FlightData, value: string | boolean) => {
-    setFlightData(prev => ({ ...prev, [field]: value }));
+  const handleInputChange = (field: keyof FlightData, value: string) => {
+    setFlightData(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
-  const handleSave = () => {
-    // Validate required fields
-    if (!flightData.tailNumber || !flightData.date || !flightData.totalTime) {
-      Alert.alert('Missing Information', 'Please fill in at least tail number, date, and total time.');
-      return;
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Create flight object to save (same mapping as original logbook.tsx)
+      const flightToSave = {
+        id: prefilledData?.id || `flight_${Date.now()}`,
+        ident: flightData.flightNumber,
+        flight_number: flightData.flightNumber,
+        registration: flightData.aircraftId,
+        aircraft_type: flightData.aircraftType,
+        origin: { code: flightData.from, city: '' },
+        destination: { code: flightData.to, city: '' },
+        scheduled_out: flightData.scheduledOut,
+        scheduled_in: flightData.scheduledIn,
+        duration: parseFloat(flightData.totalTime || '0') * 60, // Convert hours to minutes
+        status: 'completed',
+        remarks: flightData.remarks,
+        signature: flightData.signature,
+        
+        // Time fields - Basic
+        total_time: flightData.totalTime,
+        dual_received: flightData.dualReceived,
+        pic: flightData.pic,
+        xc: flightData.xc,
+        night: flightData.night,
+        sim_inst: flightData.simInst,
+        solo: flightData.solo,
+        actual_inst: flightData.actualInst,
+        ground: flightData.ground,
+        
+        // Time fields - Granular
+        dual_day_local: flightData.dualDayLocal,
+        dual_night_local: flightData.dualNightLocal,
+        solo_day_local: flightData.soloDayLocal,
+        solo_night_local: flightData.soloNightLocal,
+        dual_day_xc: flightData.dualDayXc,
+        dual_night_xc: flightData.dualNightXc,
+        solo_day_xc: flightData.soloDayXc,
+        solo_night_xc: flightData.soloNightXc,
+        instrument_actual: flightData.instrumentActual,
+        instrument_hood: flightData.instrumentHood,
+        instrument_xc: flightData.instrumentXc,
+        
+        // Landing fields
+        day_ldg: flightData.dayLdg,
+        night_ldg: flightData.nightLdg,
+        dual_day_landings: flightData.dualDayLandings,
+        dual_night_landings: flightData.dualNightLandings,
+        solo_day_landings: flightData.soloDayLandings,
+        solo_night_landings: flightData.soloNightLandings,
+        
+        // Crew fields
+        instructor: flightData.instructor,
+        student: flightData.student,
+      };
+
+      console.log('Saving flight log:', flightToSave);
+      Alert.alert('Success', 'Flight saved successfully!', [
+        { text: 'OK', onPress: () => navigation.goBack() }
+      ]);
+    } catch (error) {
+      console.error('Error saving flight:', error);
+      Alert.alert('Error', 'Failed to save flight. Please try again.');
+    } finally {
+      setIsSaving(false);
     }
-
-    Alert.alert(
-      'Flight Saved',
-      'Your flight has been added to your logbook.',
-      [
-        {
-          text: 'View Logbook',
-          onPress: () => navigation.navigate('Logbook')
-        },
-        {
-          text: 'Add Another',
-          onPress: () => {
-            setFlightData({
-              tailNumber: '',
-              aircraftType: '',
-              aircraftMake: '',
-              departure: '',
-              arrival: '',
-              route: '',
-              totalTime: '',
-              picTime: '',
-              dualReceived: '',
-              dualGiven: '',
-              soloTime: '',
-              crossCountry: '',
-              nightTime: '',
-              actualInstrument: '',
-              simulatedInstrument: '',
-              groundTrainer: '',
-              date: '',
-              departureTime: '',
-              arrivalTime: '',
-              approaches: '',
-              dayLandings: '',
-              nightLandings: '',
-              isActualInstrument: false,
-              isSimulatedInstrument: false,
-              isNight: false,
-              isCrossCountry: false,
-              instructor: '',
-              safety: '',
-              purpose: 'Training',
-              maneuvers: '',
-              remarks: '',
-            });
-            setCurrentSection(0);
-          }
-        }
-      ]
-    );
   };
 
-  const renderSection = () => {
+  const renderFlightDetailsSection = () => (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Flight Details</Text>
+      
+      <View style={styles.formGrid}>
+        {/* Date */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Date</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.date}
+            onChangeText={(value) => handleInputChange('date', value)}
+            placeholder="YYYY-MM-DD"
+          />
+        </View>
+
+        {/* Flight Number */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Flight Number</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.flightNumber}
+            onChangeText={(value) => handleInputChange('flightNumber', value)}
+            placeholder="Enter Flight Number"
+          />
+        </View>
+
+        {/* Aircraft ID */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Aircraft ID</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.aircraftId}
+            onChangeText={(value) => handleInputChange('aircraftId', value)}
+            placeholder="Enter Aircraft ID"
+          />
+        </View>
+
+        {/* Aircraft Type */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Aircraft Type</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.aircraftType}
+            onChangeText={(value) => handleInputChange('aircraftType', value)}
+            placeholder="Enter Aircraft Type"
+          />
+        </View>
+
+        {/* From */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>From</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.from}
+            onChangeText={(value) => handleInputChange('from', value)}
+            placeholder="Departure Airport"
+            autoCapitalize="characters"
+          />
+        </View>
+
+        {/* To */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>To</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.to}
+            onChangeText={(value) => handleInputChange('to', value)}
+            placeholder="Arrival Airport"
+            autoCapitalize="characters"
+          />
+        </View>
+
+        {/* Route */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Route</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.route}
+            onChangeText={(value) => handleInputChange('route', value)}
+            placeholder="Flight Route"
+          />
+        </View>
+
+        {/* Scheduled Out */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Scheduled Out</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.scheduledOut}
+            onChangeText={(value) => handleInputChange('scheduledOut', value)}
+            placeholder="YYYY-MM-DDTHH:MM"
+          />
+        </View>
+
+        {/* Scheduled In */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Scheduled In</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.scheduledIn}
+            onChangeText={(value) => handleInputChange('scheduledIn', value)}
+            placeholder="YYYY-MM-DDTHH:MM"
+          />
+        </View>
+
+        {/* Hobbs Out */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Hobbs Out</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.hobbsOut}
+            onChangeText={(value) => handleInputChange('hobbsOut', value)}
+            placeholder="Enter Hobbs Time"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        {/* Hobbs In */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Hobbs In</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.hobbsIn}
+            onChangeText={(value) => handleInputChange('hobbsIn', value)}
+            placeholder="Enter Hobbs Time"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        {/* Tach Out */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Tach Out</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.tachOut}
+            onChangeText={(value) => handleInputChange('tachOut', value)}
+            placeholder="Enter Tach Time"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        {/* Tach In */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Tach In</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.tachIn}
+            onChangeText={(value) => handleInputChange('tachIn', value)}
+            placeholder="Enter Tach Time"
+            keyboardType="decimal-pad"
+          />
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderTimeSection = () => (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Time</Text>
+      
+      <View style={styles.formGrid}>
+        {/* Basic Time Fields */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Total Time</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.totalTime}
+            onChangeText={(value) => handleInputChange('totalTime', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Dual Received</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.dualReceived}
+            onChangeText={(value) => handleInputChange('dualReceived', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>PIC</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.pic}
+            onChangeText={(value) => handleInputChange('pic', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>XC</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.xc}
+            onChangeText={(value) => handleInputChange('xc', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Night</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.night}
+            onChangeText={(value) => handleInputChange('night', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Sim Inst</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.simInst}
+            onChangeText={(value) => handleInputChange('simInst', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Solo</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.solo}
+            onChangeText={(value) => handleInputChange('solo', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Actual Inst</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.actualInst}
+            onChangeText={(value) => handleInputChange('actualInst', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Ground</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.ground}
+            onChangeText={(value) => handleInputChange('ground', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        {/* Granular Time Fields */}
+        <View style={styles.formField}>
+          <Text style={styles.label}>Dual Day Local</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.dualDayLocal}
+            onChangeText={(value) => handleInputChange('dualDayLocal', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Dual Night Local</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.dualNightLocal}
+            onChangeText={(value) => handleInputChange('dualNightLocal', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Solo Day Local</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.soloDayLocal}
+            onChangeText={(value) => handleInputChange('soloDayLocal', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Solo Night Local</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.soloNightLocal}
+            onChangeText={(value) => handleInputChange('soloNightLocal', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Dual Day XC</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.dualDayXc}
+            onChangeText={(value) => handleInputChange('dualDayXc', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Dual Night XC</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.dualNightXc}
+            onChangeText={(value) => handleInputChange('dualNightXc', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Solo Day XC</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.soloDayXc}
+            onChangeText={(value) => handleInputChange('soloDayXc', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Solo Night XC</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.soloNightXc}
+            onChangeText={(value) => handleInputChange('soloNightXc', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Instrument (Actual)</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.instrumentActual}
+            onChangeText={(value) => handleInputChange('instrumentActual', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Instrument (Hood)</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.instrumentHood}
+            onChangeText={(value) => handleInputChange('instrumentHood', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Instrument XC</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.instrumentXc}
+            onChangeText={(value) => handleInputChange('instrumentXc', value)}
+            placeholder="Enter Hours"
+            keyboardType="decimal-pad"
+          />
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderLandingsSection = () => (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Landings</Text>
+      
+      <View style={styles.formGrid}>
+        <View style={styles.formField}>
+          <Text style={styles.label}>Day Ldg</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.dayLdg}
+            onChangeText={(value) => handleInputChange('dayLdg', value)}
+            placeholder="Enter Landings"
+            keyboardType="number-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Night Ldg</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.nightLdg}
+            onChangeText={(value) => handleInputChange('nightLdg', value)}
+            placeholder="Enter Landings"
+            keyboardType="number-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Dual Day Landings</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.dualDayLandings}
+            onChangeText={(value) => handleInputChange('dualDayLandings', value)}
+            placeholder="Enter Landings"
+            keyboardType="number-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Dual Night Landings</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.dualNightLandings}
+            onChangeText={(value) => handleInputChange('dualNightLandings', value)}
+            placeholder="Enter Landings"
+            keyboardType="number-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Solo Day Landings</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.soloDayLandings}
+            onChangeText={(value) => handleInputChange('soloDayLandings', value)}
+            placeholder="Enter Landings"
+            keyboardType="number-pad"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Solo Night Landings</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.soloNightLandings}
+            onChangeText={(value) => handleInputChange('soloNightLandings', value)}
+            placeholder="Enter Landings"
+            keyboardType="number-pad"
+          />
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderCrewSection = () => (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Crew</Text>
+      
+      <View style={styles.formGrid}>
+        <View style={styles.formField}>
+          <Text style={styles.label}>Instructor</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.instructor}
+            onChangeText={(value) => handleInputChange('instructor', value)}
+            placeholder="Enter Instructor Name"
+          />
+        </View>
+
+        <View style={styles.formField}>
+          <Text style={styles.label}>Student</Text>
+          <TextInput
+            style={styles.input}
+            value={flightData.student}
+            onChangeText={(value) => handleInputChange('student', value)}
+            placeholder="Enter Student Name"
+          />
+        </View>
+      </View>
+    </View>
+  );
+
+  const renderNotesSection = () => (
+    <View style={styles.section}>
+      <Text style={styles.sectionTitle}>Notes</Text>
+      
+      <View style={styles.formField}>
+        <Text style={styles.label}>Remarks</Text>
+        <TextInput
+          style={[styles.input, styles.textArea]}
+          value={flightData.remarks}
+          onChangeText={(value) => handleInputChange('remarks', value)}
+          placeholder="Enter flight remarks, notes, or observations..."
+          multiline
+          numberOfLines={6}
+          textAlignVertical="top"
+        />
+      </View>
+
+      <View style={styles.formField}>
+        <Text style={styles.label}>Photos</Text>
+        <TouchableOpacity style={styles.photoUpload}>
+          <Icon name="plus" size={24} color={Colors.neutral.gray400} />
+          <Text style={styles.photoUploadText}>Add Photos</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.formField}>
+        <Text style={styles.label}>Signature</Text>
+        <TouchableOpacity style={styles.signatureUpload}>
+          <Icon name="pen-clip" size={24} color={Colors.neutral.gray400} />
+          <Text style={styles.signatureUploadText}>Add Signature</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
+  const renderCurrentSection = () => {
     switch (currentSection) {
-      case 0: // Aircraft & Route
-        return (
-          <View style={styles.sectionContent}>
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Aircraft Tail Number *</Text>
-              <TextInput
-                style={styles.input}
-                value={flightData.tailNumber}
-                onChangeText={(value) => updateField('tailNumber', value)}
-                placeholder="N123AB"
-                autoCapitalize="characters"
-              />
-            </View>
-
-            <View style={styles.formRow}>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Aircraft Type</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.aircraftType}
-                  onChangeText={(value) => updateField('aircraftType', value)}
-                  placeholder="C172"
-                />
-              </View>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Make/Model</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.aircraftMake}
-                  onChangeText={(value) => updateField('aircraftMake', value)}
-                  placeholder="Cessna 172"
-                />
-              </View>
-            </View>
-
-            <View style={styles.formRow}>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>From</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.departure}
-                  onChangeText={(value) => updateField('departure', value)}
-                  placeholder="KPHX"
-                  autoCapitalize="characters"
-                />
-              </View>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>To</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.arrival}
-                  onChangeText={(value) => updateField('arrival', value)}
-                  placeholder="KLAS"
-                  autoCapitalize="characters"
-                />
-              </View>
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Route</Text>
-              <TextInput
-                style={styles.input}
-                value={flightData.route}
-                onChangeText={(value) => updateField('route', value)}
-                placeholder="Direct, VFR"
-              />
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Date *</Text>
-              <TextInput
-                style={styles.input}
-                value={flightData.date}
-                onChangeText={(value) => updateField('date', value)}
-                placeholder="YYYY-MM-DD"
-              />
-            </View>
-
-            <View style={styles.formRow}>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Departure Time</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.departureTime}
-                  onChangeText={(value) => updateField('departureTime', value)}
-                  placeholder="14:30"
-                />
-              </View>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Arrival Time</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.arrivalTime}
-                  onChangeText={(value) => updateField('arrivalTime', value)}
-                  placeholder="16:45"
-                />
-              </View>
-            </View>
-          </View>
-        );
-
-      case 1: // Flight Times
-        return (
-          <View style={styles.sectionContent}>
-            <Text style={styles.sectionDescription}>
-              Enter time in decimal hours (e.g., 1.5 for 1 hour 30 minutes)
-            </Text>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Total Flight Time *</Text>
-              <TextInput
-                style={styles.input}
-                value={flightData.totalTime}
-                onChangeText={(value) => updateField('totalTime', value)}
-                placeholder="1.5"
-                keyboardType="decimal-pad"
-              />
-            </View>
-
-            <View style={styles.formRow}>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>PIC Time</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.picTime}
-                  onChangeText={(value) => updateField('picTime', value)}
-                  placeholder="0.0"
-                  keyboardType="decimal-pad"
-                />
-              </View>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Solo Time</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.soloTime}
-                  onChangeText={(value) => updateField('soloTime', value)}
-                  placeholder="0.0"
-                  keyboardType="decimal-pad"
-                />
-              </View>
-            </View>
-
-            <View style={styles.formRow}>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Dual Received</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.dualReceived}
-                  onChangeText={(value) => updateField('dualReceived', value)}
-                  placeholder="0.0"
-                  keyboardType="decimal-pad"
-                />
-              </View>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Dual Given</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.dualGiven}
-                  onChangeText={(value) => updateField('dualGiven', value)}
-                  placeholder="0.0"
-                  keyboardType="decimal-pad"
-                />
-              </View>
-            </View>
-
-            <View style={styles.formRow}>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Cross Country</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.crossCountry}
-                  onChangeText={(value) => updateField('crossCountry', value)}
-                  placeholder="0.0"
-                  keyboardType="decimal-pad"
-                />
-              </View>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Night Time</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.nightTime}
-                  onChangeText={(value) => updateField('nightTime', value)}
-                  placeholder="0.0"
-                  keyboardType="decimal-pad"
-                />
-              </View>
-            </View>
-
-            <View style={styles.formRow}>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Actual Instrument</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.actualInstrument}
-                  onChangeText={(value) => updateField('actualInstrument', value)}
-                  placeholder="0.0"
-                  keyboardType="decimal-pad"
-                />
-              </View>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Simulated Instrument</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.simulatedInstrument}
-                  onChangeText={(value) => updateField('simulatedInstrument', value)}
-                  placeholder="0.0"
-                  keyboardType="decimal-pad"
-                />
-              </View>
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Ground Trainer</Text>
-              <TextInput
-                style={styles.input}
-                value={flightData.groundTrainer}
-                onChangeText={(value) => updateField('groundTrainer', value)}
-                placeholder="0.0"
-                keyboardType="decimal-pad"
-              />
-            </View>
-          </View>
-        );
-
-      case 2: // Conditions
-        return (
-          <View style={styles.sectionContent}>
-            <View style={styles.switchGroup}>
-              <View style={styles.switchRow}>
-                <Text style={styles.switchLabel}>Cross Country</Text>
-                <Switch
-                  value={flightData.isCrossCountry}
-                  onValueChange={(value) => updateField('isCrossCountry', value)}
-                  trackColor={{ false: Colors.neutral.gray200, true: '#00FFF2' }}
-                  thumbColor={flightData.isCrossCountry ? Colors.primary.white : Colors.neutral.gray500}
-                />
-              </View>
-              
-              <View style={styles.switchRow}>
-                <Text style={styles.switchLabel}>Night Flight</Text>
-                <Switch
-                  value={flightData.isNight}
-                  onValueChange={(value) => updateField('isNight', value)}
-                  trackColor={{ false: Colors.neutral.gray200, true: '#00FFF2' }}
-                  thumbColor={flightData.isNight ? Colors.primary.white : Colors.neutral.gray500}
-                />
-              </View>
-              
-              <View style={styles.switchRow}>
-                <Text style={styles.switchLabel}>Actual Instrument Conditions</Text>
-                <Switch
-                  value={flightData.isActualInstrument}
-                  onValueChange={(value) => updateField('isActualInstrument', value)}
-                  trackColor={{ false: Colors.neutral.gray200, true: '#00FFF2' }}
-                  thumbColor={flightData.isActualInstrument ? Colors.primary.white : Colors.neutral.gray500}
-                />
-              </View>
-              
-              <View style={styles.switchRow}>
-                <Text style={styles.switchLabel}>Simulated Instrument</Text>
-                <Switch
-                  value={flightData.isSimulatedInstrument}
-                  onValueChange={(value) => updateField('isSimulatedInstrument', value)}
-                  trackColor={{ false: Colors.neutral.gray200, true: '#00FFF2' }}
-                  thumbColor={flightData.isSimulatedInstrument ? Colors.primary.white : Colors.neutral.gray500}
-                />
-              </View>
-            </View>
-
-            <View style={styles.formRow}>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Approaches</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.approaches}
-                  onChangeText={(value) => updateField('approaches', value)}
-                  placeholder="0"
-                  keyboardType="number-pad"
-                />
-              </View>
-              <View style={[styles.formGroup, styles.halfWidth]}>
-                <Text style={styles.label}>Day Landings</Text>
-                <TextInput
-                  style={styles.input}
-                  value={flightData.dayLandings}
-                  onChangeText={(value) => updateField('dayLandings', value)}
-                  placeholder="0"
-                  keyboardType="number-pad"
-                />
-              </View>
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Night Landings</Text>
-              <TextInput
-                style={[styles.input, { width: '48%' }]}
-                value={flightData.nightLandings}
-                onChangeText={(value) => updateField('nightLandings', value)}
-                placeholder="0"
-                keyboardType="number-pad"
-              />
-            </View>
-          </View>
-        );
-
-      case 3: // People & Notes
-        return (
-          <View style={styles.sectionContent}>
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Instructor Name</Text>
-              <TextInput
-                style={styles.input}
-                value={flightData.instructor}
-                onChangeText={(value) => updateField('instructor', value)}
-                placeholder="John Smith, CFI"
-              />
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Safety Pilot</Text>
-              <TextInput
-                style={styles.input}
-                value={flightData.safety}
-                onChangeText={(value) => updateField('safety', value)}
-                placeholder="Safety pilot name (if applicable)"
-              />
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Flight Purpose</Text>
-              <TextInput
-                style={styles.input}
-                value={flightData.purpose}
-                onChangeText={(value) => updateField('purpose', value)}
-                placeholder="Training, Personal, Business"
-              />
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Maneuvers Practiced</Text>
-              <TextInput
-                style={[styles.input, styles.textArea]}
-                value={flightData.maneuvers}
-                onChangeText={(value) => updateField('maneuvers', value)}
-                placeholder="Steep turns, stalls, emergency procedures..."
-                multiline
-                numberOfLines={3}
-                textAlignVertical="top"
-              />
-            </View>
-
-            <View style={styles.formGroup}>
-              <Text style={styles.label}>Remarks</Text>
-              <TextInput
-                style={[styles.input, styles.textArea]}
-                value={flightData.remarks}
-                onChangeText={(value) => updateField('remarks', value)}
-                placeholder="Additional notes about the flight..."
-                multiline
-                numberOfLines={3}
-                textAlignVertical="top"
-              />
-            </View>
-          </View>
-        );
-
-      default:
-        return null;
+      case 0: return renderFlightDetailsSection();
+      case 1: return renderTimeSection();
+      case 2: return renderLandingsSection();
+      case 3: return renderCrewSection();
+      case 4: return renderNotesSection();
+      default: return renderFlightDetailsSection();
     }
   };
 
@@ -551,28 +785,26 @@ export default function FlightDetailsFormScreen({ navigation, route }: any) {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
+          <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Flight Details</Text>
-        <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Save</Text>
+        <Text style={styles.headerTitle}>Flight Form</Text>
+        <TouchableOpacity onPress={handleSave} style={styles.saveButton} disabled={isSaving}>
+          <Text style={styles.saveButtonText}>{isSaving ? 'Saving...' : 'Save'}</Text>
         </TouchableOpacity>
       </View>
 
       {/* Section Navigation */}
       <View style={styles.sectionNav}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.sectionScroll}>
           {sections.map((section, index) => (
             <TouchableOpacity
-              key={index}
-              style={[styles.sectionTab, currentSection === index && styles.sectionTabActive]}
+              key={section.key}
+              style={[
+                styles.sectionTab,
+                currentSection === index && styles.sectionTabActive
+              ]}
               onPress={() => setCurrentSection(index)}
             >
-              <Icon 
-                name={section.icon as any} 
-                size={16} 
-                color={currentSection === index ? Colors.primary.white : Colors.neutral.gray500} 
-              />
               <Text style={[
                 styles.sectionTabText,
                 currentSection === index && styles.sectionTabTextActive
@@ -584,40 +816,12 @@ export default function FlightDetailsFormScreen({ navigation, route }: any) {
         </ScrollView>
       </View>
 
-      {/* Content */}
+      {/* Form Content */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {renderSection()}
-        <View style={styles.bottomPadding} />
-      </ScrollView>
-
-      {/* Navigation Footer */}
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={[styles.navButton, currentSection === 0 && styles.navButtonDisabled]}
-          onPress={() => setCurrentSection(Math.max(0, currentSection - 1))}
-          disabled={currentSection === 0}
-        >
-          <Text style={[styles.navButtonText, currentSection === 0 && styles.navButtonTextDisabled]}>
-            Previous
-          </Text>
-        </TouchableOpacity>
-
-        <View style={styles.sectionIndicator}>
-          <Text style={styles.sectionIndicatorText}>
-            {currentSection + 1} of {sections.length}
-          </Text>
+        <View style={styles.contentPadding}>
+          {renderCurrentSection()}
         </View>
-
-        <TouchableOpacity
-          style={[styles.navButton, currentSection === sections.length - 1 && styles.navButtonDisabled]}
-          onPress={() => setCurrentSection(Math.min(sections.length - 1, currentSection + 1))}
-          disabled={currentSection === sections.length - 1}
-        >
-          <Text style={[styles.navButtonText, currentSection === sections.length - 1 && styles.navButtonTextDisabled]}>
-            Next
-          </Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
@@ -625,173 +829,138 @@ export default function FlightDetailsFormScreen({ navigation, route }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.neutral.gray50,
+    backgroundColor: Colors.primary.white,
   },
   header: {
-    backgroundColor: Colors.primary.white,
-    paddingTop: Platform.OS === 'ios' ? 60 : 20,
-    paddingBottom: 16,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.neutral.gray200,
+    backgroundColor: Colors.primary.white,
   },
   backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.neutral.gray100,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 8,
   },
   headerTitle: {
     fontSize: 18,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.primary.black,
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.neutral.gray900,
     flex: 1,
     textAlign: 'center',
-    marginHorizontal: 16,
   },
   saveButton: {
+    backgroundColor: Colors.brand.blueAzure,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: Colors.primary.black,
-    borderRadius: 8,
+    borderRadius: 6,
   },
   saveButtonText: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.white,
   },
   sectionNav: {
     backgroundColor: Colors.primary.white,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: Colors.neutral.gray200,
   },
-  sectionTab: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  sectionScroll: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 12,
-    backgroundColor: Colors.neutral.gray50,
+  },
+  sectionTab: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginRight: 8,
   },
   sectionTabActive: {
-    backgroundColor: Colors.primary.black,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.brand.blueAzure,
   },
   sectionTabText: {
     fontSize: 14,
     fontFamily: Typography.fontFamily.medium,
-    color: Colors.neutral.gray500,
-    marginLeft: 8,
+    color: Colors.neutral.gray600,
   },
   sectionTabTextActive: {
-    color: Colors.primary.white,
+    color: Colors.brand.blueAzure,
   },
   content: {
     flex: 1,
   },
-  sectionContent: {
-    padding: 20,
+  contentPadding: {
+    padding: 16,
   },
-  sectionDescription: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-    marginBottom: 20,
-    textAlign: 'center',
+  section: {
+    backgroundColor: Colors.primary.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Colors.neutral.gray200,
+    padding: 16,
   },
-  formGroup: {
-    marginBottom: 20,
+  sectionTitle: {
+    fontSize: 18,
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.neutral.gray900,
+    marginBottom: 16,
   },
-  formRow: {
-    flexDirection: 'row',
+  formGrid: {
     gap: 16,
-    marginBottom: 20,
   },
-  halfWidth: {
-    flex: 1,
+  formField: {
+    marginBottom: 16,
   },
   label: {
     fontSize: 14,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary.black,
+    fontFamily: Typography.fontFamily.semibold,
+    color: Colors.neutral.gray700,
     marginBottom: 8,
   },
   input: {
     borderWidth: 1,
-    borderColor: Colors.neutral.gray200,
+    borderColor: Colors.neutral.gray300,
     borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     fontSize: 16,
     fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray900,
     backgroundColor: Colors.primary.white,
   },
   textArea: {
-    minHeight: 80,
+    height: 120,
     textAlignVertical: 'top',
   },
-  switchGroup: {
-    marginBottom: 20,
-  },
-  switchRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  photoUpload: {
+    borderWidth: 2,
+    borderColor: Colors.neutral.gray300,
+    borderStyle: 'dashed',
+    borderRadius: 8,
+    padding: 32,
     alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-  },
-  switchLabel: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.primary.black,
-    flex: 1,
-  },
-  footer: {
-    backgroundColor: Colors.primary.white,
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderTopColor: Colors.neutral.gray200,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  navButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  navButtonDisabled: {
-    opacity: 0.5,
-  },
-  navButtonText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: '#5177BB',
-  },
-  navButtonTextDisabled: {
-    color: Colors.neutral.gray500,
-  },
-  sectionIndicator: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
     backgroundColor: Colors.neutral.gray50,
-    borderRadius: 20,
   },
-  sectionIndicatorText: {
+  photoUploadText: {
     fontSize: 14,
-    fontFamily: Typography.fontFamily.medium,
-    color: Colors.neutral.gray500,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    marginTop: 8,
   },
-  bottomPadding: {
-    height: 32,
+  signatureUpload: {
+    borderWidth: 2,
+    borderColor: Colors.neutral.gray300,
+    borderStyle: 'dashed',
+    borderRadius: 8,
+    padding: 32,
+    alignItems: 'center',
+    backgroundColor: Colors.neutral.gray50,
+  },
+  signatureUploadText: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    marginTop: 8,
   },
 });
-
