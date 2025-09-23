@@ -335,7 +335,7 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <TouchableOpacity onPress={() => nav.goBack()} style={styles.backButton}>
-              <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+              <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
             </TouchableOpacity>
             <View style={styles.headerTitleContainer}>
               <Text style={styles.headerTitle}>Flight Details</Text>
@@ -349,7 +349,7 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
                 onPress={() => setShowDropdown(!showDropdown)}
                 style={styles.dropdownButton}
               >
-                <Icon name="ellipsis-v" size={20} color={Colors.neutral.gray600} />
+                <Icon name="ellipsisV" size={20} color={Colors.neutral.gray600} />
               </TouchableOpacity>
               
               {showDropdown && (
@@ -549,7 +549,7 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
                   <View style={styles.sectionHeader}>
                     <Text style={styles.sectionTitle}>Reservation Details</Text>
                     <TouchableOpacity onPress={handleViewReservation} style={styles.viewButton}>
-                      <Icon name="external-link-alt" size={12} color={Colors.neutral.gray600} />
+                      <Icon name="externalLink" size={12} color={Colors.neutral.gray600} />
                       <Text style={styles.viewButtonText}>View Reservation</Text>
                     </TouchableOpacity>
                   </View>
@@ -597,7 +597,7 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
                     <View style={styles.sectionHeader}>
                       <Text style={styles.sectionTitle}>Lesson Details</Text>
                       <TouchableOpacity onPress={handleViewLesson} style={styles.viewButton}>
-                        <Icon name="external-link-alt" size={12} color={Colors.neutral.gray600} />
+                        <Icon name="externalLink" size={12} color={Colors.neutral.gray600} />
                         <Text style={styles.viewButtonText}>View Lesson</Text>
                       </TouchableOpacity>
                     </View>

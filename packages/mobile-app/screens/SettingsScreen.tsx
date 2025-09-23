@@ -69,7 +69,7 @@ export default function SettingsScreen() {
       id: 'help-center',
       title: 'Help Center',
       subtitle: 'FAQs and support articles',
-      icon: 'help-circle',
+      icon: 'helpCircle',
       isComingSoon: true,
       onPress: () => Alert.alert('Help Center', 'Help center coming soon')
     },
@@ -174,7 +174,7 @@ export default function SettingsScreen() {
           onPress={handleBackPress}
         >
           <Icon 
-            name="arrow-left" 
+            name="arrowLeft" 
             size={20} 
             color={themeColors.secondaryText} 
           />

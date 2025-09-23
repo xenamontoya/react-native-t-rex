@@ -187,7 +187,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
             style={styles.menuButton}
             onPress={() => setShowDropdown(!showDropdown)}
           >
-            <Icon name="ellipsis-v" size={16} color={Colors.neutral.gray600} />
+            <Icon name="ellipsisV" size={16} color={Colors.neutral.gray600} />
           </TouchableOpacity>
 
           {/* Dropdown Menu */}
@@ -351,7 +351,7 @@ export default function InstructorReservationsScreen() {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+            <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
           </TouchableOpacity>
           <View style={styles.headerInfo}>
             <Text style={styles.headerTitle}>Reservations</Text>

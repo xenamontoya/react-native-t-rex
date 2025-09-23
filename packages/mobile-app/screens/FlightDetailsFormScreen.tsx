@@ -759,7 +759,7 @@ export default function FlightDetailsFormScreen() {
       <View style={styles.formField}>
         <Text style={styles.label}>Signature</Text>
         <TouchableOpacity style={styles.signatureUpload}>
-          <Icon name="pen-clip" size={24} color={Colors.neutral.gray400} />
+          <Icon name="edit" size={24} color={Colors.neutral.gray400} />
           <Text style={styles.signatureUploadText}>Add Signature</Text>
         </TouchableOpacity>
       </View>
@@ -785,7 +785,7 @@ export default function FlightDetailsFormScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Flight Form</Text>
         <TouchableOpacity onPress={handleSave} style={styles.saveButton} disabled={isSaving}>

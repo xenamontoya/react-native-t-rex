@@ -105,7 +105,7 @@ const InstructorMyFlights: React.FC = () => {
         </View>
         
         <TouchableOpacity style={styles.moreButton}>
-          <Icon name="ellipsis-v" size={16} color="#6b7280" />
+          <Icon name="ellipsisV" size={16} color="#6b7280" />
         </TouchableOpacity>
       </View>
 
@@ -148,11 +148,11 @@ const InstructorMyFlights: React.FC = () => {
       <View style={styles.flightFooter}>
         <View style={styles.flightStats}>
           <View style={styles.statItem}>
-            <Icon name="graduation-cap" size={14} color="#6b7280" />
+            <Icon name="graduation" size={14} color="#6b7280" />
             <Text style={styles.statText}>{flight.lessonType}</Text>
           </View>
           <View style={styles.statItem}>
-            <Icon name="clock-o" size={14} color="#6b7280" />
+            <Icon name="clock" size={14} color="#6b7280" />
             <Text style={styles.statText}>{flight.totalTime} hrs</Text>
           </View>
         </View>
@@ -194,7 +194,7 @@ const InstructorMyFlights: React.FC = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-left" size={20} color="#111827" />
+          <Icon name="arrowLeft" size={20} color="#111827" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>My Flights</Text>
         <TouchableOpacity style={styles.settingsButton}>

@@ -227,7 +227,7 @@ export default function ReservationsScreen() {
                         <Text style={styles.detailText}>{reservation.instructor}</Text>
                       </View>
                       <View style={styles.detailItem}>
-                        <Icon name="graduationCap" size={14} color={Colors.neutral.gray400} />
+                        <Icon name="graduation" size={14} color={Colors.neutral.gray400} />
                         <Text style={styles.detailText}>{reservation.type}</Text>
                       </View>
                     </View>

@@ -444,7 +444,7 @@ export default function AudioDebriefScreen() {
                 style={[styles.navButton, currentStep === DEBRIEF_PROMPTS.length - 1 && styles.navButtonDisabled]}
               >
                 <Icon 
-                  name="chevron-right" 
+                  name="chevronRight" 
                   size={16} 
                   color={currentStep === DEBRIEF_PROMPTS.length - 1 ? Colors.neutral.gray400 : Colors.neutral.gray600} 
                 />

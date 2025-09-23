@@ -59,7 +59,7 @@ import CustomDrawerContent from './components/CustomDrawerContent';
 
 // Import components from new design system  
 import { Colors, Typography } from '../components/src';
-import { Icon } from './components/Icons';
+import { Icon } from '../components/src/Icons';
 import StudentDashboard from './screens/StudentDashboard';
 
 // Import role store
@@ -74,9 +74,9 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
   const tabData = [
     { name: 'Home', icon: 'home', label: 'Home' },
     { name: 'Reservations', icon: 'calendar', label: 'Reservations' },
-    { name: 'Training', icon: 'graduationCap', label: 'Training' },
+    { name: 'Training', icon: 'graduation', label: 'Training' },
     { name: 'Logbook', icon: 'book', label: 'Logbook' },
-    { name: 'More', icon: 'ellipsisV', label: 'More' },
+    { name: 'More', icon: 'more', label: 'More' },
   ];
 
   return (

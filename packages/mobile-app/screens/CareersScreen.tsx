@@ -226,7 +226,7 @@ export default function CareersScreen() {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+            <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
           </TouchableOpacity>
           <View style={styles.headerInfo}>
             <Text style={styles.headerTitle}>Careers</Text>
@@ -265,7 +265,7 @@ export default function CareersScreen() {
           
           <TouchableOpacity style={styles.viewMoreButton}>
             <Text style={styles.viewMoreText}>View 27 More</Text>
-            <Icon name="chevron-right" size={12} color={Colors.brand.blueAzure} />
+            <Icon name="chevronRight" size={12} color={Colors.brand.blueAzure} />
           </TouchableOpacity>
         </View>
 
@@ -290,7 +290,7 @@ export default function CareersScreen() {
           
           <TouchableOpacity style={styles.viewMoreButton}>
             <Text style={styles.viewMoreText}>View 34 More</Text>
-            <Icon name="chevron-right" size={12} color={Colors.brand.blueAzure} />
+            <Icon name="chevronRight" size={12} color={Colors.brand.blueAzure} />
           </TouchableOpacity>
         </View>
 
@@ -311,7 +311,7 @@ export default function CareersScreen() {
                   <Text style={styles.categoryTitle}>Following</Text>
                   <Text style={styles.categoryDescription}>10 jobs you're tracking</Text>
                 </View>
-                <Icon name="chevron-right" size={16} color={Colors.neutral.gray400} />
+                <Icon name="chevronRight" size={16} color={Colors.neutral.gray400} />
               </View>
             </TouchableOpacity>
 
@@ -327,7 +327,7 @@ export default function CareersScreen() {
                   <Text style={styles.categoryTitle}>Applied</Text>
                   <Text style={styles.categoryDescription}>10 applications submitted</Text>
                 </View>
-                <Icon name="chevron-right" size={16} color={Colors.neutral.gray400} />
+                <Icon name="chevronRight" size={16} color={Colors.neutral.gray400} />
               </View>
             </TouchableOpacity>
 
@@ -343,7 +343,7 @@ export default function CareersScreen() {
                   <Text style={styles.categoryTitle}>Explore All</Text>
                   <Text style={styles.categoryDescription}>Browse all available positions</Text>
                 </View>
-                <Icon name="chevron-right" size={16} color={Colors.neutral.gray400} />
+                <Icon name="chevronRight" size={16} color={Colors.neutral.gray400} />
               </View>
             </TouchableOpacity>
           </View>

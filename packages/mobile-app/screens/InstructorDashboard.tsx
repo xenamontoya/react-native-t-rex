@@ -194,7 +194,7 @@ const InstructorDashboard: React.FC = () => {
             style={styles.viewAllButton}
           >
             <Text style={[styles.viewAllText, { color: '#5177bb' }]}>View All</Text>
-            <Icon name="arrow-right" size={12} color="#5177bb" />
+            <Icon name="arrowRight" size={12} color="#5177bb" />
           </TouchableOpacity>
         </View>
 
@@ -207,7 +207,7 @@ const InstructorDashboard: React.FC = () => {
               <Text style={styles.scheduleDetailText}>AUG 15</Text>
             </View>
             <View style={styles.scheduleDetailItem}>
-              <Icon name="clock-o" size={12} color="#6b7280" />
+              <Icon name="clock" size={12} color="#6b7280" />
               <Text style={styles.scheduleDetailText}>9:00 AM - 11:00 AM</Text>
             </View>
           </View>
@@ -227,7 +227,7 @@ const InstructorDashboard: React.FC = () => {
                 style={styles.viewAllButton}
               >
                 <Text style={[styles.viewAllText, { color: '#5177bb' }]}>View All</Text>
-                <Icon name="arrow-right" size={12} color="#5177bb" />
+                <Icon name="arrowRight" size={12} color="#5177bb" />
               </TouchableOpacity>
             </View>
             <View style={styles.lessonsList}>
@@ -242,7 +242,7 @@ const InstructorDashboard: React.FC = () => {
                         <Text style={styles.lessonDetailText}>{formatShortDate(lesson.date)}</Text>
                       </View>
                       <View style={styles.lessonDetailItem}>
-                        <Icon name="clock-o" size={12} color="#6b7280" />
+                        <Icon name="clock" size={12} color="#6b7280" />
                         <Text style={styles.lessonDetailText}>{lesson.duration}</Text>
                       </View>
                     </View>
@@ -267,7 +267,7 @@ const InstructorDashboard: React.FC = () => {
               style={styles.viewAllButton}
             >
               <Text style={[styles.viewAllText, { color: '#5177bb' }]}>View All</Text>
-              <Icon name="arrow-right" size={12} color="#5177bb" />
+              <Icon name="arrowRight" size={12} color="#5177bb" />
             </TouchableOpacity>
           </View>
           <View style={styles.studentsList}>
@@ -316,20 +316,20 @@ const InstructorDashboard: React.FC = () => {
             style={styles.viewAllButton}
           >
             <Text style={[styles.viewAllText, { color: '#5177bb' }]}>View Logbook</Text>
-            <Icon name="arrow-right" size={12} color="#5177bb" />
+            <Icon name="arrowRight" size={12} color="#5177bb" />
           </TouchableOpacity>
         </View>
         <View style={styles.flightStats}>
           <View style={styles.flightStatItem}>
             <View style={styles.flightStatContent}>
-              <Icon name="clock-o" size={16} color="#6b7280" />
+              <Icon name="clock" size={16} color="#6b7280" />
               <Text style={styles.flightStatLabel}>Total Flight Time</Text>
             </View>
             <Text style={styles.flightStatValue}>{totalFlightTime.toFixed(1)} hrs</Text>
           </View>
           <View style={styles.flightStatItem}>
             <View style={styles.flightStatContent}>
-              <Icon name="graduation-cap" size={16} color="#6b7280" />
+              <Icon name="graduation" size={16} color="#6b7280" />
               <Text style={styles.flightStatLabel}>Instruction Given</Text>
             </View>
             <Text style={styles.flightStatValue}>370.0 hrs</Text>

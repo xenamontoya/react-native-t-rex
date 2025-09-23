@@ -99,7 +99,7 @@ const trainingResources = [
   {
     title: 'Commercial Pilot Checklist',
     type: 'Checklist',
-    icon: 'check-circle',
+    icon: 'checkCircle',
     description: 'Step-by-step requirements checklist',
     downloads: '3,156',
     rating: 4.7
@@ -107,7 +107,7 @@ const trainingResources = [
   {
     title: 'FAA Regulations Guide',
     type: 'Reference',
-    icon: 'book-open',
+    icon: 'bookOpen',
     description: 'Updated FAR/AIM reference manual',
     downloads: '4,231',
     rating: 4.6
@@ -176,9 +176,9 @@ const quizQuestions = [
 // Tab definitions
 const tabs = [
   { id: 'careers', label: 'Career Paths', icon: 'briefcase' },
-  { id: 'resources', label: 'Resources', icon: 'book-open' },
+  { id: 'resources', label: 'Resources', icon: 'bookOpen' },
   { id: 'stories', label: 'Success Stories', icon: 'star' },
-  { id: 'quiz', label: 'Career Quiz', icon: 'help-circle' }
+  { id: 'quiz', label: 'Career Quiz', icon: 'helpCircle' }
 ];
 
 // Career Card Component
@@ -211,7 +211,7 @@ const CareerCard: React.FC<{ career: any; onLearnMore: () => void }> = ({ career
         <Text style={styles.requirementsTitle}>Requirements:</Text>
         {career.requirements.map((req: string, index: number) => (
           <View key={index} style={styles.requirementItem}>
-            <Icon name="check-circle" size={12} color="#10b981" />
+            <Icon name="checkCircle" size={12} color="#10b981" />
             <Text style={styles.requirementText}>{req}</Text>
           </View>
         ))}
@@ -224,7 +224,7 @@ const CareerCard: React.FC<{ career: any; onLearnMore: () => void }> = ({ career
         </View>
         <TouchableOpacity onPress={onLearnMore} style={styles.learnMoreButton}>
           <Text style={styles.learnMoreText}>Learn More</Text>
-          <Icon name="arrow-right" size={12} color={Colors.status.info} />
+          <Icon name="arrowRight" size={12} color={Colors.status.info} />
         </TouchableOpacity>
       </View>
     </View>
@@ -393,7 +393,7 @@ export default function ProspectiveExploreScreen() {
           <View style={styles.tabContent}>
             <View style={styles.introCard}>
               <View style={styles.introHeader}>
-                <Icon name="book-open" size={24} color="#10b981" />
+                <Icon name="bookOpen" size={24} color="#10b981" />
                 <Text style={styles.introTitle}>Training Resources</Text>
               </View>
               <Text style={styles.introText}>
@@ -466,7 +466,7 @@ export default function ProspectiveExploreScreen() {
           <View style={styles.tabContent}>
             <View style={styles.introCard}>
               <View style={styles.introHeader}>
-                <Icon name="help-circle" size={24} color="#8b5cf6" />
+                <Icon name="helpCircle" size={24} color="#8b5cf6" />
                 <Text style={styles.introTitle}>Career Path Quiz</Text>
               </View>
               <Text style={styles.introText}>
@@ -503,7 +503,7 @@ export default function ProspectiveExploreScreen() {
               <View style={styles.quizResultContainer}>
                 <View style={styles.resultHeader}>
                   <View style={styles.resultIcon}>
-                    <Icon name="check-circle" size={32} color="#10b981" />
+                    <Icon name="checkCircle" size={32} color="#10b981" />
                   </View>
                   <Text style={styles.resultTitle}>Your Career Recommendation</Text>
                   <Text style={styles.resultSubtitle}>
@@ -574,7 +574,7 @@ export default function ProspectiveExploreScreen() {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Explore Aviation</Text>
         <View style={styles.headerSpacer} />

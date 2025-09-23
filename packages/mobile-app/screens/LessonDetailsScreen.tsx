@@ -246,14 +246,14 @@ export default function LessonDetailsScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Lesson Details</Text>
           <Text style={styles.headerSubtitle}>{lesson.title}</Text>
         </View>
         <TouchableOpacity onPress={() => setShowDropdown(!showDropdown)} style={styles.menuButton}>
-          <Icon name="ellipsis-v" size={20} color={Colors.neutral.gray600} />
+          <Icon name="ellipsisV" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         
         {/* Dropdown Menu */}
@@ -303,7 +303,7 @@ export default function LessonDetailsScreen() {
                       Great airspeed control improvement! Focus on radio communication and pattern entries for next flight.
                     </Text>
                   </View>
-                  <Icon name="arrow-right" size={16} color={Colors.brand.cyan} />
+                  <Icon name="arrowRight" size={16} color={Colors.brand.cyan} />
                 </View>
               </View>
             </View>
@@ -377,7 +377,7 @@ export default function LessonDetailsScreen() {
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Reservation Details</Text>
                 <TouchableOpacity onPress={handleViewReservation} style={styles.viewButton}>
-                  <Icon name="external-link-alt" size={12} color={Colors.neutral.gray600} />
+                  <Icon name="externalLink" size={12} color={Colors.neutral.gray600} />
                   <Text style={styles.viewButtonText}>View Reservation</Text>
                 </TouchableOpacity>
               </View>

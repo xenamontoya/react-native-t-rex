@@ -575,7 +575,7 @@ export default function LessonGradingScreen() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+            <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
           </TouchableOpacity>
           <View style={styles.headerInfo}>
             <Text style={styles.headerTitle}>Log Lesson</Text>
@@ -587,7 +587,7 @@ export default function LessonGradingScreen() {
           onPress={() => setShowDropdown(!showDropdown)}
           style={styles.menuButton}
         >
-          <Icon name="ellipsis-v" size={20} color={Colors.neutral.gray600} />
+          <Icon name="ellipsisV" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
       </View>
 
@@ -623,7 +623,7 @@ export default function LessonGradingScreen() {
               </View>
               {lesson.aircraft && (
                 <View style={styles.infoItem}>
-                  <Icon name="graduation-cap" size={16} color={Colors.neutral.gray500} />
+                  <Icon name="graduation" size={16} color={Colors.neutral.gray500} />
                   <Text style={styles.infoText}>{lesson.aircraft}</Text>
                 </View>
               )}

@@ -66,7 +66,7 @@ const BillingOverviewCard: React.FC = () => {
       {showWarning && (
         <View style={styles.warningSection}>
           <View style={styles.warningContent}>
-            <Icon name="alert-circle" size={18} color="#FF9500" style={styles.warningIcon} />
+            <Icon name="alertCircle" size={18} color="#FF9500" style={styles.warningIcon} />
             <View style={styles.warningTextContainer}>
               <Text style={styles.warningText}>{warningText}</Text>
               <TouchableOpacity 
@@ -74,7 +74,7 @@ const BillingOverviewCard: React.FC = () => {
                 onPress={() => Alert.alert('Start Application', 'Start new loan application')}
               >
                 <Text style={styles.startApplicationText}>Start Application</Text>
-                <Icon name="chevron-right" size={12} color="#007AFF" />
+                <Icon name="chevronRight" size={12} color="#007AFF" />
               </TouchableOpacity>
             </View>
           </View>
@@ -144,7 +144,7 @@ export default function BillingScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-          <Icon name="arrow-left" size={16} color={Colors.neutral.gray600} />
+          <Icon name="arrowLeft" size={16} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         <View style={styles.headerInfo}>
           <Text style={styles.headerTitle}>Billing Overview</Text>
@@ -174,7 +174,7 @@ export default function BillingScreen() {
                   <Text style={styles.actionSubtitle}>{action.subtitle}</Text>
                 </View>
               </View>
-              <Icon name="chevron-right" size={16} color={Colors.neutral.gray400} />
+              <Icon name="chevronRight" size={16} color={Colors.neutral.gray400} />
             </TouchableOpacity>
           ))}
         </View>

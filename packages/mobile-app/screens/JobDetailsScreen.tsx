@@ -187,7 +187,7 @@ export default function JobDetailsScreen() {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+            <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
           </TouchableOpacity>
           <View style={styles.headerInfo}>
             <View style={styles.companyLogo}>
@@ -215,7 +215,7 @@ export default function JobDetailsScreen() {
                   You're about <Text style={styles.boldText}>{job.daysAway} days away!</Text> Meet Program Requirements around {job.targetDate}.
                 </Text>
               </View>
-              <Icon name="arrow-right" size={16} color={Colors.brand.cyan} />
+              <Icon name="arrowRight" size={16} color={Colors.brand.cyan} />
             </View>
           </View>
         </View>
@@ -300,7 +300,7 @@ export default function JobDetailsScreen() {
             >
               <View style={styles.supportContent}>
                 <View style={styles.supportIcon}>
-                  <Icon name="clipboard-list" size={24} color={Colors.neutral.gray600} />
+                  <Icon name="clipboard" size={24} color={Colors.neutral.gray600} />
                 </View>
                 <View style={styles.supportText}>
                   <Text style={styles.supportTitle}>Interview Preparation</Text>
@@ -308,7 +308,7 @@ export default function JobDetailsScreen() {
                     Practice questions and mock interviews specifically for {job.company} and airline positions
                   </Text>
                 </View>
-                <Icon name="arrow-right" size={16} color={Colors.neutral.gray400} />
+                <Icon name="arrowRight" size={16} color={Colors.neutral.gray400} />
               </View>
             </TouchableOpacity>
 
@@ -327,7 +327,7 @@ export default function JobDetailsScreen() {
                     Get personalized guidance from experienced aviation professionals to enhance your career path
                   </Text>
                 </View>
-                <Icon name="arrow-right" size={16} color={Colors.neutral.gray400} />
+                <Icon name="arrowRight" size={16} color={Colors.neutral.gray400} />
               </View>
             </TouchableOpacity>
 
@@ -346,7 +346,7 @@ export default function JobDetailsScreen() {
                     Create a personalized cover letter tailored to this {job.company} position using your Pilotbase profile
                   </Text>
                 </View>
-                <Icon name="arrow-right" size={16} color={Colors.neutral.gray400} />
+                <Icon name="arrowRight" size={16} color={Colors.neutral.gray400} />
               </View>
             </TouchableOpacity>
           </View>

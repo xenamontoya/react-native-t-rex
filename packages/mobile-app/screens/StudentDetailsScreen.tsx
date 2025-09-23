@@ -256,7 +256,6 @@ export default function StudentDetailsScreen() {
       updatedLesson.learningObjectives = getDefaultLearningObjectives(updatedLesson.title);
     }
     
-    console.log('🔍 Student Details - Passing lesson with learning objectives:', updatedLesson.learningObjectives);
     
     const lessonDataParam = encodeURIComponent(JSON.stringify(updatedLesson));
     navigation.navigate('LessonDetails' as never, {
@@ -446,7 +445,7 @@ export default function StudentDetailsScreen() {
               }
             }}
           >
-            <Icon name="external-link-alt" size={12} color={Colors.neutral.gray600} />
+            <Icon name="externalLink" size={12} color={Colors.neutral.gray600} />
             <Text style={styles.viewReservationText}>View Reservation</Text>
           </TouchableOpacity>
         </View>
@@ -463,7 +462,7 @@ export default function StudentDetailsScreen() {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="arrow-left" size={16} color={Colors.brand.cyan} />
+            <Icon name="arrowLeft" size={16} color={Colors.brand.cyan} />
             <Text style={styles.backButtonText}>Return to Training</Text>
           </TouchableOpacity>
         </View>
@@ -480,7 +479,7 @@ export default function StudentDetailsScreen() {
             style={styles.headerBackButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+            <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
           </TouchableOpacity>
           <View style={styles.headerInfo}>
             <Text style={styles.headerTitle}>{student.name}</Text>
@@ -491,7 +490,7 @@ export default function StudentDetailsScreen() {
           style={styles.menuButton}
           onPress={() => setShowDropdown(!showDropdown)}
         >
-          <Icon name="ellipsis-v" size={20} color={Colors.neutral.gray600} />
+          <Icon name="ellipsisV" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
       </View>
 
@@ -515,7 +514,7 @@ export default function StudentDetailsScreen() {
               Alert.alert('Export Progress', 'Export student progress functionality');
             }}
           >
-            <Icon name="external-link-alt" size={16} color={Colors.neutral.gray600} />
+            <Icon name="externalLink" size={16} color={Colors.neutral.gray600} />
             <Text style={styles.dropdownText}>Export Progress</Text>
           </TouchableOpacity>
         </View>

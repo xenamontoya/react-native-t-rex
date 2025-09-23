@@ -65,6 +65,9 @@ import {
   faThermometerHalf,
   faWind,
   faTint,
+  faBookOpen,
+  faCalendarPlus,
+  faExclamationCircle,
 } from '@fortawesome/pro-regular-svg-icons';
 
 // Import Pro Solid icons (for emphasis/active states)
@@ -142,6 +145,9 @@ library.add(
   faThermometerHalf,
   faWind,
   faTint,
+  faBookOpen,
+  faCalendarPlus,
+  faExclamationCircle,
   
   // Solid icons
   faHomeSolid,
@@ -213,6 +219,10 @@ export const IconNames = {
   exclamationTriangle: faExclamationTriangle,
   infoCircle: faInfoCircle,
   externalLink: faExternalLinkAlt,
+  bookOpen: faBookOpen,
+  calendarPlus: faCalendarPlus,
+  alertCircle: faExclamationCircle,
+  helpCircle: faQuestionCircle,
   graduationCap: faGraduationCap,
   list: faList,
   map: faMap,

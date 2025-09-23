@@ -21,7 +21,7 @@ export default function HelpScreen() {
       {/* Sticky Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-          <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         <View style={styles.headerTextContainer}>
           <Text style={styles.headerTitle}>Help & Support</Text>
@@ -34,7 +34,7 @@ export default function HelpScreen() {
         {/* Coming Soon Card */}
         <View style={styles.comingSoonCard}>
           <View style={styles.iconContainer}>
-            <Icon name="help-circle" size={32} color="#6366f1" />
+            <Icon name="helpCircle" size={32} color="#6366f1" />
           </View>
           <Text style={styles.comingSoonTitle}>Coming Soon</Text>
           <Text style={styles.comingSoonDescription}>

@@ -147,7 +147,7 @@ const FlightSchoolCard: React.FC<{
       </View>
 
       <View style={styles.schoolAddress}>
-        <Icon name="map-marker" size={14} color={Colors.neutral.gray500} />
+        <Icon name="mapMarker" size={14} color={Colors.neutral.gray500} />
         <Text style={styles.addressText}>{school.address}</Text>
       </View>
 
@@ -618,7 +618,7 @@ export default function ProspectiveFindSchoolScreen() {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+            <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Find Your Flight School</Text>
           <TouchableOpacity

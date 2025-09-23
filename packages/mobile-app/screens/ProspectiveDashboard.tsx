@@ -79,7 +79,7 @@ const ProspectiveDashboard: React.FC = () => {
                 {/* Location Information */}
                 <View style={styles.locationInfo}>
                   <View style={styles.locationRow}>
-                    <Icon name="map-marker" size={12} color={isDark ? '#a0a0a0' : '#6b7280'} />
+                    <Icon name="mapMarker" size={12} color={isDark ? '#a0a0a0' : '#6b7280'} />
                     <Text style={[styles.locationText, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
                       {bookingData.schoolName}
                     </Text>
@@ -98,7 +98,7 @@ const ProspectiveDashboard: React.FC = () => {
                     </Text>
                   </View>
                   <View style={styles.dateTimeRow}>
-                    <Icon name="clock-o" size={12} color={isDark ? '#a0a0a0' : '#6b7280'} />
+                    <Icon name="clock" size={12} color={isDark ? '#a0a0a0' : '#6b7280'} />
                     <Text style={[styles.dateTimeText, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
                       60 min
                     </Text>
@@ -125,7 +125,7 @@ const ProspectiveDashboard: React.FC = () => {
                   <Text style={styles.careersSubtitle}>Explore career opportunities in aviation</Text>
                 </View>
               </View>
-              <Icon name="arrow-right" size={16} color="#00FFF2" />
+              <Icon name="arrowRight" size={16} color="#00FFF2" />
             </TouchableOpacity>
           </View>
         </View>
@@ -151,7 +151,7 @@ const ProspectiveDashboard: React.FC = () => {
           >
             <View style={styles.actionContent}>
               <Icon 
-                name="map-marker" 
+                name="mapMarker" 
                 size={24} 
                 color="#ED703D"
                 style={styles.actionIcon}

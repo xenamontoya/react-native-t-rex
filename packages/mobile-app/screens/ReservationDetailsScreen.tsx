@@ -180,14 +180,14 @@ export default function ReservationDetailsScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrow-left" size={20} color={Colors.neutral.gray600} />
+          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         <View style={styles.headerTitleContainer}>
           <Text style={styles.headerTitle}>Reservation Details</Text>
           <Text style={styles.headerSubtitle}>{reservation.aircraft}</Text>
         </View>
         <TouchableOpacity onPress={() => setShowDropdown(!showDropdown)} style={styles.menuButton}>
-          <Icon name="ellipsis-v" size={20} color={Colors.neutral.gray600} />
+          <Icon name="ellipsisV" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         
         {/* Dropdown Menu */}
@@ -205,7 +205,7 @@ export default function ReservationDetailsScreen() {
               setShowDropdown(false);
               Alert.alert('Info', 'Check Out feature coming soon');
             }}>
-              <Icon name="arrow-right" size={16} color={Colors.neutral.gray400} style={styles.dropdownIcon} />
+              <Icon name="arrowRight" size={16} color={Colors.neutral.gray400} style={styles.dropdownIcon} />
               <Text style={styles.dropdownText}>Check Out</Text>
             </TouchableOpacity>
             
@@ -213,7 +213,7 @@ export default function ReservationDetailsScreen() {
               setShowDropdown(false);
               Alert.alert('Info', 'Calendar feature coming soon');
             }}>
-              <Icon name="calendar-plus" size={16} color={Colors.neutral.gray400} style={styles.dropdownIcon} />
+              <Icon name="calendarPlus" size={16} color={Colors.neutral.gray400} style={styles.dropdownIcon} />
               <Text style={styles.dropdownText}>Add to Calendar</Text>
             </TouchableOpacity>
             
@@ -292,7 +292,7 @@ export default function ReservationDetailsScreen() {
           {isToday && (
             <View style={styles.preflightSection}>
               <View style={styles.preflightIcon}>
-                <Icon name="clipboard-list" size={16} color={Colors.brand.blueAzure} />
+                <Icon name="clipboard" size={16} color={Colors.brand.blueAzure} />
               </View>
               <View style={styles.preflightContent}>
                 <Text style={styles.preflightTitle}>Preflight Checklist Required</Text>
@@ -315,7 +315,7 @@ export default function ReservationDetailsScreen() {
               <TouchableOpacity style={styles.viewButton} onPress={() => {
                 Alert.alert('Info', 'Student profile feature coming soon');
               }}>
-                <Icon name="external-link-alt" size={12} color={Colors.neutral.gray600} />
+                <Icon name="externalLink" size={12} color={Colors.neutral.gray600} />
                 <Text style={styles.viewButtonText}>View Student</Text>
               </TouchableOpacity>
             </View>
@@ -369,7 +369,7 @@ export default function ReservationDetailsScreen() {
               <View style={styles.sectionHeader}>
                 <Text style={styles.sectionTitle}>Lesson Details</Text>
                 <TouchableOpacity style={styles.viewButton} onPress={handleViewLesson}>
-                  <Icon name="external-link-alt" size={12} color={Colors.neutral.gray600} />
+                  <Icon name="externalLink" size={12} color={Colors.neutral.gray600} />
                   <Text style={styles.viewButtonText}>View Lesson</Text>
                 </TouchableOpacity>
               </View>
@@ -401,7 +401,7 @@ export default function ReservationDetailsScreen() {
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Logbook Entry</Text>
               <TouchableOpacity style={styles.viewButton} onPress={handleViewLogbookEntry}>
-                <Icon name="external-link-alt" size={12} color={Colors.neutral.gray600} />
+                <Icon name="externalLink" size={12} color={Colors.neutral.gray600} />
                 <Text style={styles.viewButtonText}>View Logbook Entry</Text>
               </TouchableOpacity>
             </View>

@@ -221,7 +221,7 @@ const FlightCard = ({
             style={styles.dropdownButton}
             onPress={() => onToggleDropdown && onToggleDropdown(dropdownButtonRef)}
           >
-            <Icon name="ellipsis-v" size={16} color={Colors.neutral.gray500} />
+            <Icon name="ellipsisV" size={16} color={Colors.neutral.gray500} />
           </TouchableOpacity>
         </View>
       </View>

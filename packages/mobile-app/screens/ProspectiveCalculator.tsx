@@ -56,7 +56,7 @@ const ProspectiveCalculator: React.FC = () => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-left" size={20} color="#111827" />
+          <Icon name="arrowLeft" size={20} color="#111827" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Training Calculator</Text>
         <View style={styles.headerSpacer} />
@@ -183,7 +183,7 @@ const ProspectiveCalculator: React.FC = () => {
 
             {/* Time to Complete */}
             <View style={[styles.resultItem, { backgroundColor: '#eff6ff' }]}>
-              <Icon name="graduation-cap" size={32} color="#2563eb" style={styles.resultIcon} />
+              <Icon name="graduation" size={32} color="#2563eb" style={styles.resultIcon} />
               <Text style={styles.resultLabel}>Time to Complete</Text>
               <Text style={[styles.resultValue, { color: '#2563eb' }]}>
                 {selectedCert?.time}
@@ -193,7 +193,7 @@ const ProspectiveCalculator: React.FC = () => {
 
             {/* Expected Salary */}
             <View style={[styles.resultItem, { backgroundColor: '#f0fdf4' }]}>
-              <Icon name="line-chart" size={32} color="#16a34a" style={styles.resultIcon} />
+              <Icon name="chartLine" size={32} color="#16a34a" style={styles.resultIcon} />
               <Text style={styles.resultLabel}>Expected Salary</Text>
               <Text style={[styles.resultValue, { color: '#16a34a' }]}>
                 {formatCurrency(adjustedSalary)}
