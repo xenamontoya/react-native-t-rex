@@ -3,7 +3,7 @@ import {
   Modal,
   View,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  Pressable,
   Animated,
   Dimensions,
   StyleSheet,
@@ -92,7 +92,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     
     Animated.spring(translateY, {
       toValue: availableHeight - targetHeight,
-      useNativeDriver: true,
+      useNativeDriver: false, // Disabled for web compatibility
       tension: 100,
       friction: 8,
     }).start();
@@ -106,14 +106,14 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     Animated.parallel([
       Animated.spring(translateY, {
         toValue: availableHeight - targetHeight,
-        useNativeDriver: true,
+        useNativeDriver: false, // Disabled for web compatibility
         tension: 100,
         friction: 8,
       }),
       Animated.timing(opacity, {
         toValue: 1,
         duration: 250,
-        useNativeDriver: true,
+        useNativeDriver: false, // Disabled for web compatibility
       }),
     ]).start();
   };
@@ -122,14 +122,14 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     Animated.parallel([
       Animated.spring(translateY, {
         toValue: screenHeight,
-        useNativeDriver: true,
+        useNativeDriver: false, // Disabled for web compatibility
         tension: 100,
         friction: 8,
       }),
       Animated.timing(opacity, {
         toValue: 0,
         duration: 200,
-        useNativeDriver: true,
+        useNativeDriver: false, // Disabled for web compatibility
       }),
     ]).start(() => {
       onClose();
@@ -167,7 +167,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
     >
       <View style={styles.container}>
         {/* Overlay */}
-        <TouchableWithoutFeedback onPress={handleOverlayPress}>
+        <Pressable onPress={handleOverlayPress}>
           <Animated.View
             style={[
               styles.overlay,
@@ -179,7 +179,7 @@ const BottomSheet: React.FC<BottomSheetProps> = ({
               },
             ]}
           />
-        </TouchableWithoutFeedback>
+        </Pressable>
 
         {/* Bottom Sheet */}
         <Animated.View

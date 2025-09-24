@@ -6,7 +6,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 // Import stores
 import { useRoleStore } from '../utils/roleStore';

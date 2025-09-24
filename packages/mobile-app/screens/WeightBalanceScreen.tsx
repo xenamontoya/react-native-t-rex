@@ -10,7 +10,8 @@ import {
   Alert,
   KeyboardAvoidingView,
 } from 'react-native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 interface WeightItem {
   id: string;
@@ -144,7 +145,13 @@ export default function WeightBalanceScreen({ navigation, route }: any) {
     Alert.alert(
       'Save Weight & Balance',
       'Weight and Balance calculation has been saved to your flight records.',
-      [{ text: 'OK' }]
+      [{ 
+        text: 'OK',
+        onPress: () => {
+          // Navigate back to preflight checklist with completion flag
+          navigation.navigate('PreflightChecklistScreen', { weightBalanceCompleted: true });
+        }
+      }]
     );
   };
 
@@ -592,6 +599,7 @@ const styles = StyleSheet.create({
     height: 32,
   },
 });
+
 
 
 

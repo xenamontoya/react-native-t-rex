@@ -1,10 +1,18 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, Image, useWindowDimensions, Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useFonts } from 'expo-font';
+
+// Load FontAwesome CSS for web mode
+if (Platform.OS === 'web') {
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+  document.head.appendChild(link);
+}
 
 
 // Import screens
@@ -502,6 +510,13 @@ function MobileTabNavigator() {
              />
              <Tab.Screen 
                name="PreflightChecklist" 
+               component={PreflightChecklistScreen}
+               options={{
+                 tabBarButton: () => null, // Hide from tab bar
+               }}
+             />
+             <Tab.Screen 
+               name="PreflightChecklistScreen" 
                component={PreflightChecklistScreen}
                options={{
                  tabBarButton: () => null, // Hide from tab bar

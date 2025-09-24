@@ -8,7 +8,8 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 export default function WeatherReviewScreen({ navigation }: any) {
   const [selectedConsideration, setSelectedConsideration] = useState<string>('');
@@ -27,7 +28,7 @@ export default function WeatherReviewScreen({ navigation }: any) {
     if (selectedConsideration) {
       console.log('Selected consideration:', selectedConsideration);
       // Navigate back to preflight checklist with completion flag
-      navigation.navigate('PreflightChecklist', { weatherCompleted: 'true' });
+      navigation.navigate('PreflightChecklistScreen', { weatherCompleted: true });
     }
   };
 
@@ -598,6 +599,7 @@ const styles = StyleSheet.create({
     height: 32,
   },
 });
+
 
 
 

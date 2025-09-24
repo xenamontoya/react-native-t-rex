@@ -9,7 +9,8 @@ import {
   Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 const { width } = Dimensions.get('window');
 const isTablet = width >= 768;

@@ -10,7 +10,9 @@ import {
   Image,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
+// Using direct require() instead of broken asset imports
 
 interface FlightDetailsProps {
   navigation: any;
@@ -674,6 +676,27 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
 
             </View>
           </View>
+
+          {/* Signature Section for Completed Flights */}
+          {(() => {
+            const hasFlightTime = flight.total_time && parseFloat(flight.total_time) > 0;
+            const isFlightInPast = flight.scheduled_out ? new Date(flight.scheduled_out) < new Date() : false;
+            const isCompleted = hasFlightTime && isFlightInPast;
+            
+            return isCompleted ? (
+              <View style={styles.signatureSection}>
+                <Text style={styles.sectionTitle}>Flight Completion</Text>
+                <View style={styles.signatureRow}>
+                  <Text style={styles.signatureLabel}>Student Signature:</Text>
+                  <Image 
+                    source={require('../assets/images/logos/xena-signature.png')}
+                    style={styles.signatureImage}
+                    resizeMode="contain"
+                  />
+                </View>
+              </View>
+            ) : null;
+          })()}
         </ScrollView>
       </View>
 
@@ -1152,5 +1175,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.primary.white,
+  },
+  
+  // Signature styles
+  signatureSection: {
+    backgroundColor: Colors.neutral.gray50,
+    margin: 20,
+    marginTop: 0,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: Colors.neutral.gray200,
+    padding: 16,
+  },
+  signatureRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  signatureLabel: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    marginRight: 12,
+    minWidth: 100,
+  },
+  signatureImage: {
+    width: 80,
+    height: 25,
   },
 });

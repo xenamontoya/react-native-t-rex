@@ -11,7 +11,8 @@ import {
   Modal,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 interface Reservation {
   id: string;
@@ -300,7 +301,7 @@ export default function ReservationDetailsScreen() {
                   Complete your preflight preparation before your lesson
                 </Text>
                 <TouchableOpacity style={styles.preflightButton} onPress={() => {
-                  Alert.alert('Info', 'Preflight checklist feature coming soon');
+                  navigation.navigate('PreflightChecklist');
                 }}>
                   <Text style={styles.preflightButtonText}>Complete Preflight</Text>
                 </TouchableOpacity>

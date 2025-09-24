@@ -7,10 +7,13 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 import { AdaptiveAIModal } from '../components';
+// Using direct require() instead of broken asset imports
 
 // Mock job data
 const jobMatches = [
@@ -353,12 +356,18 @@ export default function CareersScreen() {
         <View style={styles.bottomSpacing} />
       </ScrollView>
 
-      {/* Floating AI Wingman Button */}
+      {/* Floating AI Wingman Button with Pilotbase Branding */}
       <TouchableOpacity
         style={styles.floatingAIButton}
         onPress={handleAIInsights}
       >
-        <Icon name="robot" size={24} color={Colors.brand.cyan} />
+        {<Image 
+                   source={require('../assets/images/logos/pilotbase-icon-6x.png')}
+                   style={styles.pilotbaseIcon}
+                   resizeMode="contain"
+                 /> || (
+          <Icon name="robot" size={24} color={Colors.brand.cyan} />
+        )}
       </TouchableOpacity>
 
       {/* AI Insights Modal */}
@@ -639,5 +648,10 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderWidth: 3,
     borderColor: Colors.brand.cyan,
+  },
+  pilotbaseIcon: {
+    width: 24,
+    height: 24,
+    tintColor: Colors.primary.white,
   },
 });

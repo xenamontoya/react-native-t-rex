@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,14 +7,11 @@ import {
   TouchableOpacity,
   Alert,
   Modal,
-  Dimensions,
-  Platform,
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 interface DebriefData {
-  audioBlob: any; // In React Native, would be audio file path or blob
   transcription: string;
   aiInsights: {
     overallGrade: 'Complete' | 'Not Complete' | 'Incomplete';
@@ -26,331 +23,155 @@ interface DebriefData {
   };
 }
 
-interface PromptStep {
-  id: string;
-  question: string;
-  category: string;
-  duration: number; // suggested duration in seconds
-}
-
-const DEBRIEF_PROMPTS: PromptStep[] = [
-  {
-    id: 'overview',
-    question: "Let's start with an overall summary. How did the lesson go today? What were the main objectives and how well were they accomplished?",
-    category: 'Overview',
-    duration: 60
-  },
-  {
-    id: 'preflight',
-    question: "Tell me about the pre-flight portion. How did the student perform during aircraft inspection, weather briefing, and flight planning?",
-    category: 'Ground Operations',
-    duration: 45
-  },
-  {
-    id: 'flight_maneuvers',
-    question: "Describe the flight maneuvers practiced today. Which maneuvers were performed well and which need more work?",
-    category: 'Flight Skills',
-    duration: 90
-  },
-  {
-    id: 'communication',
-    question: "How was the student's radio communication and interaction with ATC? Any areas for improvement?",
-    category: 'Communication',
-    duration: 30
-  },
-  {
-    id: 'decision_making',
-    question: "Discuss the student's decision-making and situational awareness during the flight. Any notable examples?",
-    category: 'Aeronautical Decision Making',
-    duration: 45
-  },
-  {
-    id: 'areas_improvement',
-    question: "What are the key areas the student should focus on for next lesson? What homework or additional study would you recommend?",
-    category: 'Next Steps',
-    duration: 45
-  }
-];
-
-const LESSON_OBJECTIVES = [
-  'Pre-flight inspection and aircraft systems',
-  'Taxi operations and ground procedures', 
-  'Normal takeoffs and landings',
-  'Traffic pattern operations',
-  'Basic flight maneuvers and aircraft control',
-  'Radio communications and phraseology',
-  'Emergency procedures and safety protocols',
-  'Post-flight procedures and securing aircraft'
-];
-
-export default function AudioDebriefScreen() {
-  const navigation = useNavigation();
-  const route = useRoute();
-  
+export default function AudioDebriefScreen({ navigation, route }: any) {
+  const { id, lessonData: lessonDataParam } = route.params;
   const [lessonData, setLessonData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [currentStep, setCurrentStep] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [recordingDuration, setRecordingDuration] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [recordingTime, setRecordingTime] = useState(0);
-  const [audioBlob, setAudioBlob] = useState<any>(null);
-  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
-  
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const { width } = Dimensions.get('window');
-  const isTablet = width >= 768;
-
-  const currentPrompt = DEBRIEF_PROMPTS[currentStep];
-  const isLastStep = currentStep === DEBRIEF_PROMPTS.length - 1;
+  const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
-    try {
-      const params = route.params as any;
-      const { id, lessonData: lessonDataParam } = params || {};
-      
-      if (lessonDataParam && typeof lessonDataParam === 'string') {
-        const parsedLessonData = JSON.parse(decodeURIComponent(lessonDataParam));
+    // Parse lesson data from route parameters
+    if (lessonDataParam) {
+      try {
+        const parsedLessonData = JSON.parse(lessonDataParam);
         setLessonData(parsedLessonData);
-      } else {
-        // Fallback lesson data
-        setLessonData({
-          id: id || '1',
-          title: 'Basic Maneuvers',
-          studentName: 'Alex Johnson',
-          date: new Date().toLocaleDateString(),
-          duration: '2.0 hours'
-        });
+      } catch (error) {
+        console.error('Error parsing lesson data:', error);
+        navigation.goBack();
       }
-    } catch (error) {
-      console.error('Error parsing lesson data:', error);
-      setLessonData({
-        id: '1',
-        title: 'Basic Maneuvers',
-        studentName: 'Alex Johnson',
-        date: new Date().toLocaleDateString(),
-        duration: '2.0 hours'
-      });
-    } finally {
-      setLoading(false);
     }
-  }, [route.params]);
+  }, [lessonDataParam, navigation]);
 
-  // Auto-start recording when component mounts
   useEffect(() => {
-    if (!loading && lessonData) {
-      const autoStartTimer = setTimeout(() => {
-        startRecording();
+    let interval: NodeJS.Timeout;
+    if (isRecording) {
+      interval = setInterval(() => {
+        setRecordingDuration(prev => prev + 1);
       }, 1000);
-      return () => clearTimeout(autoStartTimer);
     }
-  }, [loading, lessonData]);
+    return () => clearInterval(interval);
+  }, [isRecording]);
 
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, []);
-
-  const startRecording = async () => {
-    console.log('Starting audio recording...');
-    
-    setIsRecording(true);
-    setRecordingTime(0);
-    
-    // Start timer
-    timerRef.current = setInterval(() => {
-      setRecordingTime(prev => prev + 1);
-    }, 1000);
-
-    // In a real implementation, you would start actual audio recording here
-    // using a library like react-native-audio-recorder-player
-  };
-
-  const stopRecording = () => {
-    console.log('Stopping audio recording...');
-    
-    setIsRecording(false);
-    
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
-    
-    // Create mock audio blob - in real implementation would be actual recorded audio
-    const mockAudioBlob = { type: 'audio/wav', duration: recordingTime };
-    setAudioBlob(mockAudioBlob);
-  };
-
-  const playAudio = () => {
-    // In real implementation, would play the recorded audio
-    setIsPlaying(true);
-    setIsPaused(false);
-    
-    // Mock playback - stop after a few seconds
-    setTimeout(() => {
-      setIsPlaying(false);
-    }, 3000);
-  };
-
-  const pauseAudio = () => {
-    setIsPlaying(false);
-    setIsPaused(true);
-  };
-
-  const resetRecording = () => {
-    setAudioBlob(null);
-    setRecordingTime(0);
-    setIsPlaying(false);
-    setIsPaused(false);
-  };
-
-  const nextStep = () => {
-    if (isLastStep) {
-      processDebrief();
-    } else {
-      setCurrentStep(prev => prev + 1);
-    }
-  };
-
-  const previousStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
-    }
-  };
-
-  const processDebrief = async () => {
-    setIsProcessing(true);
-    
-    try {
-      // Simulate AI processing
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      const debriefData: DebriefData = {
-        audioBlob: audioBlob,
-        transcription: "Overall, the lesson went excellent today with the student. They demonstrated really strong progress across all key areas. During pre-flight inspection, they were thorough and systematic, checking all required items methodically. Their taxi technique was smooth with excellent control inputs and good situational awareness. The radio communications were clear and professional throughout. For the flight maneuvers, we worked on steep turns and coordination exercises. They're really getting the hang of it, though we'll continue working on maintaining altitude precision. The landing was well-executed with good approach stability and smooth touchdown. They logged 1.3 hours of dual instruction with 6 successful landings.",
-        aiInsights: {
-          overallGrade: 'Complete',
-          overallNotes: 'Student demonstrated excellent progress across all lesson objectives. Strong performance in pre-flight procedures, aircraft control, and communication. Continue focus on steep turn altitude maintenance and landing consistency.',
-          taskGrades: {
-            'preflight': 'Pr',
-            'weather': 'E',
-            'radio': 'E',
-            'taxi': 'E',
-            'airwork': 'Pr',
-            'navigation': 'E',
-            'straight-level': 'Pr',
-            'climbs': 'Pr',
-            'descents': 'Pr',
-            'turns': 'M',
-            'power-management': 'Pr',
-            'pattern-entry': 'Pr',
-            'downwind': 'E',
-            'base-turn': 'Pr',
-            'final-approach': 'E',
-            'landing': 'Pr'
-          },
-          taskNotes: {
-            'preflight': 'Thorough and systematic inspection, excellent attention to detail and safety procedures.',
-            'weather': 'Comprehensive weather analysis and risk assessment demonstrated.',
-            'radio': 'Clear, professional communication with excellent phraseology and situational awareness.',
-            'taxi': 'Smooth control inputs and excellent ground handling skills demonstrated.',
-            'airwork': 'Good overall airmanship and aircraft control during flight maneuvers.',
-            'navigation': 'Effective use of navigation aids and situational awareness demonstrated.',
-            'straight-level': 'Good aircraft control with consistent altitude and heading maintenance.',
-            'climbs': 'Proper climb technique with good airspeed control and engine management.',
-            'descents': 'Controlled descents with appropriate power management and airspeed control.',
-            'turns': 'Good coordination but needs practice maintaining altitude during steep turns.',
-            'power-management': 'Appropriate power settings and smooth throttle control throughout flight maneuvers.',
-            'pattern-entry': 'Proper pattern entry procedures and good traffic awareness demonstrated.',
-            'downwind': 'Excellent spacing and altitude control on downwind leg.',
-            'base-turn': 'Good timing and coordination on base turn with proper wind correction.',
-            'final-approach': 'Excellent approach stabilization and energy management.',
-            'landing': 'Smooth touchdown with good directional control and appropriate flare timing.'
-          },
-          flightTimes: {
-            'total_time': '1.3',
-            'dual_day_local': '1.3',
-            'dual_day_landings': '6'
-          },
-          summary: 'Excellent lesson with strong progress demonstrated across all training objectives.'
-        }
-      };
-      
-      // Navigate to lesson grading with AI insights
-      const enhancedLessonData = {
-        ...lessonData,
-        aiDebrief: {
-          transcription: debriefData.transcription,
-          audioBlob: debriefData.audioBlob,
-          processedAt: new Date().toISOString(),
-          insights: debriefData.aiInsights
-        }
-      };
-
-      // Navigate to lesson grading page with pre-filled AI insights
-      const lessonDataParam = encodeURIComponent(JSON.stringify(enhancedLessonData));
-      navigation.navigate('LessonGrading' as never, {
-        id: lessonData.id,
-        lessonData: lessonDataParam,
-        hasAiInsights: true
-      } as never);
-      
-    } catch (error) {
-      console.error('Error processing debrief:', error);
-      Alert.alert('Error', 'Error processing debrief. Please try again.');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleCancel = () => {
-    if (isRecording || audioBlob) {
-      setShowCancelConfirmation(true);
-    } else {
-      navigation.goBack();
-    }
-  };
-
-  const confirmCancel = () => {
-    setShowCancelConfirmation(false);
-    navigation.goBack();
-  };
-
-  const formatTime = (seconds: number) => {
+  const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading...</Text>
-      </View>
+  const handleStartRecording = () => {
+    setIsRecording(true);
+    setRecordingDuration(0);
+  };
+
+  const handleStopRecording = () => {
+    setIsRecording(false);
+    setIsProcessing(true);
+    
+    // Simulate AI processing
+    setTimeout(() => {
+      handleProcessingComplete();
+    }, 3000);
+  };
+
+  const handleProcessingComplete = () => {
+    setIsProcessing(false);
+    
+    // Create mock debrief data
+    const debriefData: DebriefData = {
+      transcription: "Today's lesson went really well. The student demonstrated excellent control during pattern work and showed good improvement in radio communications. We practiced normal takeoffs and landings, and the student managed the aircraft with confidence. There were a few areas for improvement in altitude control during the base turn, but overall performance was very satisfactory.",
+      aiInsights: {
+        overallGrade: 'Complete',
+        overallNotes: 'Excellent progress demonstrated across all lesson objectives. Strong performance in key areas with good attention to detail and safety procedures.',
+        taskGrades: {
+          'preflight': 'E',
+          'pattern-entry': 'Pr',
+          'radio': 'E',
+          'takeoff': 'Pr',
+          'landing': 'E'
+        },
+        taskNotes: {
+          'preflight': 'Thorough and systematic inspection performed.',
+          'pattern-entry': 'Good pattern entry with proper spacing.',
+          'radio': 'Clear communications with proper phraseology.',
+          'takeoff': 'Smooth takeoff with good directional control.',
+          'landing': 'Excellent landing technique demonstrated.'
+        },
+        flightTimes: {
+          'total_time': '1.3',
+          'dual_day_local': '1.3',
+          'dual_day_landings': '6'
+        },
+        summary: 'Overall excellent lesson with strong performance in all areas. Student is ready to progress to the next phase of training.'
+      }
+    };
+
+    // Navigate to lesson grading with AI insights
+    const enhancedLessonData = {
+      ...lessonData,
+      aiDebrief: {
+        transcription: debriefData.transcription,
+        processedAt: new Date().toISOString(),
+        insights: debriefData.aiInsights
+      }
+    };
+
+    const lessonDataParam = encodeURIComponent(JSON.stringify(enhancedLessonData));
+    navigation.navigate('LessonGrading', {
+      id: id,
+      lessonData: lessonDataParam,
+      hasAiInsights: 'true'
+    });
+  };
+
+  const handleCancel = () => {
+    if (isRecording) {
+      Alert.alert(
+        'Stop Recording?',
+        'Are you sure you want to stop the recording? This will discard the current recording.',
+        [
+          { text: 'Continue Recording', style: 'cancel' },
+          { 
+            text: 'Stop & Discard', 
+            style: 'destructive', 
+            onPress: () => {
+              setIsRecording(false);
+              setRecordingDuration(0);
+              navigation.goBack();
+            }
+          }
+        ]
+      );
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const handleSkipToGrading = () => {
+    Alert.alert(
+      'Skip Audio Debrief?',
+      'You can proceed directly to lesson grading without recording a debrief.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Skip', 
+          onPress: () => {
+            const lessonDataParam = encodeURIComponent(JSON.stringify(lessonData));
+            navigation.navigate('LessonGrading', {
+              id: id,
+              lessonData: lessonDataParam
+            });
+          }
+        }
+      ]
     );
-  }
+  };
 
   if (!lessonData) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.errorText}>No lesson data found</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.goBackText}>Go Back</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  if (isProcessing) {
-    return (
-      <View style={styles.processingContainer}>
-        <Icon name="spinner" size={48} color={Colors.brand.orange} />
-        <Text style={styles.processingTitle}>Processing Your Debrief</Text>
-        <Text style={styles.processingSubtitle}>AI is analyzing your audio to generate lesson insights...</Text>
+      <View style={styles.container}>
+        <Text>Loading...</Text>
       </View>
     );
   }
@@ -359,158 +180,177 @@ export default function AudioDebriefScreen() {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={handleCancel}
+        >
+          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
+        </TouchableOpacity>
         <View style={styles.headerInfo}>
-          <Text style={styles.headerTitle}>Lesson Debrief</Text>
-          <Text style={styles.headerSubtitle}>{lessonData.studentName} • {lessonData.title}</Text>
+          <Text style={styles.headerTitle}>Audio Debrief</Text>
+          <Text style={styles.headerSubtitle}>{lessonData.title}</Text>
         </View>
-        <TouchableOpacity onPress={handleCancel} style={styles.closeButton}>
-          <Icon name="times" size={20} color={Colors.neutral.gray600} />
+        <TouchableOpacity
+          style={styles.helpButton}
+          onPress={() => setShowInstructions(true)}
+        >
+          <Icon name="questionCircle" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
       </View>
 
-      {/* Recording Controls */}
-      <View style={styles.recordingControls}>
-        <View style={styles.recordingControlsInner}>
-          {/* Left Side - Recording Indicator */}
-          <View style={styles.recordingIndicator}>
-            {isRecording && (
-              <View style={styles.recordingActiveIndicator}>
-                <View style={styles.recordingDot} />
-                <Text style={styles.recordingText}>Recording...</Text>
-              </View>
-            )}
+      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
+        {/* Lesson Info */}
+        <View style={styles.lessonInfo}>
+          <Text style={styles.lessonTitle}>{lessonData.title}</Text>
+          <Text style={styles.studentName}>Student: {lessonData.studentName}</Text>
+          <Text style={styles.lessonDetails}>
+            {lessonData.duration} • {lessonData.aircraft || 'Aircraft TBD'}
+          </Text>
+        </View>
+
+        {/* Recording Section */}
+        <View style={styles.recordingSection}>
+          <View style={styles.recordingIcon}>
+            <Icon 
+              name="microphone" 
+              size={48} 
+              color={isRecording ? '#ef4444' : Colors.neutral.gray400} 
+            />
           </View>
 
-          {/* Right Side - Timer */}
-          <View style={styles.timerContainer}>
-            <Text style={styles.timerText}>{formatTime(recordingTime)}</Text>
-          </View>
+          <Text style={styles.recordingTitle}>
+            {isRecording ? 'Recording Debrief...' : 'Ready to Record'}
+          </Text>
 
-          {/* Center - Action Buttons */}
-          <View style={styles.actionButtons}>
-            {!isRecording && !audioBlob && (
-              <TouchableOpacity onPress={startRecording} style={styles.recordButton}>
-                <Icon name="microphone" size={20} color={Colors.brand.cyan} />
+          {isRecording && (
+            <View style={styles.recordingIndicator}>
+              <View style={styles.recordingDot} />
+              <Text style={styles.recordingDuration}>
+                {formatDuration(recordingDuration)}
+              </Text>
+            </View>
+          )}
+
+          <Text style={styles.recordingDescription}>
+            {isRecording 
+              ? 'Speak naturally about the lesson performance, areas for improvement, and overall assessment.'
+              : 'Tap the record button and provide a verbal debrief of the lesson. The AI will analyze your comments and pre-fill the grading form.'
+            }
+          </Text>
+
+          {/* Recording Controls */}
+          <View style={styles.recordingControls}>
+            {!isRecording ? (
+              <TouchableOpacity
+                style={styles.recordButton}
+                onPress={handleStartRecording}
+              >
+                <Icon name="microphone" size={20} color={Colors.primary.white} />
+                <Text style={styles.recordButtonText}>Start Recording</Text>
               </TouchableOpacity>
-            )}
-
-            {isRecording && (
-              <TouchableOpacity onPress={stopRecording} style={styles.stopButton}>
+            ) : (
+              <TouchableOpacity
+                style={styles.stopButton}
+                onPress={handleStopRecording}
+              >
                 <Icon name="stop" size={20} color={Colors.primary.white} />
+                <Text style={styles.stopButtonText}>Stop & Process</Text>
               </TouchableOpacity>
-            )}
-
-            {audioBlob && !isRecording && (
-              <View style={styles.playbackControls}>
-                <TouchableOpacity 
-                  onPress={isPlaying ? pauseAudio : playAudio} 
-                  style={styles.playButton}
-                >
-                  <Icon name={isPlaying ? "pause" : "play"} size={16} color={Colors.primary.white} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={resetRecording} style={styles.resetButton}>
-                  <Icon name="redo" size={16} color={Colors.primary.white} />
-                </TouchableOpacity>
-              </View>
             )}
           </View>
         </View>
-      </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.contentPadding}>
-          {/* Current Question */}
-          <View style={styles.questionCard}>
-            <View style={styles.questionNavigation}>
-              <TouchableOpacity 
-                onPress={previousStep}
-                disabled={currentStep === 0}
-                style={[styles.navButton, currentStep === 0 && styles.navButtonDisabled]}
-              >
-                <Icon 
-                  name="chevron-left" 
-                  size={16} 
-                  color={currentStep === 0 ? Colors.neutral.gray400 : Colors.neutral.gray600} 
-                />
-              </TouchableOpacity>
-              
-              <View style={styles.stepIndicator}>
-                <Text style={styles.stepText}>{currentStep + 1} of {DEBRIEF_PROMPTS.length}</Text>
-              </View>
-              
-              <TouchableOpacity 
-                onPress={nextStep}
-                disabled={currentStep === DEBRIEF_PROMPTS.length - 1}
-                style={[styles.navButton, currentStep === DEBRIEF_PROMPTS.length - 1 && styles.navButtonDisabled]}
-              >
-                <Icon 
-                  name="chevronRight" 
-                  size={16} 
-                  color={currentStep === DEBRIEF_PROMPTS.length - 1 ? Colors.neutral.gray400 : Colors.neutral.gray600} 
-                />
-              </TouchableOpacity>
-            </View>
-            
-            <View style={styles.questionContent}>
-              <Text style={styles.questionCategory}>{currentPrompt.category}</Text>
-              <Text style={styles.questionText}>{currentPrompt.question}</Text>
-            </View>
-          </View>
-
-          {/* Lesson Objectives */}
-          <View style={styles.objectivesCard}>
-            <Text style={styles.objectivesTitle}>Lesson Objectives</Text>
-            <View style={styles.objectivesList}>
-              {LESSON_OBJECTIVES.map((objective, index) => (
-                <View key={index} style={styles.objectiveItem}>
-                  <View style={styles.objectiveNumber}>
-                    <Text style={styles.objectiveNumberText}>{index + 1}</Text>
-                  </View>
-                  <Text style={styles.objectiveText}>{objective}</Text>
-                </View>
-              ))}
-            </View>
-          </View>
+        {/* Skip Option */}
+        <View style={styles.skipSection}>
+          <Text style={styles.skipTitle}>Prefer Manual Entry?</Text>
+          <Text style={styles.skipDescription}>
+            You can skip the audio debrief and go directly to the lesson grading form.
+          </Text>
+          <TouchableOpacity
+            style={styles.skipButton}
+            onPress={handleSkipToGrading}
+          >
+            <Text style={styles.skipButtonText}>Skip to Grading</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
 
-      {/* Complete Debrief Button */}
-      <View style={styles.completeButtonContainer}>
-        <TouchableOpacity onPress={() => {
-          if (isRecording) {
-            stopRecording();
-            setTimeout(processDebrief, 500);
-          } else {
-            processDebrief();
-          }
-        }} style={styles.completeButton}>
-          <Icon name="check" size={16} color={Colors.brand.cyan} />
-          <Text style={styles.completeButtonText}>Complete Debrief</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Cancel Confirmation Modal */}
-      <Modal visible={showCancelConfirmation} transparent animationType="fade">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Cancel Debrief?</Text>
-            <Text style={styles.modalText}>
-              Are you sure you want to cancel? Any recorded audio will be lost.
+      {/* Processing Modal */}
+      <Modal
+        visible={isProcessing}
+        transparent
+        animationType="fade"
+      >
+        <View style={styles.processingOverlay}>
+          <View style={styles.processingModal}>
+            <View style={styles.processingIcon}>
+              <Icon name="magic" size={32} color={Colors.brand.cyan} />
+            </View>
+            <Text style={styles.processingTitle}>Processing Audio</Text>
+            <Text style={styles.processingDescription}>
+              AI is analyzing your debrief and generating lesson insights...
             </Text>
-            <View style={styles.modalActions}>
-              <TouchableOpacity 
-                style={styles.modalCancelButton}
-                onPress={() => setShowCancelConfirmation(false)}
+            <View style={styles.processingIndicator}>
+              <View style={styles.processingDot} />
+              <View style={styles.processingDot} />
+              <View style={styles.processingDot} />
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Instructions Modal */}
+      <Modal
+        visible={showInstructions}
+        transparent
+        animationType="slide"
+      >
+        <View style={styles.instructionsOverlay}>
+          <View style={styles.instructionsModal}>
+            <View style={styles.instructionsHeader}>
+              <Text style={styles.instructionsTitle}>Audio Debrief Instructions</Text>
+              <TouchableOpacity
+                style={styles.instructionsClose}
+                onPress={() => setShowInstructions(false)}
               >
-                <Text style={styles.modalCancelText}>Nevermind</Text>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                style={styles.modalConfirmButton}
-                onPress={confirmCancel}
-              >
-                <Text style={styles.modalConfirmText}>Yes, Cancel</Text>
+                <Icon name="times" size={20} color={Colors.neutral.gray600} />
               </TouchableOpacity>
             </View>
+            <ScrollView style={styles.instructionsContent}>
+              <Text style={styles.instructionsText}>
+                The audio debrief helps you quickly grade lessons using AI assistance:
+              </Text>
+              <View style={styles.instructionsList}>
+                <View style={styles.instructionItem}>
+                  <Text style={styles.instructionBullet}>1.</Text>
+                  <Text style={styles.instructionText}>
+                    Record your verbal assessment of the student's performance
+                  </Text>
+                </View>
+                <View style={styles.instructionItem}>
+                  <Text style={styles.instructionBullet}>2.</Text>
+                  <Text style={styles.instructionText}>
+                    Mention specific maneuvers, areas of strength, and improvement areas
+                  </Text>
+                </View>
+                <View style={styles.instructionItem}>
+                  <Text style={styles.instructionBullet}>3.</Text>
+                  <Text style={styles.instructionText}>
+                    AI will analyze your comments and pre-fill grades and notes
+                  </Text>
+                </View>
+                <View style={styles.instructionItem}>
+                  <Text style={styles.instructionBullet}>4.</Text>
+                  <Text style={styles.instructionText}>
+                    Review and adjust the AI-generated assessment as needed
+                  </Text>
+                </View>
+              </View>
+              <Text style={styles.instructionsTip}>
+                <Text style={styles.tipLabel}>Tip:</Text> Speak clearly and mention flight times, 
+                number of landings, and specific task performance for best AI analysis.
+              </Text>
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -521,60 +361,23 @@ export default function AudioDebriefScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.neutral.gray50,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.neutral.gray50,
-  },
-  loadingText: {
-    fontSize: 16,
-    color: Colors.neutral.gray600,
-    fontFamily: Typography.fontFamily.regular,
-  },
-  errorText: {
-    fontSize: 18,
-    color: Colors.neutral.gray900,
-    fontFamily: Typography.fontFamily.bold,
-    marginBottom: 8,
-  },
-  goBackText: {
-    fontSize: 14,
-    color: Colors.brand.blueAzure,
-    fontFamily: Typography.fontFamily.medium,
-  },
-  processingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.neutral.gray50,
-    paddingHorizontal: 16,
-  },
-  processingTitle: {
-    fontSize: 20,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.neutral.gray900,
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  processingSubtitle: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray600,
-    textAlign: 'center',
-    lineHeight: 24,
+    backgroundColor: Colors.primary.white,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    backgroundColor: Colors.primary.white,
+    padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.neutral.gray200,
+  },
+  backButton: {
+    width: 48,
+    height: 48,
+    backgroundColor: Colors.neutral.gray100,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
   },
   headerInfo: {
     flex: 1,
@@ -583,283 +386,280 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
-    marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 14,
     fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray600,
+    color: Colors.neutral.gray500,
   },
-  closeButton: {
+  helpButton: {
     width: 48,
     height: 48,
     backgroundColor: Colors.neutral.gray100,
     borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  recordingControls: {
-    backgroundColor: Colors.primary.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-  },
-  recordingControlsInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  recordingIndicator: {
-    flex: 1,
-    alignItems: 'flex-start',
-  },
-  recordingActiveIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  recordingDot: {
-    width: 8,
-    height: 8,
-    backgroundColor: Colors.status.error,
-    borderRadius: 4,
-    marginRight: 8,
-  },
-  recordingText: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.status.error,
-  },
-  timerContainer: {
-    flex: 1,
-    alignItems: 'flex-end',
-  },
-  timerText: {
-    fontSize: 20,
-    fontFamily: Typography.fontFamily.mono,
-    color: Colors.neutral.gray900,
-  },
-  actionButtons: {
-    position: 'absolute',
-    left: '50%',
-    marginLeft: -24, // Half of button width
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  recordButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: '#212121',
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stopButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.status.error,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  playbackControls: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  playButton: {
-    width: 40,
-    height: 40,
-    backgroundColor: Colors.status.success,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  resetButton: {
-    width: 40,
-    height: 40,
-    backgroundColor: Colors.neutral.gray600,
-    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
   content: {
     flex: 1,
   },
-  contentPadding: {
-    padding: 16,
-    paddingBottom: 100, // Extra space for button
-  },
-  questionCard: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Colors.neutral.gray200,
-    padding: 16,
-    marginBottom: 16,
-  },
-  questionNavigation: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  navButton: {
-    width: 32,
-    height: 32,
-    backgroundColor: Colors.neutral.gray200,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  navButtonDisabled: {
-    backgroundColor: Colors.neutral.gray100,
-  },
-  stepIndicator: {
-    backgroundColor: 'rgba(246, 163, 69, 0.15)',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  stepText: {
-    fontSize: 12,
-    fontFamily: Typography.fontFamily.semibold,
-    color: '#D2691E',
-  },
-  questionContent: {
-    width: '100%',
-  },
-  questionCategory: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.neutral.gray900,
-    marginBottom: 12,
-  },
-  questionText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray700,
-    lineHeight: 24,
-  },
-  objectivesCard: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: Colors.neutral.gray200,
-    padding: 16,
-  },
-  objectivesTitle: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.neutral.gray900,
-    marginBottom: 16,
-  },
-  objectivesList: {
-    gap: 12,
-  },
-  objectiveItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  objectiveNumber: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: 'rgba(246, 163, 69, 0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-    marginTop: 2,
-  },
-  objectiveNumberText: {
-    fontSize: 12,
-    fontFamily: Typography.fontFamily.semibold,
-    color: '#D2691E',
-  },
-  objectiveText: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray700,
-    flex: 1,
-    lineHeight: 20,
-  },
-  completeButtonContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: Colors.primary.white,
-    borderTopWidth: 1,
-    borderTopColor: Colors.neutral.gray200,
-    padding: 16,
-  },
-  completeButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#212121',
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  completeButtonText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.primary.white,
-    marginLeft: 8,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 8,
+  contentContainer: {
     padding: 24,
-    margin: 16,
-    maxWidth: 400,
-    width: '100%',
   },
-  modalTitle: {
+  lessonInfo: {
+    backgroundColor: Colors.neutral.gray50,
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 32,
+  },
+  lessonTitle: {
     fontSize: 18,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 8,
   },
-  modalText: {
-    fontSize: 16,
+  studentName: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.medium,
+    color: Colors.brand.cyan,
+    marginBottom: 4,
+  },
+  lessonDetails: {
+    fontSize: 14,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
+  },
+  recordingSection: {
+    alignItems: 'center',
+    marginBottom: 48,
+  },
+  recordingIcon: {
+    width: 120,
+    height: 120,
+    backgroundColor: Colors.neutral.gray50,
+    borderRadius: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 24,
-    lineHeight: 22,
   },
-  modalActions: {
+  recordingTitle: {
+    fontSize: 20,
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.neutral.gray900,
+    marginBottom: 16,
+  },
+  recordingIndicator: {
     flexDirection: 'row',
-    gap: 12,
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 16,
   },
-  modalCancelButton: {
-    flex: 1,
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: Colors.neutral.gray300,
-    borderRadius: 8,
+  recordingDot: {
+    width: 8,
+    height: 8,
+    backgroundColor: '#ef4444',
+    borderRadius: 4,
+  },
+  recordingDuration: {
+    fontSize: 18,
+    fontFamily: Typography.fontFamily.mono,
+    color: '#ef4444',
+    fontWeight: 'bold',
+  },
+  recordingDescription: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 32,
+    paddingHorizontal: 16,
+  },
+  recordingControls: {
+    width: '100%',
+  },
+  recordButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#ef4444',
+    paddingVertical: 16,
+    borderRadius: 12,
+    gap: 8,
+  },
+  recordButtonText: {
+    fontSize: 16,
+    fontFamily: Typography.fontFamily.medium,
+    color: Colors.primary.white,
+  },
+  stopButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#dc2626',
+    paddingVertical: 16,
+    borderRadius: 12,
+    gap: 8,
+  },
+  stopButtonText: {
+    fontSize: 16,
+    fontFamily: Typography.fontFamily.medium,
+    color: Colors.primary.white,
+  },
+  skipSection: {
+    backgroundColor: Colors.neutral.gray50,
+    padding: 20,
+    borderRadius: 12,
     alignItems: 'center',
   },
-  modalCancelText: {
+  skipTitle: {
     fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.neutral.gray900,
+    marginBottom: 8,
+  },
+  skipDescription: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 20,
+  },
+  skipButton: {
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    backgroundColor: Colors.neutral.gray200,
+    borderRadius: 8,
+  },
+  skipButtonText: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray700,
   },
-  modalConfirmButton: {
+  processingOverlay: {
     flex: 1,
-    paddingVertical: 12,
-    backgroundColor: Colors.status.error,
-    borderRadius: 8,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
   },
-  modalConfirmText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.primary.white,
+  processingModal: {
+    backgroundColor: Colors.primary.white,
+    borderRadius: 16,
+    padding: 32,
+    alignItems: 'center',
+    minWidth: 280,
+  },
+  processingIcon: {
+    width: 64,
+    height: 64,
+    backgroundColor: Colors.neutral.gray50,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  processingTitle: {
+    fontSize: 18,
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.neutral.gray900,
+    marginBottom: 8,
+  },
+  processingDescription: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 24,
+  },
+  processingIndicator: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  processingDot: {
+    width: 8,
+    height: 8,
+    backgroundColor: Colors.brand.cyan,
+    borderRadius: 4,
+  },
+  instructionsOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
+  instructionsModal: {
+    backgroundColor: Colors.primary.white,
+    borderRadius: 16,
+    maxHeight: '80%',
+    width: '100%',
+    maxWidth: 400,
+  },
+  instructionsHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.neutral.gray200,
+  },
+  instructionsTitle: {
+    fontSize: 18,
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.neutral.gray900,
+  },
+  instructionsClose: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  instructionsContent: {
+    padding: 20,
+  },
+  instructionsText: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  instructionsList: {
+    marginBottom: 16,
+  },
+  instructionItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+  },
+  instructionBullet: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.brand.cyan,
+    marginRight: 12,
+    minWidth: 20,
+  },
+  instructionText: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    lineHeight: 20,
+  },
+  instructionsTip: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+    lineHeight: 20,
+    backgroundColor: Colors.brand.cyan + '10',
+    padding: 12,
+    borderRadius: 8,
+  },
+  tipLabel: {
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.brand.cyan,
   },
 });

@@ -11,7 +11,7 @@ import {
   FlatList,
 } from 'react-native';
 import { Icon, Colors, Typography } from '../../components/src';
-import { AdaptiveBottomSheet } from './index';
+import AdaptiveBottomSheet from './AdaptiveBottomSheet';
 import { FlightData } from '../utils/flightStore';
 import ActionSheet from './ActionSheet';
 

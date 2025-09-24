@@ -1,5 +1,5 @@
 import React from 'react';
-import { AdaptiveBottomSheet } from './index';
+import AdaptiveBottomSheet from './AdaptiveBottomSheet';
 import NewReservationContent from './NewReservationContent';
 
 interface NewReservationModalProps {

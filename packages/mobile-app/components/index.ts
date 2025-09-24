@@ -14,8 +14,24 @@ export { default as ImportLogbookModal } from './ImportLogbookModal';
 export { default as NewReservationModal } from './NewReservationModal';
 export { default as ReservationDetailsDrawer } from './ReservationDetailsDrawer';
 
+// Export flight-related components
+export { default as FlightMap } from './FlightMap';
+export { default as FlightWeather } from './FlightWeather';
+
+// Export billing components
+export { default as BillingOverviewCard } from './BillingOverviewCard';
+export { default as BillingSummaryCard } from './BillingSummaryCard';
+
 // Re-export icons and design system from components package
 export { Icon, Colors, Typography } from '../../components/src';
+
+// Pilotbase brand components 🏢
+export { PilotbaseIcon, PilotbasePro, PilotbaseLogo } from './PilotbaseLogos';
+
+// High-quality SVG components 🎨
+export * from './svgs';
+export { SvgIcon } from './SvgIcon';
+export { default as SvgExample } from './SvgExample';
 
 // Types
 export type { default as ActionSheetOption } from './ActionSheet';

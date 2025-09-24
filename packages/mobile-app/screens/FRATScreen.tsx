@@ -8,7 +8,8 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 interface FRATItem {
   id: string;
@@ -304,7 +305,13 @@ export default function FRATScreen({ navigation }: any) {
     Alert.alert(
       'Assessment Saved',
       `Flight Risk Assessment completed with ${riskLevel?.level} risk level. Assessment has been saved to your flight records.`,
-      [{ text: 'OK' }]
+      [{ 
+        text: 'OK',
+        onPress: () => {
+          // Navigate back to preflight checklist with completion flag
+          navigation.navigate('PreflightChecklistScreen', { fratCompleted: true });
+        }
+      }]
     );
   };
 
@@ -681,6 +688,7 @@ const styles = StyleSheet.create({
     height: 32,
   },
 });
+
 
 
 

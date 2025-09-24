@@ -3,7 +3,7 @@ import {
   Modal,
   View,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  Pressable,
   Animated,
   Dimensions,
   StyleSheet,
@@ -62,9 +62,7 @@ const AdaptiveBottomSheet: React.FC<AdaptiveBottomSheetProps> = ({
         onRequestClose={onClose}
       >
         <View style={styles.tabletOverlay}>
-          <TouchableWithoutFeedback onPress={onClose}>
-            <View style={styles.tabletBackdrop} />
-          </TouchableWithoutFeedback>
+          <Pressable onPress={onClose} style={styles.tabletBackdrop} />
           
           <View style={[
             styles.tabletModal,

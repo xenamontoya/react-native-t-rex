@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 export default function AnalyticsScreen({ navigation }: any) {
   const [isPrivatePilotExpanded, setIsPrivatePilotExpanded] = useState(false);

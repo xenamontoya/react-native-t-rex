@@ -1,0 +1,61 @@
+/**
+ * 🛩️ PROJECT T-REX ASSETS INDEX
+ * 
+ * Centralized asset imports for React Native app
+ * PILOTBASE BRANDING FOCUS! 🎨
+ * 
+ * Copied from original project: xenamontoya/project-t-rex/public/
+ */
+
+// 🏢 PILOTBASE BRAND ASSETS - HIGHEST PRIORITY!
+// HIGH-QUALITY 6X PNG FILES FOR CRISP RENDERING
+export const pilotbaseIcon = require('./logos/pilotbase-icon-6x.png');
+export const pilotbasePro = require('./logos/pilotbase-pro-6x.png');
+export const pilotbase = require('./logos/pilotbase-6x.png');
+export const nameplate = require('./logos/pilotbase-6x.png'); // Using main logo as nameplate fallback
+
+// Main Brand Assets (PNG versions)
+export const flightScheduleProLogoPng = require('./logos/fsp-icon.png');
+export const flightsIconPng = require('./logos/fsp-icon.png');  
+export const backgroundImage = require('./thewayofcolor-JyOeDt0kRYc-unsplash.png');
+
+// Company & Partner Logos
+export const flightAwareLogo = require('./logos/flight-aware.png');
+export const fspIcon = require('./logos/fsp-icon.png');
+export const logtenDarkLogo = require('./logos/logten-dark.png');
+export const sportysLogo = require('./logos/SportysLogo.png');
+export const xenaSignature = require('./logos/xena-signature.png');
+
+// FALLBACK: Use working FSP icon until PNGs resolve
+export const pilotbaseIconFallback = require('./logos/fsp-icon.png');
+
+// Asset Groups for Easy Access  
+export const brandLogos = {
+  fsp: fspIcon,
+};
+
+export const partnerLogos = {
+  flightAware: flightAwareLogo,
+  logten: logtenDarkLogo,
+  sportys: sportysLogo,
+};
+
+// PILOTBASE BRAND GROUPS - Easy access to all Pilotbase assets
+export const pilotbaseAssets = {
+  icon: pilotbaseIcon,          // Main Pilotbase icon
+  pro: pilotbasePro,            // Pilotbase Pro wordmark
+  main: pilotbase,              // Full Pilotbase logo
+  nameplate: nameplate,         // Brand nameplate
+};
+
+export const signatures = {
+  xena: xenaSignature,
+};
+
+export const backgrounds = {
+  main: backgroundImage,
+};
+
+export const icons = {
+  flightsPng: flightsIconPng,
+};

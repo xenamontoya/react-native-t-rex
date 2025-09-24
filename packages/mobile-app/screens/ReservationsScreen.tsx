@@ -8,7 +8,8 @@ import {
   Alert 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Colors, FloatingActionButton } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, FloatingActionButton } from '../../components/src';
 import type { FloatingActionItem } from '../../components/src';
 import { NewReservationModal, showSuccessToast } from '../components';
 
@@ -119,7 +120,7 @@ export default function ReservationsScreen() {
 
   const handlePreflightClick = () => {
     // Navigate to preflight checklist
-    navigation?.navigate('PreflightChecklistScreen');
+    navigation?.navigate('PreflightChecklist');
   };
 
   const handleNewReservation = () => {

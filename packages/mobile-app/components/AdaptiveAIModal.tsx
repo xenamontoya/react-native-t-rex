@@ -5,7 +5,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  Pressable,
   ScrollView,
   StyleSheet,
   SafeAreaView,
@@ -208,7 +208,7 @@ const AdaptiveAIModal: React.FC<AdaptiveAIModalProps> = ({
           onPress={resetConversation}
           style={styles.resetButton}
         >
-          <Icon name="arrow-left" size={16} color={Colors.neutral.gray600} />
+          <Icon name="arrowLeft" size={16} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Reset Chat</Text>
       </View>
@@ -269,7 +269,7 @@ const AdaptiveAIModal: React.FC<AdaptiveAIModalProps> = ({
           onPress={handleSendMessage}
           disabled={!inputValue.trim()}
         >
-          <Icon name="arrow-right" size={20} color={inputValue.trim() ? Colors.primary.white : Colors.neutral.gray400} />
+          <Icon name="arrowRight" size={20} color={inputValue.trim() ? Colors.primary.white : Colors.neutral.gray400} />
         </TouchableOpacity>
       </View>
     </View>
@@ -315,9 +315,7 @@ const AdaptiveAIModal: React.FC<AdaptiveAIModalProps> = ({
           onRequestClose={onClose}
         >
           <View style={styles.tabletOverlay}>
-            <TouchableWithoutFeedback onPress={onClose}>
-              <View style={styles.tabletBackdrop} />
-            </TouchableWithoutFeedback>
+            <Pressable onPress={onClose} style={styles.tabletBackdrop} />
             
             <View style={[
               styles.tabletLargeModal,

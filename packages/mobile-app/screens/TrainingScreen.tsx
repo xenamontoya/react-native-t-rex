@@ -9,7 +9,8 @@ import {
   Image 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Colors } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors } from '../../components/src';
 import { AdaptiveAIModal } from '../components';
 
 // Mock stores for mobile (to match web app structure)

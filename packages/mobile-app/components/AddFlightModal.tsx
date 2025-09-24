@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon, Colors, Typography } from '../../components/src';
-import { AdaptiveBottomSheet } from './index';
+import AdaptiveBottomSheet from './AdaptiveBottomSheet';
 import { useFlightStore } from '../utils/flightStore';
 
 interface AddFlightModalProps {

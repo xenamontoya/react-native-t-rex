@@ -8,7 +8,8 @@ import {
   Alert,
   Image 
 } from 'react-native';
-import { Icon, Colors } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors } from '../../components/src';
 
 // Import stores
 import { useRoleStore, roleConfig } from '../utils/roleStore';

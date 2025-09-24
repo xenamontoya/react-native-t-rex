@@ -11,9 +11,11 @@ import {
   FlatList,
   Linking,
   Alert,
+  Image,
 } from 'react-native';
 import { Icon, Colors, Typography } from '../../components/src';
 import BottomSheet from './BottomSheet';
+// Using direct require() instead of broken asset imports
 
 interface AIInsightsModalProps {
   isOpen: boolean;
@@ -200,10 +202,14 @@ const AIInsightsModal: React.FC<AIInsightsModalProps> = ({
     setIsTyping(false);
   };
 
-  // Custom Wingman AI Icon Component
+  // Custom Wingman AI Icon Component with Pilotbase branding
   const WingmanIcon = () => (
     <View style={styles.wingmanIcon}>
-      <Icon name="robot" size={16} color={Colors.brand.blueAzure} />
+      <Image 
+        source={require('../assets/images/logos/pilotbase-icon-6x.png')}
+        style={styles.pilotbaseIcon}
+        resizeMode="contain"
+      />
     </View>
   );
 
@@ -620,6 +626,10 @@ const styles = StyleSheet.create({
   },
   sendButtonDisabled: {
     backgroundColor: Colors.neutral.gray300,
+  },
+  pilotbaseIcon: {
+    width: 16,
+    height: 16,
   },
 });
 

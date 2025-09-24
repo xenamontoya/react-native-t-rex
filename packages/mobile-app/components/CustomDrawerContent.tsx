@@ -6,9 +6,11 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Image,
 } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { Icon, Colors } from '../../components/src';
+// Using direct require() instead of broken asset imports
 
 interface CustomDrawerContentProps {
   navigation: any;
@@ -166,18 +168,14 @@ export default function CustomDrawerContent({ navigation, state }: CustomDrawerC
         </View>
       </ScrollView>
 
-      {/* Brand Footer */}
+      {/* Brand Footer - Pilotbase Branding */}
       <View style={styles.brandFooter}>
         <View style={styles.brandContent}>
-          <View style={styles.brandLogo}>
-            <Icon
-              name="plane"
-              size={16}
-              color={Colors.neutral.gray500}
-              style={{ opacity: 0.6 }}
-            />
-          </View>
-          <Text style={styles.brandText}>Pilotbase</Text>
+          <Image
+              source={require('../assets/images/logos/pilotbase-6x.png')}
+            style={styles.pilotbaseNameplate}
+            resizeMode="contain"
+          />
           <Text style={styles.versionText}>© 2024 · v1.0.2</Text>
         </View>
       </View>
@@ -319,15 +317,11 @@ const styles = StyleSheet.create({
   brandContent: {
     alignItems: 'center',
   },
-  brandLogo: {
+  pilotbaseNameplate: {
+    width: 80,
+    height: 20,
     marginBottom: 8,
-  },
-  brandText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: Colors.neutral.gray500,
     opacity: 0.6,
-    marginBottom: 4,
   },
   versionText: {
     fontSize: 10,

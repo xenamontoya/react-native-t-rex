@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import { Icon } from '../components/Icons';
+// Using direct require() instead of broken asset imports
 
 // Project T-Rex Brand Colors
 const Colors = {
@@ -39,26 +40,34 @@ export default function ProfileScreen() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Profile Header */}
-        <View style={styles.profileHeader}>
-          <View style={styles.profileAvatar}>
-            <Text style={styles.profileAvatarText}>AJ</Text>
+        {/* Profile Header with Background */}
+        <ImageBackground 
+          source={require('../assets/images/thewayofcolor-JyOeDt0kRYc-unsplash.png')}
+          style={styles.profileHeader}
+          imageStyle={styles.profileHeaderImage}
+        >
+          <View style={styles.profileOverlay}>
+            <View style={styles.profileAvatar}>
+              <Text style={styles.profileAvatarText}>AJ</Text>
+            </View>
+            
+            <Text style={styles.profileName}>Alex Johnson</Text>
+            <Text style={styles.profileRole}>Student Pilot</Text>
+            
+            {/* Profile info - removed test SVG */}
+            <View style={styles.locationContainer}>
+              <Icon name="mapMarkerAlt" size={14} color={Colors.neutral.gray500} style={styles.locationIcon} />
+              <Text style={styles.profileLocation}>Phoenix, AZ</Text>
+            </View>
+            
+            <TouchableOpacity 
+              style={styles.editButton}
+              onPress={() => handleActionPress('Edit Profile')}
+            >
+              <Text style={styles.editButtonText}>Edit Profile</Text>
+            </TouchableOpacity>
           </View>
-          
-          <Text style={styles.profileName}>Alex Johnson</Text>
-          <Text style={styles.profileRole}>Student Pilot</Text>
-          <View style={styles.locationContainer}>
-            <Icon name="mapMarkerAlt" size={14} color={Colors.neutral.gray500} style={styles.locationIcon} />
-            <Text style={styles.profileLocation}>Phoenix, AZ</Text>
-          </View>
-          
-          <TouchableOpacity 
-            style={styles.editButton}
-            onPress={() => handleActionPress('Edit Profile')}
-          >
-            <Text style={styles.editButtonText}>Edit Profile</Text>
-          </TouchableOpacity>
-        </View>
+        </ImageBackground>
 
         {/* Training Progress Summary */}
         <View style={styles.progressCard}>
@@ -431,5 +440,19 @@ const styles = StyleSheet.create({
 
   bottomPadding: {
     height: 100,
+  },
+  
+  // SVG test styles
+  svgTestRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    marginBottom: 8,
+    gap: 8,
+  },
+  svgTestLabel: {
+    fontSize: 12,
+    color: Colors.primary.white,
+    opacity: 0.8,
   },
 });

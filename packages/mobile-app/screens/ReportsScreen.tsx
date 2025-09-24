@@ -8,7 +8,8 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 export default function ReportsScreen({ navigation }: any) {
   const handleGoBack = () => {

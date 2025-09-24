@@ -11,9 +11,12 @@ import {
   KeyboardAvoidingView,
   Switch,
   Dimensions,
+  Image,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
+// Using direct require() instead of broken asset imports
 
 interface FlightData {
   // Flight Details
@@ -260,7 +263,17 @@ export default function FlightDetailsFormScreen() {
 
         {/* Flight Number */}
         <View style={styles.formField}>
-          <Text style={styles.label}>Flight Number</Text>
+          <View style={styles.labelWithIcon}>
+            <Text style={styles.label}>Flight Number</Text>
+            {/* FlightAware logo for flights with external data source */}
+            {prefilledData?.fa_flight_id && (
+              <Image 
+                source={require('../assets/images/logos/flight-aware.png')}
+                style={styles.dataSourceLogo}
+                resizeMode="contain"
+              />
+            )}
+          </View>
           <TextInput
             style={styles.input}
             value={flightData.flightNumber}
@@ -282,7 +295,17 @@ export default function FlightDetailsFormScreen() {
 
         {/* Aircraft Type */}
         <View style={styles.formField}>
-          <Text style={styles.label}>Aircraft Type</Text>
+          <View style={styles.labelWithIcon}>
+            <Text style={styles.label}>Aircraft Type</Text>
+            {/* Pilotbase icon for internal app data (reservation/lesson) */}
+            {(prefilledData?.reservationId || prefilledData?.lessonType || prefilledData?.instructor) && (
+              <Image 
+                source={require('../assets/images/logos/pilotbase-icon-6x.png')}
+                style={styles.dataSourceLogo}
+                resizeMode="contain"
+              />
+            )}
+          </View>
           <TextInput
             style={styles.input}
             value={flightData.aircraftType}
@@ -709,7 +732,17 @@ export default function FlightDetailsFormScreen() {
       
       <View style={styles.formGrid}>
         <View style={styles.formField}>
-          <Text style={styles.label}>Instructor</Text>
+          <View style={styles.labelWithIcon}>
+            <Text style={styles.label}>Instructor</Text>
+            {/* Pilotbase icon for internal lesson data */}
+            {(prefilledData?.lessonType || prefilledData?.instructor) && (
+              <Image 
+                source={require('../assets/images/logos/pilotbase-icon-6x.png')}
+                style={styles.dataSourceLogo}
+                resizeMode="contain"
+              />
+            )}
+          </View>
           <TextInput
             style={styles.input}
             value={flightData.instructor}
@@ -962,5 +995,17 @@ const styles = StyleSheet.create({
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginTop: 8,
+  },
+  
+  // Data source logo styles
+  labelWithIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  dataSourceLogo: {
+    width: 16,
+    height: 16,
+    marginLeft: 8,
   },
 });

@@ -6,13 +6,15 @@ import {
   ScrollView, 
   TouchableOpacity, 
   Alert,
-  Dimensions 
+  Dimensions,
+  Image 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Colors, FloatingActionButton } from '../../components/src';
 import type { FloatingActionItem } from '../../components/src';
 import { Icon, AddFlightModal, ImportLogbookModal } from '../components';
 import { FlightData } from '../utils/flightStore';
+// Using direct require() instead of broken asset imports
 
 // Mock flight data matching your web app structure
 const mockFlights = [
@@ -38,7 +40,8 @@ const mockFlights = [
     type: 'Training',
     dual_received: '1.5',
     day_ldg: '3',
-    remarks: 'Excellent progress on landing consistency. Continue working on crosswind technique.'
+    remarks: 'Excellent progress on landing consistency. Continue working on crosswind technique.',
+    signature: '/logos/xena-signature.png'
   },
   {
     id: '2',
@@ -332,6 +335,8 @@ const FlightCard = ({
           </View>
         </View>
       )}
+
+      {/* No signatures in list view - moved to detail screen */}
     </TouchableOpacity>
   );
 };
@@ -638,6 +643,16 @@ export default function LogbookScreen() {
             </View>
           </View>
         )}
+
+        {/* Powered by Pilotbase Pro Footer */}
+        <View style={styles.pilotbaseFooter}>
+          <Text style={styles.poweredByText}>Powered by</Text>
+          <Image 
+            source={require('../assets/images/logos/pilotbase-pro-6x.png')}
+            style={styles.pilotbaseProLogo}
+            resizeMode="contain"
+          />
+        </View>
 
         {/* Bottom Padding */}
         <View style={styles.bottomPadding} />
@@ -1061,6 +1076,22 @@ const styles = StyleSheet.create({
   
   bottomPadding: {
     height: 100,
+  },
+  
+  // Pilotbase Branding
+  pilotbaseFooter: {
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+  },
+  poweredByText: {
+    fontSize: 12,
+    color: Colors.neutral.gray500,
+    marginBottom: 8,
+  },
+  pilotbaseProLogo: {
+    height: 20,
+    width: 120,
   },
 });
 

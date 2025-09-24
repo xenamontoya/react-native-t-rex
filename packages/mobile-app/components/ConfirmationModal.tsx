@@ -3,7 +3,7 @@ import {
   Modal,
   View,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  Pressable,
   Animated,
   StyleSheet,
   Text,
@@ -150,7 +150,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     >
       <View style={styles.container}>
         {/* Overlay */}
-        <TouchableWithoutFeedback onPress={handleOverlayPress}>
+        <Pressable onPress={handleOverlayPress}>
           <Animated.View
             style={[
               styles.overlay,
@@ -162,7 +162,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               },
             ]}
           />
-        </TouchableWithoutFeedback>
+        </Pressable>
 
         {/* Modal */}
         <Animated.View

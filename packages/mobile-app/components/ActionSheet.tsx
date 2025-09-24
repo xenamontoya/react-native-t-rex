@@ -3,7 +3,7 @@ import {
   Modal,
   View,
   TouchableOpacity,
-  TouchableWithoutFeedback,
+  Pressable,
   Animated,
   Dimensions,
   StyleSheet,
@@ -119,7 +119,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
     >
       <SafeAreaView style={styles.container}>
         {/* Overlay */}
-        <TouchableWithoutFeedback onPress={handleOverlayPress}>
+        <Pressable onPress={handleOverlayPress}>
           <Animated.View
             style={[
               styles.overlay,
@@ -131,7 +131,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
               },
             ]}
           />
-        </TouchableWithoutFeedback>
+        </Pressable>
 
         {/* Action Sheet */}
         <Animated.View

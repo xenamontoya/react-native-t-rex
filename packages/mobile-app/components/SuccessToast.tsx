@@ -79,14 +79,14 @@ const SuccessToast: React.FC<SuccessToastProps> = ({
     Animated.parallel([
       Animated.spring(translateY, {
         toValue,
-        useNativeDriver: true,
+        useNativeDriver: false, // Disabled for web compatibility
         tension: 100,
         friction: 8,
       }),
       Animated.timing(opacity, {
         toValue: 1,
         duration: 250,
-        useNativeDriver: true,
+        useNativeDriver: false, // Disabled for web compatibility
       }),
     ]).start();
 
@@ -109,14 +109,14 @@ const SuccessToast: React.FC<SuccessToastProps> = ({
     Animated.parallel([
       Animated.spring(translateY, {
         toValue,
-        useNativeDriver: true,
+        useNativeDriver: false, // Disabled for web compatibility
         tension: 100,
         friction: 8,
       }),
       Animated.timing(opacity, {
         toValue: 0,
         duration: 200,
-        useNativeDriver: true,
+        useNativeDriver: false, // Disabled for web compatibility
       }),
     ]).start(() => {
       if (onHide) {

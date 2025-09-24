@@ -12,7 +12,8 @@ import {
   Platform,
   Pressable,
 } from 'react-native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 
 // Mock data structure - in real app this would come from FlightAware API
 interface Airport {

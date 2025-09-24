@@ -10,7 +10,8 @@ import {
   Modal,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Icon, Colors, Typography } from '../../components/src';
+import { Icon } from '../components/Icons';
+import { Colors, Typography } from '../../components/src';
 import { NewReservationModal } from '../components';
 
 // Mock reservation data for instructor perspective (showing student names)
