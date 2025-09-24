@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Icon, Colors, Typography } from '@project-t-rex/components';
+import { Icon, Colors, Typography } from '../../components/src';
 
 interface PackageItem {
   name: string;

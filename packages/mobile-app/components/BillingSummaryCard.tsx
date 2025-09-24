@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Colors, Typography } from '@project-t-rex/components';
+import { Colors, Typography } from '../../components/src';
 
 interface BillingSummaryCardProps {
   packageName?: string;
