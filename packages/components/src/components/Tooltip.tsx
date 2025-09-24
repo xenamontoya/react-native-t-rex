@@ -200,7 +200,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             getTooltipStyle() as any,
           ]}
           onLayout={handleTooltipLayout}
-          pointerEvents="none"
+          style={{ pointerEvents: 'none' }}
         >
           <Text style={[styles.tooltipText, { color: textColor }]}>
             {content}
@@ -268,10 +268,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.sm,
     paddingVertical: Spacing.xs,
     borderRadius: 6,
-    shadowColor: Colors.primary.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
     elevation: 5,
   },
   tooltipText: {

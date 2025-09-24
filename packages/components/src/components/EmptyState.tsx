@@ -176,10 +176,7 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.md,
     borderRadius: 8,
     gap: Spacing.xs,
-    shadowColor: Colors.primary.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    boxShadow: '0 2px 3px rgba(0, 0, 0, 0.1)',
     elevation: 3,
   },
   actionButtonError: {

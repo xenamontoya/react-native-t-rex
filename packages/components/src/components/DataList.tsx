@@ -235,10 +235,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.neutral.gray200,
     padding: Spacing.md,
     marginBottom: Spacing.md,
-    shadowColor: Colors.primary.black,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
     elevation: 1,
   },
   cardHeader: {
