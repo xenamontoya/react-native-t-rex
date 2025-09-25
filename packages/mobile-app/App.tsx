@@ -593,6 +593,13 @@ function MobileTabNavigator() {
           }}
         />
         <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{
+            tabBarButton: () => null, // Hide from tab bar
+          }}
+        />
+        <Tab.Screen
           name="Careers"
           component={CareersScreen}
           options={{

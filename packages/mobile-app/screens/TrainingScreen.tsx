@@ -6,11 +6,12 @@ import {
   ScrollView, 
   TouchableOpacity, 
   Alert,
-  Image 
+  Image,
+  Dimensions 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors } from '../../components/src';
+import { Colors, AIInsightsHeader, StatCard, FloatingAIButton } from '../../components/src';
 import { AdaptiveAIModal } from '../components';
 
 // Mock stores for mobile (to match web app structure)
@@ -170,6 +171,10 @@ export default function TrainingScreen() {
   const [student, setStudent] = useState(studentData);
   const [showAIInsightsModal, setShowAIInsightsModal] = useState(false);
 
+  // Tablet detection
+  const { width } = Dimensions.get('window');
+  const isTablet = width >= 768;
+
   useEffect(() => {
     setRole('student');
     addDummyDebriefData();
@@ -261,30 +266,21 @@ export default function TrainingScreen() {
 
           {/* Stats Grid */}
           <View style={styles.statsGrid}>
-            <View style={styles.statCard}>
-              <View style={styles.statHeader}>
-                <Icon name="clock" size={16} color={Colors.neutral.gray500} />
-                <Text style={styles.statLabel}>Total Hours</Text>
-              </View>
-              <Text style={styles.statValue}>{student.totalHours}</Text>
-            </View>
-            <View style={styles.statCard}>
-              <View style={styles.statHeader}>
-                <Icon name="calendar" size={16} color={Colors.neutral.gray500} />
-                <Text style={styles.statLabel}>Started</Text>
-              </View>
-              <Text style={styles.statValue}>
-                {new Date(student.enrollmentDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-              </Text>
-            </View>
+            <StatCard 
+              label="Total Hours"
+              value={student.totalHours}
+              icon={<Icon name="clock" size={16} color={Colors.neutral.gray500} />}
+            />
+            <StatCard 
+              label="Started"
+              value={new Date(student.enrollmentDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+              icon={<Icon name="calendar" size={16} color={Colors.neutral.gray500} />}
+            />
           </View>
 
           {/* AI Training Insights - Compact */}
           <View style={styles.aiInsights}>
-            <View style={styles.aiInsightsHeader}>
-              <Icon name="checkCircle" size={16} color="#0891B2" />
-              <Text style={styles.aiInsightsTitle}>AI Training Insights</Text>
-            </View>
+            <AIInsightsHeader title="AI Training Insights" />
             <Text style={styles.aiInsightsDescription}>
               At your current pace, you'll complete training by March 2024. Add one more lesson per month to finish two months sooner and start your career faster.
             </Text>
@@ -303,7 +299,7 @@ export default function TrainingScreen() {
           {/* Logo */}
           <View style={styles.groundSchoolHeader}>
             <Image 
-              source={{ uri: '/logos/SportysLogo.png' }}
+              source={require('../assets/images/logos/SportysLogo.png')}
               style={styles.sportysLogo}
               resizeMode="contain"
             />
@@ -509,12 +505,10 @@ export default function TrainingScreen() {
       </ScrollView>
 
       {/* Floating Wingman AI Button */}
-      <TouchableOpacity
-        style={styles.floatingAIButton}
+      <FloatingAIButton 
         onPress={() => setShowAIInsightsModal(true)}
-      >
-        <Icon name="checkCircle" size={24} color={Colors.primary.white} />
-      </TouchableOpacity>
+        iconType="pilotbase"
+      />
 
       {/* AI Insights Modal */}
       <AdaptiveAIModal
@@ -614,31 +608,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 16,
     marginBottom: 24,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: Colors.primary.white,
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: Colors.neutral.gray200,
-  },
-  statHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  statLabel: {
-    fontSize: 12,
-    color: Colors.neutral.gray600,
-    fontFamily: 'monospace',
-    textTransform: 'uppercase',
-    marginLeft: 8,
-  },
-  statValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.primary.black,
   },
   
   // AI Insights
@@ -891,25 +860,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   
-  // Floating AI Button
-  floatingAIButton: {
-    position: 'absolute',
-    right: 24,
-    bottom: 120, // Above tab bar
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: Colors.primary.black,
-    borderWidth: 3,
-    borderColor: '#00FFF2',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 8,
-  },
   
   bottomPadding: {
     height: 100,

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
+import { PilotbaseIcon } from '../components/svgs';
 import { Colors, Typography } from '../../components/src';
 
 // Mock job data - in real app this would come from API based on ID
@@ -208,7 +209,7 @@ export default function JobDetailsScreen() {
           <View style={styles.aiInsightCard}>
             <View style={styles.aiInsightContent}>
               <View style={styles.aiInsightIcon}>
-                <Icon name="robot" size={20} color={Colors.brand.cyan} />
+                <PilotbaseIcon width={20} height={20} />
               </View>
               <View style={styles.aiInsightText}>
                 <Text style={styles.aiInsightTitle}>Wingman AI Career Insights</Text>

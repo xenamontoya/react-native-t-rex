@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Icon, AdaptiveAIModal } from '../components';
+import { PilotbaseIcon, AIInsightsHeader, CardHeader, StatCard } from '../../components/src';
 import { useNavigation } from '@react-navigation/native';
 
 // This is a React Native conversion of the original student.tsx dashboard
@@ -169,46 +170,40 @@ const StudentDashboardMain: React.FC = () => {
 
         {/* Stats Grid */}
         <View style={styles.statsGrid}>
-          <View style={styles.statItem}>
-            <Text style={[styles.statValue, { color: isDark ? '#ffffff' : '#111827' }]}>
-              {student.totalHours}
-            </Text>
-            <Text style={[styles.statLabel, { color: isDark ? '#a0a0a0' : '#4b5563' }]}>
-              Total Hours
-            </Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={[styles.statValue, { color: isDark ? '#ffffff' : '#111827' }]}>
-              {student.lessons?.filter((l: any) => l.status === 'completed').length || 0}
-            </Text>
-            <Text style={[styles.statLabel, { color: isDark ? '#a0a0a0' : '#4b5563' }]}>
-              Lessons Completed
-            </Text>
-          </View>
-          <View style={styles.statItem}>
-            <Text style={[styles.statValue, { color: isDark ? '#ffffff' : '#111827' }]}>
-              {savedFlights.length}
-            </Text>
-            <Text style={[styles.statLabel, { color: isDark ? '#a0a0a0' : '#4b5563' }]}>
-              Flights Logged
-            </Text>
-          </View>
+          <StatCard 
+            label="Total Hours"
+            value={student.totalHours}
+            icon={<Icon name="clock" size={16} color="#6b7280" />}
+            containerStyle={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}
+            valueStyle={{ color: isDark ? '#ffffff' : '#111827' }}
+            labelStyle={{ color: isDark ? '#a0a0a0' : '#6b7280' }}
+          />
+          <StatCard 
+            label="Lessons Completed"
+            value={student.lessons?.filter((l: any) => l.status === 'completed').length || 0}
+            icon={<Icon name="book" size={16} color="#6b7280" />}
+            containerStyle={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}
+            valueStyle={{ color: isDark ? '#ffffff' : '#111827' }}
+            labelStyle={{ color: isDark ? '#a0a0a0' : '#6b7280' }}
+          />
+          <StatCard 
+            label="Flights Logged"
+            value={savedFlights.length}
+            icon={<Icon name="plane" size={16} color="#6b7280" />}
+            containerStyle={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}
+            valueStyle={{ color: isDark ? '#ffffff' : '#111827' }}
+            labelStyle={{ color: isDark ? '#a0a0a0' : '#6b7280' }}
+          />
         </View>
       </View>
 
       {/* What's Next */}
       {nextLesson && (
         <View style={[styles.card, { borderColor: '#00FFF2' }]}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>What's Next</Text>
-            <TouchableOpacity 
-              onPress={() => navigation.navigate('StudentTraining' as never)}
-              style={styles.viewAllButton}
-            >
-              <Text style={[styles.viewAllText, { color: '#5177bb' }]}>View All</Text>
-              <Icon name="arrowRight" size={12} color="#5177bb" />
-            </TouchableOpacity>
-          </View>
+          <CardHeader 
+            title="What's Next" 
+            onViewAllPress={() => navigation.navigate('StudentTraining' as never)}
+          />
 
           {/* AI Preparation Card */}
           <TouchableOpacity 
@@ -217,9 +212,9 @@ const StudentDashboardMain: React.FC = () => {
           >
             <View style={styles.aiCardContent}>
               <View style={styles.aiCardIcon}>
-                <Image 
-                  source={{ uri: '/logos/SVG/pilotbase-icon.svg' }}
-                  style={styles.pilotbaseIcon}
+                <PilotbaseIcon 
+                  width={22}
+                  height={22}
                 />
               </View>
               <View>
@@ -320,13 +315,7 @@ const StudentDashboardMain: React.FC = () => {
 
         {/* AI Career Insights */}
         <View style={styles.aiInsights}>
-          <View style={styles.aiInsightsHeader}>
-            <Image 
-              source={{ uri: '/logos/SVG/pilotbase-icon.svg' }}
-              style={styles.aiInsightsIcon}
-            />
-            <Text style={styles.aiInsightsTitle}>AI Career Insights</Text>
-          </View>
+          <AIInsightsHeader title="AI Career Insights" />
           <Text style={styles.aiInsightsText}>
             Based on your progress, you're eligible for airline cadet programs that can fast-track your career.
           </Text>
@@ -345,16 +334,10 @@ const StudentDashboardMain: React.FC = () => {
         {/* Recent Lessons */}
         {recentCompletedLessons && recentCompletedLessons.length > 0 && (
           <View style={styles.activityCard}>
-            <View style={styles.cardHeader}>
-              <Text style={styles.cardTitle}>Recent Lessons</Text>
-              <TouchableOpacity 
-                onPress={() => navigation.navigate('StudentTraining' as never)}
-                style={styles.viewAllButton}
-              >
-                <Text style={[styles.viewAllText, { color: '#5177bb' }]}>View All</Text>
-                <Icon name="arrowRight" size={12} color="#5177bb" />
-              </TouchableOpacity>
-            </View>
+            <CardHeader 
+              title="Recent Lessons" 
+              onViewAllPress={() => navigation.navigate('StudentTraining' as never)}
+            />
             <View style={styles.lessonsList}>
               {recentCompletedLessons.map((lesson: any) => (
                 <View key={lesson.id} style={styles.recentLessonItem}>
@@ -385,16 +368,11 @@ const StudentDashboardMain: React.FC = () => {
 
         {/* Flight Statistics */}
         <View style={styles.activityCard}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Flight Statistics</Text>
-            <TouchableOpacity 
-              onPress={() => navigation.navigate('StudentMyFlights' as never)}
-              style={styles.viewAllButton}
-            >
-              <Text style={[styles.viewAllText, { color: '#5177bb' }]}>View Logbook</Text>
-              <Icon name="arrowRight" size={12} color="#5177bb" />
-            </TouchableOpacity>
-          </View>
+          <CardHeader 
+            title="Flight Statistics" 
+            viewAllText="View Logbook"
+            onViewAllPress={() => navigation.navigate('StudentMyFlights' as never)}
+          />
           <View style={styles.flightStats}>
             <View style={styles.flightStatItem}>
               <View style={styles.flightStatContent}>
@@ -539,7 +517,7 @@ const styles = StyleSheet.create({
   },
   statsGrid: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    gap: 16,
     marginTop: 16,
   },
   statItem: {
@@ -604,11 +582,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#212121',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 16,
   },
   pilotbaseIcon: {
-    width: 20,
-    height: 20,
+    width: 28,
+    height: 28,
   },
   aiCardTitle: {
     fontWeight: '500',

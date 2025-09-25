@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, PoweredByPilotbasePro, Button } from '../../components/src';
 // Using direct require() instead of broken asset imports
 
 interface FlightDetailsProps {
@@ -294,9 +294,12 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
       <View style={styles.container}>
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Flight not found</Text>
-          <TouchableOpacity style={styles.backButton} onPress={() => nav.goBack()}>
-            <Text style={styles.backButtonText}>Go Back</Text>
-          </TouchableOpacity>
+          <Button 
+            variant="primary" 
+            onPress={() => nav.goBack()}
+          >
+            Go Back
+          </Button>
         </View>
       </View>
     );
@@ -376,8 +379,10 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
 
         {/* Content */}
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          {/* Powered by Pilotbase Pro Header */}
+          <PoweredByPilotbasePro spacing="default" />
+          
           <View style={styles.contentPadding}>
-            
             {/* Responsive Layout: Mobile single column, Tablet two columns */}
             <View style={isTablet ? styles.twoColumnLayout : styles.singleColumnLayout}>
               
@@ -697,6 +702,9 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
               </View>
             ) : null;
           })()}
+
+          {/* Bottom Padding */}
+          <View style={styles.bottomPadding} />
         </ScrollView>
       </View>
 
@@ -747,17 +755,6 @@ const styles = StyleSheet.create({
     fontFamily: Typography.fontFamily.semibold,
     marginBottom: 20,
   },
-  backButton: {
-    backgroundColor: Colors.brand.blueAzure,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-  },
-  backButtonText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.primary.white,
-  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -772,6 +769,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.neutral.gray100,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitleContainer: {
     marginLeft: 12,
@@ -1202,5 +1207,9 @@ const styles = StyleSheet.create({
   signatureImage: {
     width: 80,
     height: 25,
+  },
+
+  bottomPadding: {
+    height: 20,
   },
 });

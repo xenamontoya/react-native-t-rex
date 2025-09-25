@@ -75,7 +75,7 @@ const BillingOverviewCard: React.FC = () => {
                 onPress={() => Alert.alert('Start Application', 'Start new loan application')}
               >
                 <Text style={styles.startApplicationText}>Start Application</Text>
-                <Icon name="chevronRight" size={12} color="#007AFF" />
+                <Icon name="chevronRight" size={12} color={Colors.tertiary.denimBlue} />
               </TouchableOpacity>
             </View>
           </View>
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   viewApplicationText: {
     fontSize: 14,
     fontFamily: Typography.fontFamily.semibold,
-    color: '#007AFF',
+    color: Colors.tertiary.denimBlue,
   },
   loanAmountContainer: {
     alignItems: 'flex-end',
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
   startApplicationText: {
     fontSize: 14,
     fontFamily: Typography.fontFamily.semibold,
-    color: '#007AFF',
+    color: Colors.tertiary.denimBlue,
   },
   packageDetailsSection: {
     borderTopWidth: 1,

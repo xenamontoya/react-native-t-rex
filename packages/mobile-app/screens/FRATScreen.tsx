@@ -579,7 +579,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   optionButtonSelected: {
-    borderColor: '#5177BB',
+    borderColor: Colors.tertiary.denimBlue,
     backgroundColor: '#F0F4FF',
   },
   optionContent: {
@@ -597,13 +597,13 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   radioButtonSelected: {
-    borderColor: '#5177BB',
+    borderColor: Colors.tertiary.denimBlue,
   },
   radioButtonInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#5177BB',
+    backgroundColor: Colors.tertiary.denimBlue,
   },
   optionText: {
     flex: 1,
@@ -612,7 +612,7 @@ const styles = StyleSheet.create({
     color: Colors.primary.black,
   },
   optionTextSelected: {
-    color: '#5177BB',
+    color: Colors.tertiary.denimBlue,
     fontFamily: Typography.fontFamily.medium,
   },
   pointsBadge: {

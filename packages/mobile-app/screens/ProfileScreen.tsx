@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
+import { PilotbaseIcon } from '../components/svgs';
+import { ScreenHeader } from '../../components/src';
 // Using direct require() instead of broken asset imports
 
 // Project T-Rex Brand Colors
@@ -28,50 +31,68 @@ const Colors = {
 };
 
 export default function ProfileScreen() {
+  const navigation = useNavigation();
+  
   const handleActionPress = (action: string) => {
     Alert.alert('Action', `You pressed: ${action}`);
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
+  const handleShare = () => {
+    Alert.alert('Share', 'Share profile functionality coming soon');
+  };
+
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile</Text>
-      </View>
+      {/* Unified Screen Header */}
+      <ScreenHeader 
+        variant="detail"
+        title="Alex Johnson"
+        subtitle="Pilot Profile"
+        onBackPress={handleBack}
+        onRightPress={handleShare}
+        rightIcon="share"
+      />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Profile Header with Background */}
+        {/* Profile Header with Sky Background - Scrollable */}
         <ImageBackground 
           source={require('../assets/images/thewayofcolor-JyOeDt0kRYc-unsplash.png')}
           style={styles.profileHeader}
           imageStyle={styles.profileHeaderImage}
+          resizeMode="cover"
         >
-          <View style={styles.profileOverlay}>
+          <View style={styles.profileContent}>
             <View style={styles.profileAvatar}>
               <Text style={styles.profileAvatarText}>AJ</Text>
             </View>
             
             <Text style={styles.profileName}>Alex Johnson</Text>
-            <Text style={styles.profileRole}>Student Pilot</Text>
             
-            {/* Profile info - removed test SVG */}
             <View style={styles.locationContainer}>
-              <Icon name="mapMarkerAlt" size={14} color={Colors.neutral.gray500} style={styles.locationIcon} />
-              <Text style={styles.profileLocation}>Phoenix, AZ</Text>
+              <Icon name="mapMarkerAlt" size={14} color="white" style={styles.locationIcon} />
+              <Text style={styles.profileLocation}>PHOENIX, AZ</Text>
             </View>
             
             <TouchableOpacity 
               style={styles.editButton}
               onPress={() => handleActionPress('Edit Profile')}
             >
-              <Text style={styles.editButtonText}>Edit Profile</Text>
+              <Icon name="globe" size={16} color={Colors.primary.white} style={styles.editButtonIcon} />
+              <Text style={styles.editButtonText}>Public Profile</Text>
+              <Icon name="chevronDown" size={12} color={Colors.primary.white} style={styles.editButtonChevron} />
             </TouchableOpacity>
           </View>
         </ImageBackground>
 
-        {/* Training Progress Summary */}
-        <View style={styles.progressCard}>
-          <Text style={styles.cardTitle}>Training Progress</Text>
+        {/* Content Section */}
+        <View style={styles.contentSection}>
+          {/* Training Progress Summary */}
+          <View style={styles.progressCard}>
+            <Text style={styles.cardTitle}>Training Progress</Text>
           
           <View style={styles.progressRow}>
             <Text style={styles.progressLabel}>Current Course</Text>
@@ -135,7 +156,7 @@ export default function ProfileScreen() {
           
           <View style={styles.achievementItem}>
             <View style={styles.achievementIconContainer}>
-              <Icon name="checkCircle" size={24} color={Colors.secondary.electricBlue} />
+              <PilotbaseIcon width={24} height={24} />
             </View>
             <View style={styles.achievementContent}>
               <Text style={styles.achievementTitle}>Ground School Complete</Text>
@@ -203,8 +224,9 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Bottom Padding */}
-        <View style={styles.bottomPadding} />
+          {/* Bottom Padding */}
+          <View style={styles.bottomPadding} />
+        </View>
       </ScrollView>
     </View>
   );
@@ -215,86 +237,92 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.neutral.gray50,
   },
-  header: {
-    backgroundColor: Colors.primary.white,
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontFamily: 'Degular-Bold',
-    color: Colors.primary.black,
-    textAlign: 'center',
-  },
+  
   content: {
     flex: 1,
-    paddingHorizontal: 16,
   },
   
-  // Profile Header
-  profileHeader: {
-    backgroundColor: Colors.primary.white,
-    borderRadius: 16,
-    padding: 24,
-    marginTop: 16,
-    marginBottom: 16,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+  // Content Section (everything below sky background)
+  contentSection: {
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 16,
   },
-  profileAvatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: Colors.primary.black,
+  
+  // Profile Header - Full Width Sky Background
+  profileHeader: {
+    height: 400,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 60,
+    paddingHorizontal: 20,
+  },
+  profileHeaderImage: {
+    // Position to show more sky and less ground
+    top: -50, // Shift image up to show more sky
+  },
+  profileContent: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+  },
+  profileAvatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: Colors.primary.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    borderWidth: 4,
+    borderColor: Colors.primary.white,
   },
   profileAvatarText: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    color: Colors.primary.black,
+  },
+  profileName: {
     fontSize: 32,
     fontWeight: 'bold',
     color: Colors.primary.white,
-  },
-  profileName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.primary.black,
-    marginBottom: 4,
-  },
-  profileRole: {
-    fontSize: 16,
-    color: Colors.neutral.gray500,
-    marginBottom: 4,
+    marginBottom: 8,
+    textAlign: 'center',
   },
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   locationIcon: {
-    marginRight: 4,
+    marginRight: 6,
   },
   profileLocation: {
-    fontSize: 14,
-    color: Colors.neutral.gray500,
+    fontSize: 16,
+    color: Colors.primary.white,
+    fontWeight: '500',
+    letterSpacing: 1,
   },
   editButton: {
     backgroundColor: Colors.primary.black,
-    paddingHorizontal: 24,
+    borderWidth: 2,
+    borderColor: Colors.secondary.electricBlue,
+    paddingHorizontal: 20,
     paddingVertical: 12,
-    borderRadius: 12,
+    borderRadius: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  editButtonIcon: {
+    marginRight: 8,
   },
   editButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: '500',
     color: Colors.primary.white,
+    marginRight: 8,
+  },
+  editButtonChevron: {
+    marginLeft: 4,
   },
 
   // Cards

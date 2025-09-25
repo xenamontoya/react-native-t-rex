@@ -58,12 +58,12 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <View style={styles.loadingContent}>
           <View style={styles.iconContainer}>
-            <Icon name="plane" size={48} color={Colors.brand.blueAzure} style={styles.loadingIcon} />
+            <Icon name="plane" size={48} color={Colors.tertiary.denimBlue} style={styles.loadingIcon} />
           </View>
           <Text style={styles.loadingText}>Loading your dashboard...</Text>
           <ActivityIndicator 
             size="large" 
-            color={Colors.brand.blueAzure} 
+            color={Colors.tertiary.denimBlue} 
             style={styles.activityIndicator}
           />
         </View>
@@ -77,7 +77,7 @@ export default function HomeScreen() {
     <View style={styles.container}>
       <View style={styles.loadingContent}>
         <View style={styles.iconContainer}>
-          <Icon name="plane" size={48} color={Colors.brand.blueAzure} style={styles.loadingIcon} />
+          <Icon name="plane" size={48} color={Colors.tertiary.denimBlue} style={styles.loadingIcon} />
         </View>
         <Text style={styles.loadingText}>Redirecting to your dashboard...</Text>
       </View>

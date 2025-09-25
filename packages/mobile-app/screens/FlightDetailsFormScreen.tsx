@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, Button } from '../../components/src';
 // Using direct require() instead of broken asset imports
 
 interface FlightData {
@@ -243,6 +243,14 @@ export default function FlightDetailsFormScreen() {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handleSignFlight = () => {
+    Alert.alert(
+      'Sign Flight',
+      'Flight signature functionality will be implemented here.',
+      [{ text: 'OK' }]
+    );
   };
 
   const renderFlightDetailsSection = () => (
@@ -821,9 +829,7 @@ export default function FlightDetailsFormScreen() {
           <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Flight Form</Text>
-        <TouchableOpacity onPress={handleSave} style={styles.saveButton} disabled={isSaving}>
-          <Text style={styles.saveButtonText}>{isSaving ? 'Saving...' : 'Save'}</Text>
-        </TouchableOpacity>
+        <View style={{ width: 60 }} />
       </View>
 
       {/* Section Navigation */}
@@ -855,6 +861,30 @@ export default function FlightDetailsFormScreen() {
           {renderCurrentSection()}
         </View>
       </ScrollView>
+
+      {/* Mobile Action Buttons Footer */}
+      <View style={styles.actionFooter}>
+        <View style={styles.actionButtons}>
+          {/* Sign Flight Button - Left, Secondary (Gray) */}
+          <Button 
+            variant="secondary" 
+            onPress={handleSignFlight}
+            style={styles.signButton}
+          >
+            Sign Flight
+          </Button>
+
+          {/* Save Flight Button - Right, Primary (Black) */}
+          <Button 
+            variant="primary" 
+            onPress={handleSave}
+            disabled={isSaving}
+            style={styles.saveButton}
+          >
+            {isSaving ? 'Saving...' : 'Save Flight'}
+          </Button>
+        </View>
+      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -875,7 +905,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary.white,
   },
   backButton: {
-    padding: 8,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: Colors.neutral.gray100,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitle: {
     fontSize: 18,
@@ -883,17 +918,6 @@ const styles = StyleSheet.create({
     color: Colors.neutral.gray900,
     flex: 1,
     textAlign: 'center',
-  },
-  saveButton: {
-    backgroundColor: Colors.brand.blueAzure,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
-  },
-  saveButtonText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.primary.white,
   },
   sectionNav: {
     backgroundColor: Colors.primary.white,
@@ -910,7 +934,7 @@ const styles = StyleSheet.create({
   },
   sectionTabActive: {
     borderBottomWidth: 2,
-    borderBottomColor: Colors.brand.blueAzure,
+    borderBottomColor: Colors.tertiary.denimBlue,
   },
   sectionTabText: {
     fontSize: 14,
@@ -918,7 +942,7 @@ const styles = StyleSheet.create({
     color: Colors.neutral.gray600,
   },
   sectionTabTextActive: {
-    color: Colors.brand.blueAzure,
+    color: Colors.tertiary.denimBlue,
   },
   content: {
     flex: 1,
@@ -1007,5 +1031,29 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     marginLeft: 8,
+  },
+  
+  // Action Footer Styles
+  actionFooter: {
+    backgroundColor: Colors.primary.white,
+    borderTopWidth: 1,
+    borderTopColor: Colors.neutral.gray200,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  signButton: {
+    flex: 1,
+  },
+  saveButton: {
+    flex: 1,
   },
 });

@@ -33,7 +33,7 @@ const ProspectiveDashboard: React.FC = () => {
       {/* Full-width black header */}
       <View style={styles.blackHeader}>
         <Image 
-          source={{ uri: '/logos/SVG/pilotbase.svg' }}
+          source={require('../assets/images/logos/pilotbase-6x.png')}
           style={styles.pilotbaseLogo}
           resizeMode="contain"
         />

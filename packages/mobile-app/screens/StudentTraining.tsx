@@ -11,7 +11,7 @@ import {
   Image,
 } from 'react-native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, FloatingAIButton } from '../../components/src';
 // Removed broken asset imports - using direct require() instead
 
 interface Lesson {
@@ -484,16 +484,10 @@ export default function StudentTraining({ navigation }: any) {
       </ScrollView>
 
       {/* Floating AI Button with Pilotbase Branding */}
-      <TouchableOpacity
-        style={styles.floatingAIButton}
+      <FloatingAIButton 
         onPress={() => setShowAIInsights(true)}
-      >
-        <Image 
-          source={require('../assets/images/logos/pilotbase-icon-6x.png')}
-          style={{ width: 24, height: 24, tintColor: Colors.primary.white }}
-          resizeMode="contain"
-        />
-      </TouchableOpacity>
+        iconType="pilotbase"
+      />
 
       {/* AI Insights Modal */}
       <Modal
@@ -893,29 +887,6 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: '#00FFF2',
     marginBottom: 24,
-  },
-  floatingAIButton: {
-    position: 'absolute',
-    right: 20,
-    bottom: 100,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: Colors.primary.black,
-    borderWidth: 3,
-    borderColor: '#00FFF2',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  floatingAIText: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.semibold,
-    color: '#00FFF2',
   },
   modalContainer: {
     flex: 1,

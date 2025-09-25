@@ -9,7 +9,7 @@ import {
   Image,
 } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
-import { Icon, Colors } from '../../components/src';
+import { Icon, Colors, PilotbaseWordmark } from '../../components/src';
 // Using direct require() instead of broken asset imports
 
 interface CustomDrawerContentProps {
@@ -19,9 +19,7 @@ interface CustomDrawerContentProps {
 
 export default function CustomDrawerContent({ navigation, state }: CustomDrawerContentProps) {
   const handleNavigation = (screenName: string) => {
-    if (screenName === 'Profile') {
-      Alert.alert('Navigation', 'Profile page - coming soon!');
-    } else if (screenName === 'ImportFlights') {
+    if (screenName === 'ImportFlights') {
       Alert.alert('Navigation', 'Import Flights feature - coming soon!');
     } else {
       navigation.navigate(screenName);
@@ -171,10 +169,11 @@ export default function CustomDrawerContent({ navigation, state }: CustomDrawerC
       {/* Brand Footer - Pilotbase Branding */}
       <View style={styles.brandFooter}>
         <View style={styles.brandContent}>
-          <Image
-              source={require('../assets/images/logos/pilotbase-6x.png')}
+          <PilotbaseWordmark 
+            width={100} 
+            height={25} 
+            color="#000000"
             style={styles.pilotbaseNameplate}
-            resizeMode="contain"
           />
           <Text style={styles.versionText}>© 2024 · v1.0.2</Text>
         </View>
@@ -244,9 +243,11 @@ const styles = StyleSheet.create({
 
   // Navigation Content
   navigationContent: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
     paddingHorizontal: 8,
     paddingTop: 24,
+    paddingBottom: 16, // Ensure space for brand footer
   },
   
   // Main Navigation
@@ -312,16 +313,16 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.neutral.gray200,
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 20,
+    backgroundColor: Colors.primary.white, // Ensure background visibility
+    minHeight: 80, // Minimum height to ensure visibility
   },
   brandContent: {
     alignItems: 'center',
   },
   pilotbaseNameplate: {
-    width: 80,
-    height: 20,
     marginBottom: 8,
-    opacity: 0.6,
+    // SVG component handles its own sizing via props
   },
   versionText: {
     fontSize: 10,

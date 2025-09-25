@@ -19,7 +19,7 @@ export const LogoExpanded: React.FC<SvgIconProps> = ({
         gradientTransform="translate(87.6873 13.8) scale(13.9248 13.8)"
       >
         <Stop stopColor="#ACD5FF" />
-        <Stop offset="1" stopColor="#007AFF" />
+        <Stop offset="1" stopColor="#5177BB" />
       </RadialGradient>
     </Defs>
     

@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd packages/mobile-app && npm ci && npm run build",
+  "buildCommand": "npm ci && cd packages/components && npm ci && npm run build && cd ../mobile-app && npm ci && npm run build",
   "outputDirectory": "packages/mobile-app/dist",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }

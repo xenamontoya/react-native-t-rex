@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, FloatingAIButton } from '../../components/src';
 import { NewReservationModal } from '../components';
 
 // Mock reservation data for instructor perspective (showing student names)
@@ -494,16 +494,11 @@ export default function InstructorReservationsScreen() {
       )}
 
       {/* Floating Action Button */}
-      <TouchableOpacity
-        style={styles.fab}
+      <FloatingAIButton
         onPress={() => setShowFloatingMenu(!showFloatingMenu)}
-      >
-        <Icon 
-          name={showFloatingMenu ? 'times' : 'plus'} 
-          size={24} 
-          color={Colors.brand.cyan} 
-        />
-      </TouchableOpacity>
+        iconType={showFloatingMenu ? 'times' : 'plus'}
+        borderColor={Colors.brand.cyan}
+      />
 
       {/* Success Toast */}
       <SuccessToast
@@ -828,25 +823,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
-  },
-  fab: {
-    position: 'absolute',
-    right: 24,
-    bottom: 24,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#212121',
-    borderWidth: 3,
-    borderColor: Colors.brand.cyan,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    zIndex: 60,
   },
   successToastContainer: {
     position: 'absolute',

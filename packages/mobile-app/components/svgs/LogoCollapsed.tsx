@@ -19,7 +19,7 @@ export const LogoCollapsed: React.FC<SvgIconProps> = ({
         gradientTransform="translate(16.1447 16) scale(16.1447 16)"
       >
         <Stop stopColor="#ACD5FF" />
-        <Stop offset="1" stopColor="#007AFF" />
+        <Stop offset="1" stopColor="#5177BB" />
       </RadialGradient>
     </Defs>
     

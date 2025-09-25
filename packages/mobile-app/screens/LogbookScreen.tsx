@@ -10,7 +10,7 @@ import {
   Image 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Colors, FloatingActionButton } from '../../components/src';
+import { Colors, FloatingActionButton, PoweredByPilotbasePro } from '../../components/src';
 import type { FloatingActionItem } from '../../components/src';
 import { Icon, AddFlightModal, ImportLogbookModal } from '../components';
 import { FlightData } from '../utils/flightStore';
@@ -557,6 +557,9 @@ export default function LogbookScreen() {
 
       {/* Main Content */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Powered by Pilotbase Pro Header */}
+        <PoweredByPilotbasePro spacing="default" />
+
         {savedFlights.length > 0 ? (
           <>
             {currentView === 'list' ? (
@@ -644,16 +647,6 @@ export default function LogbookScreen() {
           </View>
         )}
 
-        {/* Powered by Pilotbase Pro Footer */}
-        <View style={styles.pilotbaseFooter}>
-          <Text style={styles.poweredByText}>Powered by</Text>
-          <Image 
-            source={require('../assets/images/logos/pilotbase-pro-6x.png')}
-            style={styles.pilotbaseProLogo}
-            resizeMode="contain"
-          />
-        </View>
-
         {/* Bottom Padding */}
         <View style={styles.bottomPadding} />
       </ScrollView>
@@ -662,8 +655,6 @@ export default function LogbookScreen() {
       <FloatingActionButton
         items={fabItems}
         mainIcon="plus"
-        right={24}
-        isTablet={isTablet}
       />
 
       {/* Global Dropdown - Renders outside of card containers */}
@@ -1076,22 +1067,6 @@ const styles = StyleSheet.create({
   
   bottomPadding: {
     height: 100,
-  },
-  
-  // Pilotbase Branding
-  pilotbaseFooter: {
-    alignItems: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 16,
-  },
-  poweredByText: {
-    fontSize: 12,
-    color: Colors.neutral.gray500,
-    marginBottom: 8,
-  },
-  pilotbaseProLogo: {
-    height: 20,
-    width: 120,
   },
 });
 

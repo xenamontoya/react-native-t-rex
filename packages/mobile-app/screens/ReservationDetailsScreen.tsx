@@ -99,7 +99,7 @@ export default function ReservationDetailsScreen() {
       case 'Completed':
         return { backgroundColor: 'rgba(0, 255, 242, 0.15)', color: '#004D47' };
       case 'Reserved':
-        return { backgroundColor: Colors.brand.blueAzure + '20', color: Colors.brand.blueAzure };
+        return { backgroundColor: Colors.tertiary.denimBlue + '20', color: Colors.tertiary.denimBlue };
       case 'Cancelled':
         return { backgroundColor: Colors.status.error + '20', color: Colors.status.error };
       default:
@@ -293,7 +293,7 @@ export default function ReservationDetailsScreen() {
           {isToday && (
             <View style={styles.preflightSection}>
               <View style={styles.preflightIcon}>
-                <Icon name="clipboard" size={16} color={Colors.brand.blueAzure} />
+                <Icon name="clipboard" size={16} color={Colors.tertiary.denimBlue} />
               </View>
               <View style={styles.preflightContent}>
                 <Text style={styles.preflightTitle}>Preflight Checklist Required</Text>
@@ -546,7 +546,7 @@ const styles = StyleSheet.create({
   },
   goBackText: {
     fontSize: 14,
-    color: Colors.brand.blueAzure,
+    color: Colors.tertiary.denimBlue,
     fontFamily: Typography.fontFamily.medium,
   },
   header: {

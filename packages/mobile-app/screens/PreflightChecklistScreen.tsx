@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
   doneButtonText: {
     fontSize: 14,
     fontFamily: Typography.fontFamily.semibold,
-    color: '#5177BB',
+    color: Colors.tertiary.denimBlue,
   },
   progressSection: {
     backgroundColor: Colors.primary.white,

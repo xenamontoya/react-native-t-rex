@@ -13,7 +13,7 @@ import {
   Pressable,
 } from 'react-native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, Button } from '../../components/src';
 
 // Mock data structure - in real app this would come from FlightAware API
 interface Airport {
@@ -271,17 +271,27 @@ const FlightDetailsView: React.FC<{
       {/* Sticky Footer */}
       <View style={styles.detailsFooter}>
         <View style={styles.footerButtons}>
-          <TouchableOpacity style={styles.secondaryButton} onPress={onBack}>
-            <Text style={styles.secondaryButtonText}>Search Again</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.primaryButton} onPress={onAddFlight}>
-            <Icon name="plus" size={16} color={Colors.primary.white} />
-            <Text style={styles.primaryButtonText}>Add Flight</Text>
-          </TouchableOpacity>
+          <Button 
+            variant="secondary" 
+            onPress={onBack}
+            style={{ flex: 1, marginRight: 8 }}
+          >
+            Search Again
+          </Button>
+          <Button 
+            variant="primary" 
+            onPress={onAddFlight}
+            style={{ flex: 1 }}
+          >
+            Add Flight
+          </Button>
         </View>
-        <TouchableOpacity style={styles.manualEntryButton} onPress={onManualEntry}>
-          <Text style={styles.manualEntryText}>Enter Details Manually</Text>
-        </TouchableOpacity>
+        <Button 
+          variant="tertiary" 
+          onPress={onManualEntry}
+        >
+          Enter Details Manually
+        </Button>
       </View>
     </View>
   );
@@ -517,9 +527,12 @@ export default function AddFlightScreen({ navigation }: any) {
 
           {/* Manual Entry Button */}
           <View style={styles.manualEntrySection}>
-            <TouchableOpacity style={styles.manualEntryButton} onPress={handleManualEntry}>
-              <Text style={styles.manualEntryText}>Enter Details Manually</Text>
-            </TouchableOpacity>
+            <Button 
+              variant="tertiary" 
+              onPress={handleManualEntry}
+            >
+              Enter Details Manually
+            </Button>
           </View>
         </ScrollView>
       </View>
@@ -742,16 +755,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 32,
   },
-  manualEntryButton: {
-    paddingHorizontal: 32,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  manualEntryText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: '#5177BB',
-  },
   
   // Flight Details View Styles
   detailsHeader: {
@@ -867,37 +870,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 12,
     marginBottom: 16,
-  },
-  secondaryButton: {
-    flex: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: '#5177BB',
-    borderStyle: 'solid',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  secondaryButtonText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: '#5177BB',
-  },
-  primaryButton: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.primary.black,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  primaryButtonText: {
-    fontSize: 16,
-    fontFamily: Typography.fontFamily.semibold,
-    color: Colors.primary.white,
   },
 });

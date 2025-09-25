@@ -17,7 +17,7 @@ We've successfully created React Native SVG components for your high-quality ass
 ```tsx
 import { SimpleTestIcon } from '../components/svgs/SimpleTest';
 
-<SimpleTestIcon width={24} height={24} color="#007AFF" />
+<SimpleTestIcon width={24} height={24} color="#5177BB" />
 ```
 
 ### For Complex Components:

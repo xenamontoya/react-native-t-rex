@@ -245,7 +245,7 @@ export default function WeatherReviewScreen({ navigation }: any) {
               <Text style={styles.factorDescription}>Current: Clear skies, 10+ SM visibility - Excellent for VFR flight</Text>
             </View>
 
-            <View style={[styles.factorItem, { borderLeftColor: '#5177BB' }]}>
+            <View style={[styles.factorItem, { borderLeftColor: Colors.tertiary.denimBlue }]}>
               <Text style={styles.factorTitle}>Wind Conditions</Text>
               <Text style={styles.factorDescription}>Light winds at 8 kts from 240° - Favorable for takeoff and landing</Text>
             </View>
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     fontSize: 14,
     fontFamily: Typography.fontFamily.semibold,
-    color: '#5177BB',
+    color: Colors.tertiary.denimBlue,
   },
   content: {
     flex: 1,

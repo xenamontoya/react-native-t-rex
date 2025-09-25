@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Alert, TextInput } from 'react-native';
 import { Icon } from '../components/Icons';
+import { PilotbaseIcon } from '../components/svgs';
 import { Colors, Typography } from '../../components/src/tokens';
 
 // Mock endorsement data matching original T-Rex
@@ -144,7 +145,11 @@ const EndorsementCard: React.FC<EndorsementCardProps> = ({ endorsement }) => {
         </View>
         <View style={styles.statusContainer}>
           <View style={[styles.statusBadge, { backgroundColor: statusStyle.bg }]}>
-            <Icon name={statusIcon as any} size={12} color={statusStyle.text} />
+            {endorsement.status === 'completed' ? (
+              <PilotbaseIcon width={12} height={12} />
+            ) : (
+              <Icon name={statusIcon as any} size={12} color={statusStyle.text} />
+            )}
             <Text style={[styles.statusText, { color: statusStyle.text }]}>
               {getStatusText(endorsement.status)}
             </Text>

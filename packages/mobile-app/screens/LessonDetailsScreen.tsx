@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
+import { PilotbaseIcon } from '../components/svgs';
 import { Colors, Typography } from '../../components/src';
 
 interface LessonTask {
@@ -296,7 +297,7 @@ export default function LessonDetailsScreen() {
               <View style={styles.aiInsightsContent}>
                 <View style={styles.aiInsightsHeader}>
                   <View style={styles.aiIcon}>
-                    <Icon name="robot" size={20} color={Colors.brand.cyan} />
+                    <PilotbaseIcon width={20} height={20} />
                   </View>
                   <View style={styles.aiTextContent}>
                     <Text style={styles.aiTitle}>AI-Powered Lesson Insights</Text>
@@ -540,7 +541,7 @@ const styles = StyleSheet.create({
   },
   goBackText: {
     fontSize: 14,
-    color: Colors.brand.blueAzure,
+    color: Colors.tertiary.denimBlue,
     fontFamily: Typography.fontFamily.medium,
   },
   header: {
@@ -763,7 +764,7 @@ const styles = StyleSheet.create({
   playButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.brand.blueAzure,
+    backgroundColor: Colors.tertiary.denimBlue,
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 6,

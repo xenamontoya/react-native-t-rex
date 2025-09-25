@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, FloatingAIButton } from '../../components/src';
 import { AdaptiveAIModal } from '../components';
 // Using direct require() instead of broken asset imports
 
@@ -268,7 +268,7 @@ export default function CareersScreen() {
           
           <TouchableOpacity style={styles.viewMoreButton}>
             <Text style={styles.viewMoreText}>View 27 More</Text>
-            <Icon name="chevronRight" size={12} color={Colors.brand.blueAzure} />
+            <Icon name="chevronRight" size={12} color={Colors.tertiary.denimBlue} />
           </TouchableOpacity>
         </View>
 
@@ -293,7 +293,7 @@ export default function CareersScreen() {
           
           <TouchableOpacity style={styles.viewMoreButton}>
             <Text style={styles.viewMoreText}>View 34 More</Text>
-            <Icon name="chevronRight" size={12} color={Colors.brand.blueAzure} />
+            <Icon name="chevronRight" size={12} color={Colors.tertiary.denimBlue} />
           </TouchableOpacity>
         </View>
 
@@ -357,18 +357,10 @@ export default function CareersScreen() {
       </ScrollView>
 
       {/* Floating AI Wingman Button with Pilotbase Branding */}
-      <TouchableOpacity
-        style={styles.floatingAIButton}
+      <FloatingAIButton 
         onPress={handleAIInsights}
-      >
-        {<Image 
-                   source={require('../assets/images/logos/pilotbase-icon-6x.png')}
-                   style={styles.pilotbaseIcon}
-                   resizeMode="contain"
-                 /> || (
-          <Icon name="robot" size={24} color={Colors.brand.cyan} />
-        )}
-      </TouchableOpacity>
+        iconType="pilotbase"
+      />
 
       {/* AI Insights Modal */}
       <AdaptiveAIModal
@@ -526,7 +518,7 @@ const styles = StyleSheet.create({
   companyName: {
     fontSize: 16,
     fontFamily: Typography.fontFamily.medium,
-    color: '#5177BB',
+    color: Colors.tertiary.denimBlue,
     marginBottom: 4,
   },
   jobMeta: {
@@ -589,7 +581,7 @@ const styles = StyleSheet.create({
   viewMoreText: {
     fontSize: 16,
     fontFamily: Typography.fontFamily.bold,
-    color: Colors.brand.blueAzure,
+    color: Colors.tertiary.denimBlue,
   },
   browseCategories: {
     gap: 8,
@@ -630,28 +622,5 @@ const styles = StyleSheet.create({
   },
   bottomSpacing: {
     height: 100,
-  },
-  floatingAIButton: {
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-    width: 56,
-    height: 56,
-    backgroundColor: '#212121',
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    borderWidth: 3,
-    borderColor: Colors.brand.cyan,
-  },
-  pilotbaseIcon: {
-    width: 24,
-    height: 24,
-    tintColor: Colors.primary.white,
   },
 });

@@ -23,7 +23,8 @@ import {
   Card, 
   Button, 
   StatusBadge, 
-  ProgressBar 
+  ProgressBar,
+  AIInsightsHeader,
 } from '../../components/src';
 
 interface StudentData {
@@ -265,10 +266,7 @@ export default function StudentDashboard({ navigation }: any) {
 
           {/* AI Career Insights */}
           <View style={styles.aiInsightsCard}>
-            <View style={styles.aiInsightsHeader}>
-              <Icon name="robot" size={16} color={Colors.tertiary.denimBlue} />
-              <Text style={styles.aiInsightsTitle}>AI Career Insights</Text>
-            </View>
+            <AIInsightsHeader title="AI Career Insights" />
             <Text style={styles.aiInsightsText}>
               Based on your progress, you're eligible for airline cadet programs that can fast-track your career.
             </Text>
