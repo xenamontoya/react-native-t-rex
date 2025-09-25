@@ -116,7 +116,7 @@ export const DataCard: React.FC<DataCardProps> = ({
 };
 
 // Reservation card that matches your exact web app pattern
-export const ReservationCard: React.FC<{
+export const DataListReservationCard: React.FC<{
   reservation: {
     id: string;
     type: string;
@@ -160,7 +160,7 @@ export const ReservationCard: React.FC<{
 };
 
 // Flight logbook entry card
-export const FlightCard: React.FC<{
+export const DataListFlightCard: React.FC<{
   flight: {
     id: string;
     date: string;

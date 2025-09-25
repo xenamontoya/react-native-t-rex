@@ -1,0 +1,47 @@
+import React from 'react';
+import { Svg, Path, G } from 'react-native-svg';
+import { StyleProp, ViewStyle } from 'react-native';
+
+interface PilotbaseIconProps {
+  width?: number;
+  height?: number;
+  color?: string;
+  style?: StyleProp<ViewStyle>;
+}
+
+/**
+ * 🛩️ PILOTBASE ICON COMPONENT
+ * 
+ * SVG icon component for Pilotbase branding
+ * Renders the crisp Pilotbase logo icon with proper scaling
+ */
+export const PilotbaseIcon: React.FC<PilotbaseIconProps> = ({ 
+  width = 16, 
+  height = 16, 
+  color,
+  style
+}) => (
+  <Svg width={width} height={height} viewBox="0 0 451.67 359.39" style={style}>
+    <G>
+      {/* Path 1 - Orange #f48222 */}
+      <Path 
+        d="M144.89,316.76c-56.39,0-102.26-45.87-102.26-102.26v-69.67h42.62v69.67c0,32.88,26.75,59.64,59.64,59.64s59.64-26.75,59.64-59.64v-69.61c0-56.39,45.88-102.26,102.26-102.26s102.26,45.88,102.26,102.26v72.1h-42.62v-72.1c0-32.88-26.75-59.64-59.64-59.64s-59.64,26.75-59.64,59.64v69.61c0,56.39-45.88,102.26-102.26,102.26h0Z" 
+        fill={color || "#f48222"} 
+      />
+      
+      {/* Path 2 - Light Orange #f6ac4e */}
+      <Path 
+        d="M144.89,274.14c32.88,0,59.64-26.75,59.64-59.64v-69.61c0-56.39,45.88-102.26,102.26-102.26s102.26,45.88,102.26,102.26v72.1h42.62v-72.1C451.67,65,386.67,0,306.78,0s-144.89,65-144.89,144.89v69.61c0,9.38-7.63,17.01-17.01,17.01s-17.01-7.63-17.01-17.01v-69.67h-42.62v69.67c0,32.88,26.75,59.64,59.64,59.64Z" 
+        fill={color || "#f6ac4e"} 
+      />
+      
+      {/* Path 3 - Deep Orange #fd7030 */}
+      <Path 
+        d="M323.8,144.89v72.1h42.62v-72.1c0-32.88-26.75-59.64-59.64-59.64s-59.64,26.75-59.64,59.64v69.61c0,56.39-45.88,102.26-102.26,102.26s-102.26-45.87-102.26-102.26v-69.67H0v69.67c0,79.89,65,144.89,144.89,144.89s144.89-65,144.89-144.89v-69.61c0-9.38,7.63-17.01,17.01-17.01s17.01,7.63,17.01,17.01h0Z" 
+        fill={color || "#fd7030"} 
+      />
+    </G>
+  </Svg>
+);
+
+export default PilotbaseIcon;

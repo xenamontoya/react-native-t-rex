@@ -31,6 +31,7 @@ import {
   faCheckCircle,
   faLock,
   faArrowRight,
+  faArrowLeft,
   faChevronRight,
   faEdit,
   faPlus,
@@ -91,6 +92,7 @@ import {
   faCheckCircle,
   faLock,
   faArrowRight,
+  faArrowLeft,
   faChevronRight,
   faEdit,
   faPlus,
@@ -180,6 +182,7 @@ export const IconNames = {
   
   // Arrows
   arrowRight: faArrowRight,
+  arrowLeft: faArrowLeft,
   chevronRight: faChevronRight,
   
   // Engagement

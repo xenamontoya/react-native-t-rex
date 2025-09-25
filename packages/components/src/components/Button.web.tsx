@@ -7,23 +7,25 @@ import React from 'react';
 import { Colors, Typography, Spacing } from '../design-system';
 
 export interface ButtonProps {
-  title: string;
+  children: React.ReactNode;
   onPress?: () => void;
-  variant?: 'primary' | 'secondary' | 'tertiary';
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'primaryBlue' | 'primaryGrey' | 'primaryRed' | 'icon';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   style?: React.CSSProperties;
-  isDark?: boolean;
+  textStyle?: React.CSSProperties;
+  fullWidth?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
-  title,
+  children,
   onPress,
   variant = 'primary',
   size = 'medium',
   disabled = false,
   style,
-  isDark = false,
+  textStyle,
+  fullWidth = false,
 }) => {
   const getButtonStyles = (): React.CSSProperties => {
     const baseStyle: React.CSSProperties = {
@@ -64,23 +66,51 @@ export const Button: React.FC<ButtonProps> = ({
       primary: {
         backgroundColor: Colors.primary.black,
         color: Colors.primary.white,
-      },
-      secondary: {
-        backgroundColor: Colors.primary.black,
-        color: Colors.primary.white,
         border: `2px solid ${Colors.secondary.electricBlue}`,
       },
+      secondary: {
+        backgroundColor: Colors.neutral.gray100,
+        color: Colors.neutral.gray700,
+        border: `1px solid ${Colors.neutral.gray300}`,
+      },
       tertiary: {
-        backgroundColor: 'transparent',
+        backgroundColor: Colors.neutral.gray50,
         color: Colors.tertiary.denimBlue,
+        border: `1px solid ${Colors.neutral.gray200}`,
+      },
+      primaryBlue: {
+        backgroundColor: Colors.brand?.blueAzure || '#5177BB',
+        color: Colors.primary.white,
+        border: 'none',
+      },
+      primaryGrey: {
+        backgroundColor: Colors.neutral.gray600,
+        color: Colors.primary.white,
+        border: 'none',
+      },
+      primaryRed: {
+        backgroundColor: Colors.status?.error || '#ef4444',
+        color: Colors.primary.white,
+        border: 'none',
+      },
+      icon: {
+        backgroundColor: 'transparent',
+        color: Colors.neutral.gray600,
+        padding: '8px',
+        height: '40px',
+        width: '40px',
+        borderRadius: '20px',
         border: 'none',
       },
     };
+
+    const fullWidthStyle = fullWidth ? { width: '100%' } : {};
 
     return {
       ...baseStyle,
       ...sizeStyles[size],
       ...variantStyles[variant],
+      ...fullWidthStyle,
     };
   };
 
@@ -90,7 +120,7 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={onPress}
       disabled={disabled}
     >
-      {title}
+      <span style={textStyle}>{children}</span>
     </button>
   );
 };

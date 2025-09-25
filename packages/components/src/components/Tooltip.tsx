@@ -196,11 +196,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
             {
               backgroundColor,
               maxWidth,
+              pointerEvents: 'none',
             },
             getTooltipStyle() as any,
           ]}
           onLayout={handleTooltipLayout}
-          style={{ pointerEvents: 'none' }}
         >
           <Text style={[styles.tooltipText, { color: textColor }]}>
             {content}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Animated } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Animated, Dimensions } from 'react-native';
 import { Icon } from '../Icons';
 import { Colors } from '../design-system';
 
@@ -25,10 +25,14 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
   style,
   bottom,
   right = 24,
-  isTablet = false,
+  isTablet,
 }) => {
+  const { width } = Dimensions.get('window');
+  const autoDetectedTablet = width >= 768;
+  const effectiveIsTablet = isTablet !== undefined ? isTablet : autoDetectedTablet;
+  
   // Calculate responsive bottom position
-  const dynamicBottom = bottom !== undefined ? bottom : (isTablet ? 32 : 84);
+  const dynamicBottom = bottom !== undefined ? bottom : (effectiveIsTablet ? 32 : 24);
   const [isExpanded, setIsExpanded] = useState(false);
   const [rotateValue] = useState(new Animated.Value(0));
 

@@ -46,6 +46,20 @@ export * from './components/FlightWeather';
 export * from './components/AircraftCard';
 export * from './components/FlightRoute';
 export * from './components/FloatingActionButton';
+export * from './components/PilotbaseIcon';
+export * from './components/PilotbaseWordmark';
+export * from './components/AIInsightsHeader';
+export * from './components/CardHeader';
+export * from './components/StatCard';
+export * from './components/LessonCard';
+export * from './components/ModalHeader';
+export * from './components/FlightCard';
+export * from './components/ReservationCard';
+export * from './components/JobCard';
+export * from './components/AchievementItem';
+export * from './components/PoweredByPilotbasePro';
+export * from './components/FloatingAIButton';
+export * from './components/ScreenHeader';
 
 // 📋 Types (for TypeScript users)
 export type { IconProps, NavIconProps } from './Icons';
