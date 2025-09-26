@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Typography } from '../design-system';
 
 interface Lesson {
   id: string;
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
     marginRight: 8,
   },
@@ -209,12 +210,12 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   date: {
     fontSize: 14,
     color: '#6b7280',
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   description: {
     fontSize: 14,

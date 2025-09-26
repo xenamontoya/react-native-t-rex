@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Typography } from '../design-system';
 
 interface Achievement {
   id: string;
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
     flex: 1,
     marginRight: 8,
@@ -253,7 +254,7 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 12,
     color: '#9ca3af',
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   compactDate: {
     fontSize: 11,
@@ -270,7 +271,7 @@ const styles = StyleSheet.create({
   category: {
     fontSize: 11,
     color: '#9ca3af',
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },

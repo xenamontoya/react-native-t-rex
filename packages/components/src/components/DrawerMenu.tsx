@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { Colors, Typography, Spacing } from '../design-system';
 
@@ -28,6 +28,15 @@ export interface DrawerMenuProps {
   };
   onClose?: () => void;
   footerComponent?: React.ReactNode;
+  // Developer options for role/phase switching
+  developerOptions?: {
+    currentRole: string;
+    currentPhase: string;
+    roleConfig: Record<string, { title: string; description: string; color: string }>;
+    phaseConfig: Record<string, { title: string; description: string; color: string }>;
+    onRoleSwitch: (role: string) => void;
+    onPhaseSwitch: (phase: string) => void;
+  };
 }
 
 export const DrawerMenu: React.FC<DrawerMenuProps> = ({
@@ -37,29 +46,190 @@ export const DrawerMenu: React.FC<DrawerMenuProps> = ({
   userInfo,
   onClose,
   footerComponent,
+  developerOptions,
 }) => {
+  const [showDeveloperOptions, setShowDeveloperOptions] = useState(false);
+
   const isActive = (itemName: string) => {
     return activeRoute === itemName;
+  };
+
+  const handleRoleSwitch = (role: string) => {
+    if (developerOptions?.onRoleSwitch) {
+      developerOptions.onRoleSwitch(role);
+      Alert.alert('Role Changed', `Switched to ${developerOptions.roleConfig[role]?.title || role} experience`);
+    }
+  };
+
+  const handlePhaseSwitch = (phase: string) => {
+    if (developerOptions?.onPhaseSwitch) {
+      developerOptions.onPhaseSwitch(phase);
+      Alert.alert('Phase Changed', `Switched to ${developerOptions.phaseConfig[phase]?.title || phase}`);
+    }
   };
 
   return (
     <View style={styles.container}>
       {/* Header */}
       {userInfo && (
-        <View style={styles.header}>
-          <View style={styles.userInfo}>
-            <View style={styles.avatar}>
-              <FontAwesome6 name="user" size={24} color={Colors.neutral.white} />
+        <View>
+          <View style={styles.header}>
+            <View style={styles.userInfo}>
+              <View style={styles.avatar}>
+                <FontAwesome6 name="user" size={24} color={Colors.neutral.white} />
+              </View>
+              <View style={styles.userDetails}>
+                <Text style={styles.userName}>{userInfo.name}</Text>
+                <Text style={styles.userRole}>{userInfo.role}</Text>
+              </View>
             </View>
-            <View style={styles.userDetails}>
-              <Text style={styles.userName}>{userInfo.name}</Text>
-              <Text style={styles.userRole}>{userInfo.role}</Text>
+            
+            <View style={styles.headerActions}>
+              {/* Developer Options Toggle */}
+              {developerOptions && (
+                <TouchableOpacity
+                  onPress={() => setShowDeveloperOptions(!showDeveloperOptions)}
+                  style={[
+                    styles.developerToggle,
+                    {
+                      // Temporary: Make more visible for debugging
+                      borderWidth: 2,
+                      borderColor: '#3b82f6'
+                    }
+                  ]}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <FontAwesome6 
+                    name={showDeveloperOptions ? 'chevron-up' : 'chevron-down'} 
+                    size={16} 
+                    color={Colors.neutral.gray600} 
+                  />
+                </TouchableOpacity>
+              )}
+              
+              {onClose && (
+                <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+                  <FontAwesome6 name="xmark" size={20} color={Colors.neutral.gray600} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
-          {onClose && (
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <FontAwesome6 name="xmark" size={20} color={Colors.neutral.gray600} />
-            </TouchableOpacity>
+
+          {/* Developer Options Dropdown */}
+          {showDeveloperOptions && developerOptions && (
+            <View style={styles.developerDropdown}>
+              {/* Experience Mode */}
+              <View style={styles.dropdownSection}>
+                <Text style={styles.dropdownSectionTitle}>EXPERIENCE MODE</Text>
+                <View style={styles.roleOptions}>
+                  {Object.entries(developerOptions.roleConfig).map(([role, config]) => (
+                    <TouchableOpacity
+                      key={role}
+                      style={[
+                        styles.roleOption,
+                        { 
+                          borderColor: developerOptions.currentRole === role ? config.color : Colors.neutral.gray300,
+                          backgroundColor: developerOptions.currentRole === role 
+                            ? `${config.color}10` 
+                            : Colors.neutral.white
+                        }
+                      ]}
+                      onPress={() => handleRoleSwitch(role)}
+                    >
+                      <View style={styles.roleOptionContent}>
+                        <View style={styles.roleOptionLeft}>
+                          <View style={[
+                            styles.roleIcon,
+                            { 
+                              backgroundColor: developerOptions.currentRole === role 
+                                ? `${config.color}20` 
+                                : Colors.neutral.gray100
+                            }
+                          ]}>
+                            <FontAwesome6
+                              name={
+                                role === 'student' ? 'graduation-cap' : 
+                                role === 'instructor' ? 'user-tie' : 'magnifying-glass'
+                              } 
+                              size={14} 
+                              color={developerOptions.currentRole === role ? config.color : Colors.neutral.gray600} 
+                            />
+                          </View>
+                          <View style={styles.roleTextContent}>
+                            <Text style={styles.roleTitle}>
+                              {config.title}
+                            </Text>
+                            <Text style={styles.roleDescription}>
+                              {config.description}
+                            </Text>
+                          </View>
+                        </View>
+                        <FontAwesome6
+                          name={developerOptions.currentRole === role ? 'toggle-on' : 'toggle-off'} 
+                          size={18} 
+                          color={developerOptions.currentRole === role ? config.color : Colors.neutral.gray400} 
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+
+              {/* Development Phase */}
+              <View style={styles.dropdownSection}>
+                <Text style={styles.dropdownSectionTitle}>DEVELOPMENT PHASE</Text>
+                <View style={styles.phaseOptions}>
+                  {Object.entries(developerOptions.phaseConfig).map(([phase, config]) => (
+                    <TouchableOpacity
+                      key={phase}
+                      style={[
+                        styles.phaseOption,
+                        { 
+                          borderColor: developerOptions.currentPhase === phase ? config.color : Colors.neutral.gray300,
+                          backgroundColor: developerOptions.currentPhase === phase 
+                            ? `${config.color}10` 
+                            : Colors.neutral.white
+                        }
+                      ]}
+                      onPress={() => handlePhaseSwitch(phase)}
+                    >
+                      <View style={styles.phaseOptionContent}>
+                        <View style={styles.phaseOptionLeft}>
+                          <View style={[
+                            styles.phaseIcon,
+                            { 
+                              backgroundColor: developerOptions.currentPhase === phase 
+                                ? `${config.color}20` 
+                                : Colors.neutral.gray100
+                            }
+                          ]}>
+                            <Text style={[
+                              styles.phaseNumber,
+                              { color: developerOptions.currentPhase === phase ? config.color : Colors.neutral.gray600 }
+                            ]}>
+                              {phase.replace('phase', '')}
+                            </Text>
+                          </View>
+                          <View style={styles.phaseTextContent}>
+                            <Text style={styles.phaseTitle}>
+                              {config.title}
+                            </Text>
+                            <Text style={styles.phaseDescription}>
+                              {config.description}
+                            </Text>
+                          </View>
+                        </View>
+                        <FontAwesome6
+                          name={developerOptions.currentPhase === phase ? 'toggle-on' : 'toggle-off'} 
+                          size={18} 
+                          color={developerOptions.currentPhase === phase ? config.color : Colors.neutral.gray400} 
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            </View>
           )}
         </View>
       )}
@@ -266,6 +436,12 @@ const styles = StyleSheet.create({
   },
   userDetails: {
     flex: 1,
+    marginRight: Spacing.sm, // Space for the dropdown toggle
+  },
+  headerActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.xs,
   },
   userName: {
     fontSize: Typography.fontSize.base,
@@ -369,5 +545,118 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.neutral.gray200,
     backgroundColor: Colors.neutral.gray50,
+  },
+  
+  // Developer options styles
+  developerToggle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.neutral.gray100,
+    flexShrink: 0,
+  },
+  developerDropdown: {
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: Colors.neutral.gray200,
+    backgroundColor: Colors.neutral.gray50,
+  },
+  dropdownSection: {
+    marginBottom: Spacing.md,
+  },
+  dropdownSectionTitle: {
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.bold,
+    color: Colors.neutral.gray500,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: Spacing.sm,
+  },
+  roleOptions: {
+    gap: Spacing.xs,
+  },
+  roleOption: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: Spacing.sm,
+  },
+  roleOptionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  roleOptionLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  roleIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: Spacing.xs,
+  },
+  roleTextContent: {
+    flex: 1,
+  },
+  roleTitle: {
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.semibold,
+    color: Colors.primary.black,
+    marginBottom: 2,
+  },
+  roleDescription: {
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
+  },
+  phaseOptions: {
+    gap: Spacing.xs,
+  },
+  phaseOption: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: Spacing.sm,
+  },
+  phaseOptionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  phaseOptionLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  phaseIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: Spacing.xs,
+  },
+  phaseNumber: {
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.bold,
+  },
+  phaseTextContent: {
+    flex: 1,
+  },
+  phaseTitle: {
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.semibold,
+    color: Colors.primary.black,
+    marginBottom: 2,
+  },
+  phaseDescription: {
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.regular,
+    color: Colors.neutral.gray600,
   },
 });

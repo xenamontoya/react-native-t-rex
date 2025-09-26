@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Typography } from '../design-system';
 
 interface Flight {
   id: string;
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
     marginBottom: 4,
   },
@@ -258,7 +259,7 @@ const styles = StyleSheet.create({
   flightNumber: {
     fontSize: 12,
     color: '#9ca3af',
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
   },
   statusBadge: {
     paddingHorizontal: 8,
@@ -267,7 +268,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   routeContainer: {
     marginBottom: 8,
@@ -278,9 +279,8 @@ const styles = StyleSheet.create({
   },
   airport: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.mono,
     color: '#111827',
-    fontFamily: 'monospace',
   },
   routeArrow: {
     fontSize: 16,
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   routeText: {
     fontSize: 14,
     color: '#374151',
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
   },
   timesContainer: {
     marginBottom: 8,
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   logbookTime: {
     fontSize: 12,
     color: '#6b7280',
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
   },
   peopleContainer: {
     gap: 4,

@@ -90,6 +90,11 @@ export const Typography = {
       fontFamily: 'Degular-Medium',
       lineHeight: 1.4,
     },
+    h5: {
+      fontSize: 14,
+      fontFamily: 'Degular-Semibold',
+      lineHeight: 1.4,
+    },
 
     // Body Text
     body: {
@@ -97,9 +102,19 @@ export const Typography = {
       fontFamily: 'Degular-Regular',
       lineHeight: 1.5,
     },
+    bodyLarge: {
+      fontSize: 18,
+      fontFamily: 'Degular-Regular',
+      lineHeight: 1.5,
+    },
     bodySmall: {
       fontSize: 14,
       fontFamily: 'Degular-Regular',
+      lineHeight: 1.5,
+    },
+    bodyMedium: {
+      fontSize: 16,
+      fontFamily: 'Degular-Medium',
       lineHeight: 1.5,
     },
 
@@ -114,27 +129,117 @@ export const Typography = {
       fontFamily: 'Degular-Medium',
       lineHeight: 1.2,
     },
-    caption: {
-      fontSize: 12,
-      fontFamily: 'Degular-Regular',
-      lineHeight: 1.4,
+    buttonLarge: {
+      fontSize: 18,
+      fontFamily: 'Degular-Semibold',
+      lineHeight: 1.2,
     },
+
+    // Card & Component Text
+    cardTitle: {
+      fontSize: 18,
+      fontFamily: 'Degular-Semibold',
+      lineHeight: 1.7, // Increased from 1.5 to prevent line overlap
+    },
+    cardSubtitle: {
+      fontSize: 14,
+      fontFamily: 'Degular-Medium',
+      lineHeight: 1.6, // Increased from 1.4 to prevent line overlap
+    },
+    cardDescription: {
+      fontSize: 14,
+      fontFamily: 'Degular-Regular',
+      lineHeight: 1.5,
+    },
+    
+    // Labels & Metadata
     label: {
       fontSize: 14,
       fontFamily: 'Degular-Medium',
       lineHeight: 1.4,
     },
+    labelSmall: {
+      fontSize: 12,
+      fontFamily: 'Degular-Medium',
+      lineHeight: 1.6, // Increased from 1.4 to prevent line overlap
+    },
+    metadata: {
+      fontSize: 12,
+      fontFamily: 'Degular-Regular',
+      lineHeight: 1.6, // Increased from 1.4 to prevent line overlap
+    },
+    caption: {
+      fontSize: 12,
+      fontFamily: 'Degular-Regular',
+      lineHeight: 1.6, // Increased from 1.4 to prevent line overlap
+    },
 
-    // Mono (for data/metrics)
+    // Data & Metrics
+    statValue: {
+      fontSize: 24,
+      fontFamily: 'Degular-Bold',
+      lineHeight: 1.2,
+    },
+    statLabel: {
+      fontSize: 12, // Back to 12 for visibility
+      fontFamily: 'DegularMono-Regular', // Back to mono font
+      lineHeight: 2.2, // Significantly increased from 1.8 to prevent line overlap on mobile
+    },
+    metric: {
+      fontSize: 20,
+      fontFamily: 'Degular-Bold',
+      lineHeight: 1.2,
+    },
+    metricSmall: {
+      fontSize: 16,
+      fontFamily: 'Degular-Semibold',
+      lineHeight: 1.2,
+    },
+
+    // Mono (for data/code)
     mono: {
       fontSize: 14,
       fontFamily: 'DegularMono-Regular',
-      lineHeight: 1.4,
+      lineHeight: 1.6, // Increased from 1.4 to prevent line overlap
     },
     monoSmall: {
-      fontSize: 12,
-      fontFamily: 'DegularMono-Regular',
+      fontSize: 12, // Back to 12 for visibility
+      fontFamily: 'DegularMono-Regular', // Back to mono font
+      lineHeight: 2.2, // Significantly increased from 1.8 to prevent line overlap on mobile
+    },
+    monoMedium: {
+      fontSize: 14,
+      fontFamily: 'DegularMono-Medium',
       lineHeight: 1.4,
+    },
+
+    // Navigation & Menu
+    navItem: {
+      fontSize: 16,
+      fontFamily: 'Degular-Medium',
+      lineHeight: 1.3,
+    },
+    navItemSmall: {
+      fontSize: 14,
+      fontFamily: 'Degular-Medium',
+      lineHeight: 1.3,
+    },
+    
+    // Form Elements
+    input: {
+      fontSize: 16,
+      fontFamily: 'Degular-Regular',
+      lineHeight: 1.6, // Increased from 1.4 to prevent line overlap
+    },
+    inputLabel: {
+      fontSize: 14,
+      fontFamily: 'Degular-Medium',
+      lineHeight: 1.6, // Increased from 1.4 to prevent line overlap
+    },
+    inputHelper: {
+      fontSize: 12,
+      fontFamily: 'Degular-Regular',
+      lineHeight: 1.6, // Increased from 1.4 to prevent line overlap
     },
   },
 } as const;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Typography } from '../design-system';
 
 interface Reservation {
   id: string;
@@ -233,7 +234,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
     marginBottom: 4,
   },
@@ -243,7 +244,7 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 14,
     color: '#374151',
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     marginBottom: 2,
   },
   duration: {
@@ -258,7 +259,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   aircraftSection: {
     flexDirection: 'row',
@@ -267,9 +268,8 @@ const styles = StyleSheet.create({
   },
   aircraftId: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.mono,
     color: '#1f2937',
-    fontFamily: 'monospace',
     marginRight: 8,
   },
   aircraftType: {
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   lessonType: {
     fontSize: 14,
     color: '#374151',
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     marginBottom: 8,
   },
   peopleSection: {

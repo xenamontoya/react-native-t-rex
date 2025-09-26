@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Animated, Dimensions } from 'react-native';
 import { Icon } from '../Icons';
-import { Colors } from '../design-system';
+import { Colors, Typography } from '../design-system';
 
 export interface FloatingActionItem {
   id: string;
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
 });

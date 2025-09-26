@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Typography } from '../design-system';
 
 interface PoweredByPilotbaseProProps {
   containerStyle?: StyleProp<ViewStyle>;
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#6b7280', // Consistent gray-500 color
     marginBottom: 8,
-    fontWeight: '400',
+    fontFamily: Typography.fontFamily.regular,
   },
   pilotbaseProLogo: {
     width: 120,

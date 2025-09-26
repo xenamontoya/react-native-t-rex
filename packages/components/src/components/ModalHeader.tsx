@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle, Platform } from 'react-native';
+import { Typography } from '../design-system';
 
 interface ModalHeaderProps {
   title: string;
@@ -128,20 +129,20 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
     textAlign: 'center',
     flex: 1,
   },
   centeredTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
     textAlign: 'center',
   },
   minimalTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
   },
   actionButton: {
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
   closeIcon: {
     fontSize: 18,
     color: '#6b7280',
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   spacer: {
     width: 40,

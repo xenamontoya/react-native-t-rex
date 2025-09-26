@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Colors, applyTextStyle } from '../design-system';
 
 interface CardHeaderProps {
   title: string;
@@ -30,7 +31,7 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   onViewAllPress,
   titleStyle,
   containerStyle,
-  viewAllTextColor = '#5177bb',
+  viewAllTextColor = Colors.tertiary.denimBlue,
   showArrow = true,
 }) => {
   return (
@@ -63,21 +64,18 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#111827',
+    ...applyTextStyle('cardTitle'),
+    color: Colors.neutral.gray900,
   },
   viewAllButton: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   viewAllText: {
-    fontSize: 14,
-    fontWeight: '500',
+    ...applyTextStyle('cardSubtitle'),
   },
   arrow: {
-    fontSize: 14,
-    fontWeight: '500',
+    ...applyTextStyle('cardSubtitle'),
   },
 });
 

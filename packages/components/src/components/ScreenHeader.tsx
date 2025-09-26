@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { Icon } from '../Icons';
-import { Colors, Typography, Spacing } from '../design-system';
+import { Colors, applyTextStyle, Spacing } from '../design-system';
 
 interface ScreenHeaderProps {
   title: string;
@@ -56,10 +56,15 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   const isDetailPage = variant === 'detail';
 
   if (isMainPage) {
-    // Main page variant - just title + right element
+    // Main page variant - title + optional subtitle + right element
     return (
       <View style={[styles.mainContainer, containerStyle]}>
-        <Text style={[styles.mainTitle, titleStyle]}>{title}</Text>
+        <View style={styles.mainTitleContainer}>
+          <Text style={[styles.mainTitle, titleStyle]}>{title}</Text>
+          {subtitle && (
+            <Text style={[styles.mainSubtitle, subtitleStyle]}>{subtitle}</Text>
+          )}
+        </View>
         {rightElement && rightElement}
       </View>
     );
@@ -81,9 +86,17 @@ export const ScreenHeader: React.FC<ScreenHeaderProps> = ({
 
       {/* Title Container */}
       <View style={styles.detailTitleContainer}>
-        <Text style={[styles.detailTitle, titleStyle]}>{title}</Text>
+        <Text 
+          style={[styles.detailTitle, titleStyle]}
+        >
+          {title}
+        </Text>
         {subtitle && (
-          <Text style={[styles.detailSubtitle, subtitleStyle]}>{subtitle}</Text>
+          <Text 
+            style={[styles.detailSubtitle, subtitleStyle]}
+          >
+            {subtitle}
+          </Text>
         )}
       </View>
 
@@ -122,11 +135,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  mainTitleContainer: {
+    flex: 1,
+  },
   mainTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    ...applyTextStyle('h2'),
     color: Colors.primary.black,
-    fontFamily: Typography.fontFamily.bold,
+    lineHeight: 24, // Explicit lineHeight to prevent overlap with new typography
+  },
+  mainSubtitle: {
+    ...applyTextStyle('bodySmall'),
+    color: Colors.neutral.gray500,
+    marginTop: 4,
+    lineHeight: 18, // Explicit lineHeight to ensure proper spacing
   },
 
   // Detail page variant (ReservationDetailsScreen pattern)
@@ -151,31 +172,33 @@ const styles = StyleSheet.create({
   detailTitleContainer: {
     flex: 1,
     marginLeft: 12,
+    minWidth: 0, // Allow shrinking below natural width
+    overflow: 'hidden', // Prevent content from overflowing
   },
   detailTitle: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.bold,
+    ...applyTextStyle('cardTitle'),
     color: Colors.neutral.gray900,
+    lineHeight: 22, // Explicit lineHeight to prevent overlap with new typography
   },
   detailSubtitle: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
+    ...applyTextStyle('bodySmall'),
     color: Colors.neutral.gray500,
-    marginTop: 2,
+    marginTop: 4,
+    lineHeight: 18, // Explicit lineHeight to ensure proper spacing
   },
   detailRightButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.neutral.gray50,
-    borderRadius: 24,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    width: 48,
+    height: 48,
+    // backgroundColor: Colors.neutral.gray100, // Optional: if button needs background
+    borderRadius: 24,
+    marginLeft: 12,
   },
   detailRightButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
+    ...applyTextStyle('cardSubtitle'),
     color: Colors.neutral.gray700,
-    fontFamily: Typography.fontFamily.medium,
   },
   detailSpacer: {
     width: 48, // Match button width for balanced layout

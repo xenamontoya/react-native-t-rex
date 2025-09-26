@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Typography } from '../design-system';
 
 interface Job {
   id: number;
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
   },
   newBadge: {
     backgroundColor: '#212121',
@@ -159,18 +160,18 @@ const styles = StyleSheet.create({
   },
   newText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
     color: '#ffffff',
   },
   jobTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: Typography.fontFamily.bold,
     color: '#212121',
     marginBottom: 4,
   },
   companyName: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#5177BB',
     marginBottom: 4,
   },
@@ -210,10 +211,9 @@ const styles = StyleSheet.create({
   },
   progressLabel: {
     fontSize: 10,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#D4511E',
     letterSpacing: 0.5,
-    fontWeight: '600',
   },
   progressBarContainer: {
     width: '100%',

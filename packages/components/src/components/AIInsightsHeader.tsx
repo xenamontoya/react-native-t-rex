@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { PilotbaseIcon } from './PilotbaseIcon';
+import { Typography } from '../design-system';
 
 interface AIInsightsHeaderProps {
   title: string;
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#0891B2',
   },
 });
