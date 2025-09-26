@@ -524,7 +524,7 @@ const styles = StyleSheet.create({
   },
   videoTitle: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
     marginBottom: 4,
   },
@@ -575,7 +575,7 @@ const styles = StyleSheet.create({
   },
   suggestedQuestionsLabel: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray700,
     marginBottom: 12,
   },

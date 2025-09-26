@@ -31,6 +31,8 @@ import {
   faLock,
   faArrowRight,
   faArrowLeft,
+  faArrowUp,
+  faArrowDown,
   faChevronRight,
   faEdit,
   faPlus,
@@ -111,6 +113,8 @@ library.add(
   faCheckCircle,
   faLock,
   faArrowRight,
+  faArrowUp,
+  faArrowDown,
   faChevronRight,
   faEdit,
   faPlus,
@@ -173,6 +177,7 @@ export const IconNames = {
   user: faUser,
   userActive: faUserSolid,
   more: faEllipsisH,
+  ellipsisH: faEllipsisH,
   
   // Analytics & Reports
   chartBar: faChartBar,
@@ -251,6 +256,8 @@ export const IconNames = {
   // Arrows
   arrowRight: faArrowRight,
   arrowLeft: faArrowLeft,
+  arrowUp: faArrowUp,
+  arrowDown: faArrowDown,
   chevronRight: faChevronRight,
   
   // Engagement

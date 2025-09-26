@@ -37,6 +37,7 @@ import { ToastProvider, ActionSheetProvider, ConfirmationModalProvider } from '.
 import IncidentReportScreen from './screens/IncidentReportScreen';
 import BillingScreen from './screens/BillingScreen';
 import CareersScreen from './screens/CareersScreen';
+import ComponentLibraryScreen from './screens/ComponentLibraryScreen';
 import EndorsementsScreen from './screens/EndorsementsScreen';
 import ReportsScreen from './screens/ReportsScreen';
 import AddFlightScreen from './screens/AddFlightScreen';
@@ -79,6 +80,12 @@ const Drawer = createDrawerNavigator();
 
 // Custom Tab Bar Component
 function CustomTabBar({ state, descriptors, navigation }: any) {
+  // Hide tab bar when in component library mode
+  const currentRoute = state.routes[state.index];
+  if (currentRoute?.name === 'ComponentLibrary') {
+    return null;
+  }
+
   const tabData = [
     { name: 'Home', icon: 'home', label: 'Home' },
     { name: 'Reservations', icon: 'calendar', label: 'Reservations' },
@@ -683,6 +690,13 @@ function MobileTabNavigator() {
             tabBarButton: () => null, // Hide from tab bar
           }}
         />
+        <Tab.Screen
+          name="ComponentLibrary"
+          component={ComponentLibraryScreen}
+          options={{
+            tabBarButton: () => null, // Hide from tab bar
+          }}
+        />
     </Tab.Navigator>
   );
 }
@@ -734,6 +748,7 @@ function TabletDrawerNavigator() {
              <Drawer.Screen name="Billing" component={BillingScreen} />
              <Drawer.Screen name="Help" component={HelpScreen} />
              <Drawer.Screen name="IncidentReport" component={IncidentReportScreen} />
+             <Drawer.Screen name="ComponentLibrary" component={ComponentLibraryScreen} />
              <Drawer.Screen name="Account" component={AccountScreen} />
              <Drawer.Screen name="Community" component={CommunityScreen} />
              <Drawer.Screen name="Documents" component={DocumentsScreen} />
@@ -1113,7 +1128,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#C44510',
   },
   
@@ -1129,12 +1144,12 @@ const styles = StyleSheet.create({
   },
   goalTitle: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
   goalStatus: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.secondary.orange2,
   },
   goalProgressBar: {
@@ -1182,12 +1197,12 @@ const styles = StyleSheet.create({
   },
   milestoneNumberText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.black,
   },
   milestoneTitle: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     flex: 1,
   },
@@ -1199,7 +1214,7 @@ const styles = StyleSheet.create({
   },
   milestoneCurrentText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#C44510',
   },
   milestoneInactive: {
@@ -1220,7 +1235,7 @@ const styles = StyleSheet.create({
   },
   milestoneNumberInactiveText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray600,
   },
   milestoneTitleInactive: {
@@ -1236,7 +1251,7 @@ const styles = StyleSheet.create({
   },
   milestoneRequirementText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray600,
   },
   
@@ -1249,7 +1264,7 @@ const styles = StyleSheet.create({
   },
   recentLessonTitle: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginBottom: 4,
   },
@@ -1269,7 +1284,7 @@ const styles = StyleSheet.create({
   },
   completeText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#004D47',
   },
   
@@ -1302,7 +1317,7 @@ const styles = StyleSheet.create({
   },
   statRowValue: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
   },
 });

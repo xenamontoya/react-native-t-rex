@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, AIInsightsHeader, StatCard, FloatingAIButton } from '../../components/src';
+import { Colors, Typography, AIInsightsHeader, StatCard, FloatingAIButton, ScreenHeader } from '../../components/src';
 import { AdaptiveAIModal } from '../components';
 
 // Mock stores for mobile (to match web app structure)
@@ -234,20 +234,16 @@ export default function TrainingScreen() {
 
   return (
     <View style={styles.container}>
+      {/* Standardized Header - Sticky at top */}
+      <ScreenHeader 
+        variant="main"
+        title="My Training"
+        subtitle={student.course}
+      />
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Training Summary Section */}
         <View style={styles.summarySection}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.headerLeft}>
-              <Text style={styles.headerTitle}>My Training</Text>
-              <Text style={styles.headerSubtitle}>{student.course}</Text>
-            </View>
-            <View style={styles.stageBadge}>
-              <Text style={styles.stageBadgeText}>{student.stage}</Text>
-            </View>
-          </View>
-
           {/* Progress Bar */}
           <View style={styles.progressSection}>
             <View style={styles.progressHeader}>
@@ -269,12 +265,12 @@ export default function TrainingScreen() {
             <StatCard 
               label="Total Hours"
               value={student.totalHours}
-              icon={<Icon name="clock" size={16} color={Colors.neutral.gray500} />}
+              icon={<Icon name="clock" size={16} />}
             />
             <StatCard 
               label="Started"
               value={new Date(student.enrollmentDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
-              icon={<Icon name="calendar" size={16} color={Colors.neutral.gray500} />}
+              icon={<Icon name="calendar" size={16} />}
             />
           </View>
 
@@ -536,39 +532,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral.gray50,
     padding: 24,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginBottom: 24,
-  },
-  headerLeft: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: Colors.primary.black,
-    marginBottom: 4,
-  },
-  headerSubtitle: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: Colors.neutral.gray600,
-    textTransform: 'uppercase',
-    fontFamily: 'monospace',
-  },
-  stageBadge: {
-    backgroundColor: '#FE652A',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  stageBadgeText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: Colors.primary.white,
-  },
   
   // Progress Section
   progressSection: {
@@ -581,13 +544,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   progressTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
   },
   progressPercentage: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.xl,
+    fontFamily: Typography.fontFamily.bold,
     color: '#D4511E',
   },
   progressBarContainer: {
@@ -622,13 +585,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   aiInsightsTitle: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.semibold,
     color: '#0891B2',
     marginLeft: 8,
   },
   aiInsightsDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     marginBottom: 12,
   },
@@ -642,8 +605,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   aiInsightsButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.white,
     marginRight: 8,
   },
@@ -669,18 +632,18 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   groundSchoolSubtitle: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray500,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
   },
   groundSchoolTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 8,
   },
   groundSchoolDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     marginBottom: 16,
   },
@@ -696,8 +659,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   groundSchoolButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.white,
     marginLeft: 8,
   },
@@ -707,8 +670,8 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 24,
   },
@@ -729,8 +692,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   subsectionTitle: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.base,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray800,
   },
   
@@ -758,13 +721,13 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   lessonTitle: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.base,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginBottom: 4,
   },
   lessonDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     marginBottom: 8,
   },
@@ -778,9 +741,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   lessonMetaText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray500,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     marginLeft: 4,
   },
@@ -798,8 +761,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral.gray100,
   },
   statusText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
   },
   statusTextDefault: {
     color: Colors.neutral.gray800,
@@ -823,7 +786,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   reservationText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     marginLeft: 4,
   },
@@ -836,8 +799,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   reservationButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray700,
     marginLeft: 4,
   },
@@ -855,7 +818,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emptyLessonsText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     color: Colors.neutral.gray500,
     marginTop: 16,
   },

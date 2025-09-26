@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 import { Icon } from '../components';
 import { useNavigation } from '@react-navigation/native';
+import { Typography } from '../../components/src';
 
 // This is a React Native conversion of the original instructor.tsx dashboard
 const InstructorDashboard: React.FC = () => {
@@ -116,17 +117,23 @@ const InstructorDashboard: React.FC = () => {
     );
   }
 
+  // Detect tablet size (768px+ width is typically tablet/desktop)
+  const { width } = Dimensions.get('window');
+  const isTablet = width >= 768;
+
   return (
     <ScrollView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f9fafb' }]}>
       {/* Welcome Header with Instructor Summary */}
       <View style={styles.headerContainer}>
         <View style={styles.headerContent}>
           <View style={styles.profileSection}>
-            {/* Profile Avatar */}
-            <Image 
-              source={{ uri: `https://i.pravatar.cc/64?seed=${instructor.name}` }}
-              style={styles.avatar}
-            />
+            {/* Profile Avatar - Hidden on tablet since it's in the drawer */}
+            {!isTablet && (
+              <Image 
+                source={{ uri: `https://i.pravatar.cc/64?seed=${instructor.name}` }}
+                style={styles.avatar}
+              />
+            )}
             
             {/* Welcome Text */}
             <View style={styles.welcomeText}>
@@ -393,7 +400,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
     marginBottom: 8,
     marginTop: -4,
   },
@@ -418,7 +425,7 @@ const styles = StyleSheet.create({
   },
   notificationText: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
     color: 'white',
   },
   statsGrid: {
@@ -430,11 +437,11 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
   },
   statLabel: {
     fontSize: 12,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
   },
   card: {
@@ -452,7 +459,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
   },
   viewAllButton: {
@@ -461,7 +468,7 @@ const styles = StyleSheet.create({
   },
   viewAllText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     marginRight: 4,
   },
   scheduleItem: {
@@ -472,7 +479,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   scheduleTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
     marginBottom: 4,
   },
@@ -492,14 +499,14 @@ const styles = StyleSheet.create({
   },
   scheduleDetailText: {
     fontSize: 12,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     color: '#6b7280',
     marginLeft: 4,
   },
   cost: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
   activityGrid: {
     marginBottom: 24,
@@ -529,7 +536,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   lessonTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
     marginBottom: 4,
   },
@@ -548,7 +555,7 @@ const styles = StyleSheet.create({
   },
   lessonDetailText: {
     fontSize: 12,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     color: '#6b7280',
     marginLeft: 4,
@@ -561,7 +568,7 @@ const styles = StyleSheet.create({
   },
   gradeText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#004D47',
   },
   studentsList: {
@@ -587,7 +594,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   studentName: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
   },
   studentProgress: {
@@ -601,7 +608,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   flightStats: {
     gap: 16,
@@ -623,7 +630,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   flightStatValue: {
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
   },
 });

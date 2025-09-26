@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Slider } from 'react-native';
 import { Icon } from '../components';
 import { useNavigation } from '@react-navigation/native';
+import { Typography } from '../../components/src';
 
 // This is a React Native conversion of the original prospective/calculator.tsx
 const ProspectiveCalculator: React.FC = () => {
@@ -302,8 +303,8 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.xl,
+    fontFamily: Typography.fontFamily.bold,
     color: '#111827',
   },
   headerSpacer: {
@@ -325,8 +326,8 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
     marginBottom: 16,
   },
@@ -368,16 +369,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#3b82f6',
   },
   certificateName: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
   },
   certificateDetails: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: '#6b7280',
   },
   salaryText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
     color: '#16a34a',
   },
   doubleCard: {
@@ -401,15 +402,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   locationName: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
   },
   locationDetails: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: '#6b7280',
   },
   locationNote: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: '#6b7280',
     marginTop: 16,
   },
@@ -431,14 +432,14 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   experienceValue: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
     minWidth: 48,
     textAlign: 'center',
   },
   experienceNote: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: '#6b7280',
     marginTop: 8,
   },
@@ -454,18 +455,18 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   resultLabel: {
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
     marginBottom: 4,
     textAlign: 'center',
   },
   resultValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.xl2,
+    fontFamily: Typography.fontFamily.bold,
     marginBottom: 4,
   },
   resultNote: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: '#6b7280',
     textAlign: 'center',
   },
@@ -481,13 +482,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   roiLabel: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
     color: '#374151',
   },
   roiValue: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.semibold,
   },
   nextStepsList: {
     gap: 12,
@@ -503,11 +504,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nextStepTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
   },
   nextStepDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: '#6b7280',
   },
   nextStepButton: {
@@ -519,8 +520,8 @@ const styles = StyleSheet.create({
   },
   nextStepButtonText: {
     color: 'white',
-    fontWeight: '600',
-    fontSize: 14,
+    fontFamily: Typography.fontFamily.semibold,
+    fontSize: Typography.fontSize.md,
   },
 });
 

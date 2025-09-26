@@ -10,7 +10,7 @@ import {
   Image 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Colors, FloatingActionButton, PoweredByPilotbasePro } from '../../components/src';
+import { Colors, Typography, FloatingActionButton, PoweredByPilotbasePro, ScreenHeader } from '../../components/src';
 import type { FloatingActionItem } from '../../components/src';
 import { Icon, AddFlightModal, ImportLogbookModal } from '../components';
 import { FlightData } from '../utils/flightStore';
@@ -525,34 +525,35 @@ export default function LogbookScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Logbook</Text>
-        
-        {/* View Toggle */}
-        {savedFlights.length > 0 && (
-          <View style={styles.viewToggle}>
-            <TouchableOpacity
-              onPress={() => setCurrentView('list')}
-              style={[
-                styles.toggleButton,
-                currentView === 'list' && styles.toggleButtonActive
-              ]}
-            >
-              <Icon name="list" size={16} color={currentView === 'list' ? Colors.primary.black : Colors.neutral.gray600} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setCurrentView('map')}
-              style={[
-                styles.toggleButton,
-                currentView === 'map' && styles.toggleButtonActive
-              ]}
-            >
-              <Icon name="map" size={16} color={currentView === 'map' ? Colors.primary.black : Colors.neutral.gray600} />
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="main"
+        title="My Logbook"
+        rightElement={
+          savedFlights.length > 0 ? (
+            <View style={styles.viewToggle}>
+              <TouchableOpacity
+                onPress={() => setCurrentView('list')}
+                style={[
+                  styles.toggleButton,
+                  currentView === 'list' && styles.toggleButtonActive
+                ]}
+              >
+                <Icon name="list" size={16} color={currentView === 'list' ? Colors.primary.black : Colors.neutral.gray600} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setCurrentView('map')}
+                style={[
+                  styles.toggleButton,
+                  currentView === 'map' && styles.toggleButtonActive
+                ]}
+              >
+                <Icon name="map" size={16} color={currentView === 'map' ? Colors.primary.black : Colors.neutral.gray600} />
+              </TouchableOpacity>
+            </View>
+          ) : undefined
+        }
+      />
 
 
       {/* Main Content */}
@@ -732,21 +733,6 @@ const styles = StyleSheet.create({
   },
   
   // Header
-  header: {
-    backgroundColor: Colors.primary.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.primary.black,
-  },
   
   // View Toggle
   viewToggle: {
@@ -783,8 +769,8 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.base,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 12,
   },
@@ -810,19 +796,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dateText: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray500,
     textTransform: 'uppercase',
-    letterSpacing: 1,
-    fontFamily: 'monospace',
-  },
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    position: 'relative',
-    zIndex: 10, // Ensure dropdown container is above other content
+    letterSpacing: 0.3, // Reduced from 1 to prevent overflow
+    fontFamily: Typography.fontFamily.mono,
   },
   statusBadge: {
     paddingHorizontal: 12,
@@ -830,8 +809,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   statusText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.medium,
   },
   dropdownButton: {
     padding: 4,
@@ -870,7 +849,7 @@ const styles = StyleSheet.create({
     // No additional styles needed, color handled by text
   },
   dropdownText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray700,
   },
   
@@ -887,14 +866,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   airportCode: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.xl,
+    fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.black,
   },
   timeText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.xs,
     color: Colors.neutral.gray500,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     marginTop: 4,
   },
   routeLine: {
@@ -919,12 +898,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   detailLabel: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray500,
   },
   detailValue: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginLeft: 4,
   },
@@ -947,7 +926,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   detailText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray600,
   },
   
@@ -968,17 +947,17 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.neutral.gray200,
   },
   mapTitle: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
   mapSubtitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray600,
     marginTop: 2,
   },
   mapCount: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray500,
   },
   mapPlaceholder: {
@@ -986,13 +965,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mapPlaceholderText: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginBottom: 8,
   },
   mapPlaceholderSubtext: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray600,
   },
   mapEmptyState: {
@@ -1005,17 +984,17 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   mapEmptyIcon: {
-    fontSize: 48,
+    fontSize: Typography.fontSize['5xl'],
     marginBottom: 16,
   },
   mapEmptyTitle: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginBottom: 8,
   },
   mapEmptyDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray600,
     textAlign: 'center',
   },
@@ -1026,14 +1005,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   emptyTitle: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginTop: 16,
     marginBottom: 8,
   },
   emptyDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray600,
     textAlign: 'center',
     marginBottom: 24,
@@ -1049,8 +1028,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   emptyPrimaryButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.white,
   },
   emptySecondaryButton: {
@@ -1060,8 +1039,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   emptySecondaryButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
   

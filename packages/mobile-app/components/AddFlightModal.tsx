@@ -691,7 +691,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
   },
   closeButton: {
@@ -712,7 +712,7 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.black,
     marginBottom: 8,
   },
@@ -758,7 +758,7 @@ const styles = StyleSheet.create({
   },
   sectionHeader: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
     marginBottom: 12,
   },
@@ -778,7 +778,7 @@ const styles = StyleSheet.create({
   },
   flightNumber: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
   statusBadge: {
@@ -788,7 +788,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   routeContainer: {
     flexDirection: 'row',
@@ -801,7 +801,7 @@ const styles = StyleSheet.create({
   },
   airportText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
   routeLine: {
@@ -829,7 +829,7 @@ const styles = StyleSheet.create({
   },
   flightTime: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray700,
   },
   flightDuration: {
@@ -849,7 +849,7 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
   emptyMessage: {
@@ -866,7 +866,7 @@ const styles = StyleSheet.create({
   },
   errorTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.status.error,
   },
   errorMessage: {
@@ -882,7 +882,7 @@ const styles = StyleSheet.create({
   },
   retryButtonText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.white,
   },
   detailsContainer: {
@@ -905,7 +905,7 @@ const styles = StyleSheet.create({
   },
   detailsTitle: {
     fontSize: 20,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
   detailsSection: {
@@ -918,7 +918,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
     marginBottom: 16,
   },
@@ -942,7 +942,7 @@ const styles = StyleSheet.create({
   },
   routeAirportCode: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray800,
   },
   routeLabel: {
@@ -952,7 +952,7 @@ const styles = StyleSheet.create({
   },
   routeTime: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
   routeVisualization: {
@@ -978,7 +978,7 @@ const styles = StyleSheet.create({
   },
   durationValue: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
   infoGrid: {
@@ -998,7 +998,7 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
   },
   actionButtons: {
@@ -1024,12 +1024,12 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray800,
   },
   primaryButtonText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.white,
   },
   manualEntryButton: {
@@ -1040,7 +1040,7 @@ const styles = StyleSheet.create({
   },
   manualEntryText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.brand.blueAzure,
   },
 });

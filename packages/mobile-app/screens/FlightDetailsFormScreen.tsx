@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography, Button } from '../../components/src';
+import { Colors, Typography, Button, ScreenHeader } from '../../components/src';
 // Using direct require() instead of broken asset imports
 
 interface FlightData {
@@ -823,14 +823,12 @@ export default function FlightDetailsFormScreen() {
       style={styles.container} 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Flight Form</Text>
-        <View style={{ width: 60 }} />
-      </View>
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="detail"
+        title="Flight Form"
+        onBackPress={() => navigation.goBack()}
+      />
 
       {/* Section Navigation */}
       <View style={styles.sectionNav}>
@@ -894,31 +892,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.primary.white,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-    backgroundColor: Colors.primary.white,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.neutral.gray100,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.neutral.gray900,
-    flex: 1,
-    textAlign: 'center',
-  },
   sectionNav: {
     backgroundColor: Colors.primary.white,
     borderBottomWidth: 1,
@@ -937,7 +910,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.tertiary.denimBlue,
   },
   sectionTabText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray600,
   },
@@ -958,7 +931,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 16,
@@ -970,7 +943,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   label: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray700,
     marginBottom: 8,
@@ -981,7 +954,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 12,
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray900,
     backgroundColor: Colors.primary.white,
@@ -1000,7 +973,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral.gray50,
   },
   photoUploadText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginTop: 8,
@@ -1015,7 +988,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral.gray50,
   },
   signatureUploadText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginTop: 8,

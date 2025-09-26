@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, FlatList } from 'react-native';
 import { Icon } from '../components';
 import { useNavigation } from '@react-navigation/native';
+import { Typography } from '../../components/src';
 
 // This is a React Native conversion of the original instructor/my-flights.tsx
 const InstructorMyFlights: React.FC = () => {
@@ -278,7 +279,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
     color: '#111827',
   },
   settingsButton: {
@@ -320,7 +321,7 @@ const styles = StyleSheet.create({
   },
   viewButtonText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#6b7280',
     marginLeft: 8,
   },
@@ -353,14 +354,14 @@ const styles = StyleSheet.create({
   },
   flightDate: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#6b7280',
     textTransform: 'uppercase',
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
   },
   flightAircraft: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
     marginTop: 4,
   },
@@ -386,7 +387,7 @@ const styles = StyleSheet.create({
   },
   airportText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
     color: '#111827',
   },
   routeLine: {
@@ -416,7 +417,7 @@ const styles = StyleSheet.create({
   detailValue: {
     fontSize: 14,
     color: '#111827',
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     flex: 1,
   },
   flightFooter: {
@@ -447,7 +448,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   emptyState: {
     flex: 1,
@@ -457,7 +458,7 @@ const styles = StyleSheet.create({
   },
   emptyStateTitle: {
     fontSize: 20,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
     marginTop: 16,
     marginBottom: 8,
@@ -476,7 +477,7 @@ const styles = StyleSheet.create({
   },
   addFlightButtonText: {
     color: 'white',
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
   mapPlaceholder: {
     flex: 1,

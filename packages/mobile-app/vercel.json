@@ -3,7 +3,7 @@
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ],
-  "buildCommand": "npm run web && npx expo export --platform web",
+  "buildCommand": "npm ci && npm run build",
   "outputDirectory": "dist",
   "framework": null
 }

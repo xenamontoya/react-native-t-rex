@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
   headerSubtitle: {
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 24,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
     marginBottom: 4,
   },
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
     marginBottom: 4,
   },
@@ -511,7 +511,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
     marginLeft: 8,
   },
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
   },
   profileContainer: {
@@ -566,7 +566,7 @@ const styles = StyleSheet.create({
   },
   lessonTitle: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
     marginBottom: 4,
   },
@@ -581,14 +581,14 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   objectivesContainer: {
     marginTop: 16,
   },
   objectivesTitle: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
     marginBottom: 8,
   },
@@ -616,7 +616,7 @@ const styles = StyleSheet.create({
   },
   viewLessonText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.status.info,
     marginLeft: 8,
   },
@@ -655,12 +655,12 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray800,
   },
   primaryButtonText: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.white,
   },
 });

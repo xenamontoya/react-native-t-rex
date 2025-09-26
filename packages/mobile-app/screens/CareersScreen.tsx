@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography, FloatingAIButton } from '../../components/src';
+import { Colors, Typography, FloatingAIButton, ScreenHeader } from '../../components/src';
 import { AdaptiveAIModal } from '../components';
 // Using direct require() instead of broken asset imports
 
@@ -222,28 +222,15 @@ export default function CareersScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
-          </TouchableOpacity>
-          <View style={styles.headerInfo}>
-            <Text style={styles.headerTitle}>Careers</Text>
-            <Text style={styles.headerSubtitle}>Explore career opportunities</Text>
-          </View>
-        </View>
-        
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={handleSearch}
-        >
-          <Icon name="search" size={20} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-      </View>
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="detail"
+        title="Careers"
+        subtitle="Explore career opportunities"
+        onBackPress={() => navigation.goBack()}
+        onRightPress={handleSearch}
+        rightIcon="search"
+      />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Career Plan Matches */}
@@ -379,52 +366,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.neutral.gray50,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    backgroundColor: Colors.primary.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  backButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.neutral.gray100,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  headerInfo: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.bold,
-    color: '#212121',
-    marginBottom: 2,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-  },
-  searchButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.neutral.gray100,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   content: {
     flex: 1,
   },
@@ -439,13 +380,13 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.medium,
     color: '#212121',
     marginRight: 8,
   },
   sectionSubtitle: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
     marginBottom: 16,
@@ -457,7 +398,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   newText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.white,
   },
@@ -489,7 +430,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   logoText: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
   },
   jobInfo: {
     flex: 1,
@@ -506,17 +447,17 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   statusText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.bold,
   },
   jobTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.bold,
     color: '#212121',
     marginBottom: 4,
   },
   companyName: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.tertiary.denimBlue,
     marginBottom: 4,
@@ -527,12 +468,12 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   jobMetaText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },
   jobMetaDot: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
   },
   locationRow: {
@@ -541,7 +482,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   locationText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginLeft: 4,
@@ -555,7 +496,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   progressLabel: {
-    fontSize: 10,
+    fontSize: Typography.fontSize.xs,
     fontFamily: Typography.fontFamily.mono,
     color: '#D4511E',
     letterSpacing: 0.5,
@@ -579,7 +520,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   viewMoreText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.tertiary.denimBlue,
   },
@@ -610,13 +551,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   categoryTitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 2,
   },
   categoryDescription: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },

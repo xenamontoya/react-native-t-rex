@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'rea
 import { Icon } from '../components';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Typography } from '../../components/src';
 
 // This is a React Native conversion of the original prospective.tsx dashboard
 const ProspectiveDashboard: React.FC = () => {
@@ -280,7 +281,7 @@ const styles = StyleSheet.create({
   },
   reservationTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
   reservationContent: {
     backgroundColor: '#f9fafb',
@@ -297,7 +298,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   reservationFlightTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     marginBottom: 4,
   },
   locationInfo: {
@@ -310,13 +311,13 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontSize: 12,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     marginLeft: 4,
   },
   locationAddress: {
     fontSize: 12,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     marginLeft: 16,
   },
@@ -330,13 +331,13 @@ const styles = StyleSheet.create({
   },
   dateTimeText: {
     fontSize: 12,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     marginLeft: 4,
   },
   cost: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
   statusBadge: {
     backgroundColor: 'rgba(0, 255, 242, 0.15)',
@@ -346,7 +347,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#004D47',
   },
   careersCard: {
@@ -373,7 +374,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   careersTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: 'white',
     marginBottom: 4,
   },
@@ -390,12 +391,12 @@ const styles = StyleSheet.create({
   },
   heroTitle: {
     fontSize: 24,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     marginBottom: 16,
   },
   heroSubtitle: {
     fontSize: 18,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
   },
   actionsGrid: {
     paddingHorizontal: 24,
@@ -420,7 +421,7 @@ const styles = StyleSheet.create({
   },
   actionTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     marginBottom: 4,
   },
   actionDescription: {
@@ -437,7 +438,7 @@ const styles = StyleSheet.create({
   },
   ctaTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
     color: 'white',
     marginBottom: 16,
     textAlign: 'center',
@@ -455,7 +456,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   ctaButtonText: {
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: 'black',
   },
 });

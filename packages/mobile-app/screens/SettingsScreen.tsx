@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, ScreenHeader } from '../../components/src';
 import { useThemeStore } from '../utils/themeStore';
 
 export default function SettingsScreen() {
@@ -162,33 +162,13 @@ export default function SettingsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: themeColors.background }]}>
-      {/* Sticky Header */}
-      <View style={[
-        styles.header,
-        { 
-          backgroundColor: themeColors.background,
-          borderBottomColor: themeColors.border
-        }
-      ]}>
-        <TouchableOpacity
-          style={[styles.backButton, { backgroundColor: themeColors.buttonBackground }]}
-          onPress={handleBackPress}
-        >
-          <Icon 
-            name="arrowLeft" 
-            size={20} 
-            color={themeColors.secondaryText} 
-          />
-        </TouchableOpacity>
-        <View style={styles.headerTextContainer}>
-          <Text style={[styles.headerTitle, { color: themeColors.text }]}>
-            Settings
-          </Text>
-          <Text style={[styles.headerSubtitle, { color: themeColors.secondaryText }]}>
-            App preferences and configuration
-          </Text>
-        </View>
-      </View>
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="detail"
+        title="Settings"
+        subtitle="App preferences and configuration"
+        onBackPress={handleBackPress}
+      />
 
       {/* Scrollable Content */}
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
@@ -289,6 +269,7 @@ export default function SettingsScreen() {
             </View>
           </View>
         </View>
+
       </ScrollView>
     </View>
   );
@@ -297,32 +278,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-  },
-  backButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  headerTextContainer: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.semibold,
-    marginBottom: 2,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
   },
   content: {
     flex: 1,
@@ -335,7 +290,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.medium,
     letterSpacing: 0.5,
     marginBottom: 12,
@@ -368,12 +323,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   settingTitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.semibold,
     marginBottom: 2,
   },
   settingSubtitle: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
   },
   toggleContainer: {
@@ -402,7 +357,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   comingSoonText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
   },
 });

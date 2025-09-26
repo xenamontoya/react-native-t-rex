@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography, PoweredByPilotbasePro, Button } from '../../components/src';
+import { Colors, Typography, PoweredByPilotbasePro, Button, ScreenHeader } from '../../components/src';
 // Using direct require() instead of broken asset imports
 
 interface FlightDetailsProps {
@@ -336,46 +336,33 @@ export default function FlightDetailsScreen({ navigation, route }: FlightDetails
     <>
       {/* Full screen container */}
       <View style={styles.fullScreenContainer}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <TouchableOpacity onPress={() => nav.goBack()} style={styles.backButton}>
-              <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
-            </TouchableOpacity>
-            <View style={styles.headerTitleContainer}>
-              <Text style={styles.headerTitle}>Flight Details</Text>
-              <Text style={styles.headerSubtitle}>{flight.flight_number || flight.ident || 'Flight'}</Text>
-            </View>
-          </View>
+        {/* Standardized Header */}
+        <ScreenHeader 
+          variant="detail"
+          title="Flight Details"
+          subtitle={flight.flight_number || flight.ident || 'Flight'}
+          onBackPress={() => nav.goBack()}
+          onRightPress={() => setShowDropdown(!showDropdown)}
+          rightIcon="ellipsisV"
+        />
           
-          <View style={styles.headerActions}>
-            <View style={styles.dropdownContainer} ref={dropdownRef}>
-              <TouchableOpacity
-                onPress={() => setShowDropdown(!showDropdown)}
-                style={styles.dropdownButton}
-              >
-                <Icon name="ellipsisV" size={20} color={Colors.neutral.gray600} />
-              </TouchableOpacity>
-              
-              {showDropdown && (
-                <View style={styles.dropdown}>
-                  <TouchableOpacity onPress={() => { handleEdit(); setShowDropdown(false); }} style={styles.dropdownItem}>
-                    <Icon name="edit" size={16} color={Colors.neutral.gray700} />
-                    <Text style={styles.dropdownText}>Edit Flight</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => { setShowDropdown(false); }} style={styles.dropdownItem}>
-                    <Icon name="copy" size={16} color={Colors.neutral.gray700} />
-                    <Text style={styles.dropdownText}>Duplicate Flight</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => { setShowDeleteModal(true); setShowDropdown(false); }} style={[styles.dropdownItem, styles.dropdownItemDanger]}>
-                    <Icon name="trash" size={16} color={Colors.status.error} />
-                    <Text style={[styles.dropdownText, styles.dropdownTextDanger]}>Delete Flight</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            </View>
+        {/* Dropdown Menu positioned below header */}
+        {showDropdown && (
+          <View style={styles.dropdown}>
+            <TouchableOpacity onPress={() => { handleEdit(); setShowDropdown(false); }} style={styles.dropdownItem}>
+              <Icon name="edit" size={16} color={Colors.neutral.gray700} />
+              <Text style={styles.dropdownText}>Edit Flight</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setShowDropdown(false); }} style={styles.dropdownItem}>
+              <Icon name="copy" size={16} color={Colors.neutral.gray700} />
+              <Text style={styles.dropdownText}>Duplicate Flight</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { setShowDeleteModal(true); setShowDropdown(false); }} style={[styles.dropdownItem, styles.dropdownItemDanger]}>
+              <Icon name="trash" size={16} color={Colors.status.error} />
+              <Text style={[styles.dropdownText, styles.dropdownTextDanger]}>Delete Flight</Text>
+            </TouchableOpacity>
           </View>
-        </View>
+        )}
 
         {/* Content */}
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -739,7 +726,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingText: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     color: Colors.neutral.gray600,
     fontFamily: Typography.fontFamily.regular,
   },
@@ -750,53 +737,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   errorText: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     color: Colors.status.error,
     fontFamily: Typography.fontFamily.semibold,
     marginBottom: 20,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-    backgroundColor: Colors.primary.white,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Colors.neutral.gray100,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitleContainer: {
-    marginLeft: 12,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.neutral.gray900,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-  },
-  headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dropdownContainer: {
-    position: 'relative',
   },
   dropdownButton: {
     width: 48,
@@ -834,7 +778,7 @@ const styles = StyleSheet.create({
     // No additional styling needed, color is handled by text
   },
   dropdownText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray700,
     marginLeft: 12,
@@ -871,7 +815,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 8,
@@ -891,7 +835,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   viewButtonText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.xs,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray600,
     marginLeft: 4,
@@ -921,18 +865,18 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral.gray200,
   },
   airportCodeText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray800,
   },
   airportLabel: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.xs,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
     marginBottom: 4,
   },
   airportTime: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
@@ -959,13 +903,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   durationLabel: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.xs,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
     marginBottom: 8,
   },
   durationValue: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
   },
@@ -984,12 +928,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   detailLabel: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
   },
   detailValue: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
@@ -999,14 +943,14 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   statusText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.xs,
     fontFamily: Typography.fontFamily.medium,
   },
   notesContainer: {
     // Notes specific styles
   },
   notesSubtitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray500,
     marginBottom: 8,
@@ -1015,13 +959,13 @@ const styles = StyleSheet.create({
     minHeight: 80,
   },
   remarksText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray900,
     lineHeight: 20,
   },
   remarksPlaceholder: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray400,
     fontStyle: 'italic',
@@ -1031,13 +975,13 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   objectiveItem: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray900,
     marginBottom: 4,
   },
   objectivesMore: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.xs,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray400,
   },
@@ -1052,13 +996,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   weatherText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginTop: 8,
   },
   weatherSubtext: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.xs,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray400,
     marginTop: 4,
@@ -1076,7 +1020,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   mapText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginTop: 8,
@@ -1108,7 +1052,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
@@ -1119,7 +1063,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   modalText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginBottom: 8,
@@ -1135,18 +1079,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   flightPreviewNumber: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
   },
   flightPreviewRoute: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
     marginLeft: 8,
   },
   flightPreviewDate: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
   },
@@ -1164,7 +1108,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cancelButtonText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray700,
   },
@@ -1177,7 +1121,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   deleteButtonText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.primary.white,
   },
@@ -1198,7 +1142,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   signatureLabel: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginRight: 12,

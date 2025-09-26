@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, ScreenHeader } from '../../components/src';
 
 // BillingOverviewCard Component
 const BillingOverviewCard: React.FC = () => {
@@ -142,16 +142,13 @@ export default function BillingScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-          <Icon name="arrowLeft" size={16} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-        <View style={styles.headerInfo}>
-          <Text style={styles.headerTitle}>Billing Overview</Text>
-          <Text style={styles.headerSubtitle}>Manage your training package and financing</Text>
-        </View>
-      </View>
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="detail"
+        title="Billing Overview"
+        subtitle="Manage your training package and financing"
+        onBackPress={handleBackPress}
+      />
 
       {/* Content */}
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
@@ -189,37 +186,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.neutral.gray50,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: Colors.primary.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-  },
-  backButton: {
-    width: 32,
-    height: 32,
-    backgroundColor: Colors.neutral.gray100,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 16,
-  },
-  headerInfo: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontFamily: Typography.fontFamily.semibold,
-    color: '#212121',
-    marginBottom: 2,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray600,
-  },
   content: {
     flex: 1,
   },
@@ -249,13 +215,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionLabel: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray500,
     letterSpacing: 0.5,
   },
   viewApplicationText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.tertiary.denimBlue,
   },
@@ -264,7 +230,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   loanAmount: {
-    fontSize: 24,
+    fontSize: Typography.fontSize.xl2,
     fontFamily: Typography.fontFamily.medium,
     color: '#008333',
     letterSpacing: 0.5,
@@ -289,7 +255,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   progressLabel: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
   },
@@ -311,7 +277,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   warningText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     lineHeight: 20,
@@ -323,7 +289,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   startApplicationText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.tertiary.denimBlue,
   },
@@ -342,12 +308,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   packageName: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.medium,
     color: '#212121',
   },
   packageCost: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.xl,
     fontFamily: Typography.fontFamily.bold,
     color: '#212121',
   },
@@ -360,7 +326,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   packageItemName: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: '#212121',
   },
@@ -369,12 +335,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   packageItemCompleted: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.bold,
     color: '#008333',
   },
   packageItemTotal: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.bold,
     color: '#212121',
   },
@@ -409,13 +375,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   actionTitle: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.medium,
     color: '#212121',
     marginBottom: 2,
   },
   actionSubtitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },

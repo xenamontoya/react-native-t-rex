@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, FloatingActionButton } from '../../components/src';
+import { Colors, Typography, FloatingActionButton, ScreenHeader } from '../../components/src';
 import type { FloatingActionItem } from '../../components/src';
 import { NewReservationModal, showSuccessToast } from '../components';
 
@@ -146,32 +146,35 @@ export default function ReservationsScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Mobile Header with Toggle */}
-      <View style={styles.mobileHeader}>
-        <Text style={styles.headerTitle}>Reservations</Text>
-        {reservations.length > 0 && (
-          <View style={styles.viewToggle}>
-            <TouchableOpacity
-              onPress={() => setCurrentView('list')}
-              style={[
-                styles.toggleButton,
-                currentView === 'list' && styles.toggleButtonActive
-              ]}
-            >
-              <Icon name="list" size={16} color={currentView === 'list' ? Colors.primary.black : Colors.neutral.gray600} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setCurrentView('calendar')}
-              style={[
-                styles.toggleButton,
-                currentView === 'calendar' && styles.toggleButtonActive
-              ]}
-            >
-              <Icon name="calendar" size={16} color={currentView === 'calendar' ? Colors.primary.black : Colors.neutral.gray600} />
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="main"
+        title="Reservations"
+        rightElement={
+          reservations.length > 0 ? (
+            <View style={styles.viewToggle}>
+              <TouchableOpacity
+                onPress={() => setCurrentView('list')}
+                style={[
+                  styles.toggleButton,
+                  currentView === 'list' && styles.toggleButtonActive
+                ]}
+              >
+                <Icon name="list" size={16} color={currentView === 'list' ? Colors.primary.black : Colors.neutral.gray600} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setCurrentView('calendar')}
+                style={[
+                  styles.toggleButton,
+                  currentView === 'calendar' && styles.toggleButtonActive
+                ]}
+              >
+                <Icon name="calendar" size={16} color={currentView === 'calendar' ? Colors.primary.black : Colors.neutral.gray600} />
+              </TouchableOpacity>
+            </View>
+          ) : undefined
+        }
+      />
 
       {/* Main Content */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -332,21 +335,6 @@ const styles = StyleSheet.create({
   },
   
   // Mobile Header
-  mobileHeader: {
-    backgroundColor: Colors.primary.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.primary.black,
-  },
   
   // View Toggle
   viewToggle: {
@@ -383,8 +371,8 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 16,
     paddingHorizontal: 8,
@@ -405,18 +393,18 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   dateText: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray500,
     textTransform: 'uppercase',
-    letterSpacing: 1,
-    fontFamily: 'monospace',
+    letterSpacing: 0.3, // Reduced from 1 to prevent overflow
+    fontFamily: Typography.fontFamily.mono,
   },
   timeText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     marginTop: 2,
   },
@@ -431,18 +419,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   aircraftNumber: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.xl,
+    fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.black,
   },
   aircraftType: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     marginTop: 2,
   },
   costText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.semibold,
     color: '#008333',
     marginTop: 4,
   },
@@ -454,8 +442,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   statusText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
   },
   
   // Details Section
@@ -473,7 +461,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   detailText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     marginLeft: 8,
   },
@@ -491,13 +479,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   preflightTitle: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.semibold,
     color: '#0891B2',
     marginLeft: 8,
   },
   preflightDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     marginBottom: 12,
   },
@@ -509,8 +497,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   preflightButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.white,
   },
   
@@ -532,14 +520,14 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   calendarTitle: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginTop: 16,
     marginBottom: 8,
   },
   calendarSubtitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     textAlign: 'center',
   },
@@ -555,14 +543,14 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   emptyTitle: {
-    fontSize: 18,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginTop: 16,
     marginBottom: 8,
   },
   emptyDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
     textAlign: 'center',
     marginBottom: 24,
@@ -574,8 +562,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   scheduleButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.white,
   },
   

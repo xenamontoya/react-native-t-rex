@@ -11,7 +11,7 @@ import {
   Image,
 } from 'react-native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography, FloatingAIButton } from '../../components/src';
+import { Colors, Typography, FloatingAIButton, ScreenHeader } from '../../components/src';
 // Removed broken asset imports - using direct require() instead
 
 interface Lesson {
@@ -530,7 +530,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.neutral.gray50,
   },
   loadingText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },
@@ -554,7 +554,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     flex: 1,
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   aiButtonText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.semibold,
     color: '#00FFF2',
   },
@@ -591,13 +591,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   summaryTitle: {
-    fontSize: 24,
+    fontSize: Typography.fontSize.xl2,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.black,
     marginBottom: 4,
   },
   summarySubtitle: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     textTransform: 'uppercase',
@@ -610,7 +610,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   stageText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.white,
   },
@@ -624,12 +624,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   progressTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
   },
   progressPercent: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.xl,
     fontFamily: Typography.fontFamily.bold,
     color: '#D4511E',
   },
@@ -664,14 +664,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.xs, // Reduced from 12 to prevent overflow
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0.3, // Reduced from 0.5 to prevent overflow
   },
   statValue: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.xl,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.black,
   },
@@ -691,12 +691,12 @@ const styles = StyleSheet.create({
     height: 16,
   },
   aiInsightsTitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.semibold,
     color: '#0891B2',
   },
   aiInsightsText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     lineHeight: 20,
@@ -713,7 +713,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   scheduleButtonText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.white,
   },
@@ -730,18 +730,18 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   groundSchoolBrand: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
   },
   groundSchoolTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 8,
   },
   groundSchoolDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     lineHeight: 20,
@@ -758,7 +758,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   continueButtonText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.white,
   },
@@ -766,7 +766,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 20,
@@ -781,7 +781,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   subsectionTitle: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
@@ -809,13 +809,13 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   lessonTitle: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
     marginBottom: 4,
   },
   lessonDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginBottom: 8,
@@ -831,7 +831,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   metaText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
     textTransform: 'uppercase',
@@ -843,7 +843,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   statusText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.medium,
   },
   reservationDetails: {
@@ -865,7 +865,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   reservationText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },
@@ -879,7 +879,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   viewReservationText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray600,
   },
@@ -910,7 +910,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     flex: 1,
@@ -927,7 +927,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   aiModalText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     textAlign: 'center',

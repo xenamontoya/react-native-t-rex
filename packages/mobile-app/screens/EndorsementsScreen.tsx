@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, SafeAreaView, Alert, TextInput } from 'react-native';
 import { Icon } from '../components/Icons';
 import { PilotbaseIcon } from '../components/svgs';
-import { Colors, Typography } from '../../components/src/tokens';
+import { Colors, Typography, ScreenHeader } from '../../components/src';
 
 // Mock endorsement data matching original T-Rex
 const endorsementsData = [
@@ -197,16 +197,13 @@ export default function EndorsementsScreen({ navigation }: any) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-        <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Endorsements</Text>
-          <Text style={styles.headerSubtitle}>Pilot certifications and authorizations</Text>
-        </View>
-      </View>
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="detail"
+        title="Endorsements"
+        subtitle="Pilot certifications and authorizations"
+        onBackPress={handleGoBack}
+      />
 
       {/* Search and Filter */}
       <View style={styles.searchContainer}>
@@ -287,39 +284,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.neutral.gray50,
   },
-  header: {
-    backgroundColor: Colors.primary.white,
-    paddingTop: 16,
-    paddingBottom: 16,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  backButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: Colors.neutral.gray100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  headerContent: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.primary.black,
-    marginBottom: 2,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-  },
   searchContainer: {
     flexDirection: 'row',
     paddingHorizontal: 16,
@@ -343,7 +307,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     paddingVertical: 12,
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.primary.black,
   },
@@ -380,7 +344,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.neutral.gray100,
   },
   filterOptionText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
@@ -416,20 +380,20 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   endorsementTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 8,
   },
   endorsementDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginBottom: 8,
     lineHeight: 20,
   },
   endorsementReference: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray500,
   },
@@ -445,7 +409,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   statusText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.medium,
   },
   completedDetails: {
@@ -459,12 +423,12 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   detailLabel: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
   detailValue: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },

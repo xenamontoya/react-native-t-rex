@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, Dimensions } from 'react-native';
 import { Icon, AdaptiveAIModal } from '../components';
-import { PilotbaseIcon, AIInsightsHeader, CardHeader, StatCard } from '../../components/src';
+import { PilotbaseIcon, AIInsightsHeader, CardHeader, StatCard, Typography } from '../../components/src';
 import { useNavigation } from '@react-navigation/native';
 
 // This is a React Native conversion of the original student.tsx dashboard
@@ -102,6 +102,10 @@ const StudentDashboardMain: React.FC = () => {
     );
   }
 
+  // Detect tablet size (768px+ width is typically tablet/desktop)
+  const { width } = Dimensions.get('window');
+  const isTablet = width >= 768;
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f9fafb' }]}>
@@ -109,11 +113,13 @@ const StudentDashboardMain: React.FC = () => {
       <View style={styles.headerContainer}>
         <View style={styles.headerContent}>
           <View style={styles.profileSection}>
-            {/* Profile Avatar */}
-            <Image 
-              source={{ uri: `https://i.pravatar.cc/64?seed=${student.name}` }}
-              style={styles.avatar}
-            />
+            {/* Profile Avatar - Hidden on tablet since it's in the drawer */}
+            {!isTablet && (
+              <Image 
+                source={{ uri: `https://i.pravatar.cc/64?seed=${student.name}` }}
+                style={styles.avatar}
+              />
+            )}
             
             {/* Welcome Text */}
             <View style={styles.welcomeText}>
@@ -173,26 +179,20 @@ const StudentDashboardMain: React.FC = () => {
           <StatCard 
             label="Total Hours"
             value={student.totalHours}
-            icon={<Icon name="clock" size={16} color="#6b7280" />}
-            containerStyle={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}
-            valueStyle={{ color: isDark ? '#ffffff' : '#111827' }}
-            labelStyle={{ color: isDark ? '#a0a0a0' : '#6b7280' }}
+            icon={<Icon name="clock" size={16} />}
+            theme={isDark ? 'dark' : 'light'}
           />
           <StatCard 
             label="Lessons Completed"
             value={student.lessons?.filter((l: any) => l.status === 'completed').length || 0}
-            icon={<Icon name="book" size={16} color="#6b7280" />}
-            containerStyle={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}
-            valueStyle={{ color: isDark ? '#ffffff' : '#111827' }}
-            labelStyle={{ color: isDark ? '#a0a0a0' : '#6b7280' }}
+            icon={<Icon name="book" size={16} />}
+            theme={isDark ? 'dark' : 'light'}
           />
           <StatCard 
             label="Flights Logged"
             value={savedFlights.length}
-            icon={<Icon name="plane" size={16} color="#6b7280" />}
-            containerStyle={{ backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }}
-            valueStyle={{ color: isDark ? '#ffffff' : '#111827' }}
-            labelStyle={{ color: isDark ? '#a0a0a0' : '#6b7280' }}
+            icon={<Icon name="plane" size={16} />}
+            theme={isDark ? 'dark' : 'light'}
           />
         </View>
       </View>
@@ -458,12 +458,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   welcomeLabel: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     lineHeight: 24,
   },
   name: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize['2xl'],
+    fontFamily: Typography.fontFamily.bold,
     marginBottom: 8,
     marginTop: -4,
   },
@@ -484,8 +484,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   notificationText: {
-    fontSize: 12,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.bold,
     color: 'white',
   },
   progressSection: {
@@ -498,14 +498,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   progressTitle: {
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
   progressSubtitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
   },
   progressPercentage: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.bold,
   },
   progressBarContainer: {
     height: 8,
@@ -524,12 +524,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize['2xl'],
+    fontFamily: Typography.fontFamily.bold,
   },
   statLabel: {
-    fontSize: 12,
-    fontFamily: 'monospace',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
   },
   card: {
@@ -546,8 +546,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
   },
   viewAllButton: {
@@ -555,8 +555,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewAllText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.medium,
     marginRight: 4,
   },
   aiCard: {
@@ -589,12 +589,12 @@ const styles = StyleSheet.create({
     height: 28,
   },
   aiCardTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: 'white',
     marginBottom: 4,
   },
   aiCardSubtitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: 'rgba(255, 255, 255, 0.8)',
   },
   lessonCard: {
@@ -611,12 +611,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   lessonTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
     marginBottom: 4,
   },
   lessonDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: '#6b7280',
     marginBottom: 8,
   },
@@ -630,15 +630,15 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   lessonDetailText: {
-    fontSize: 12,
-    fontFamily: 'monospace',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     color: '#6b7280',
     marginLeft: 4,
   },
   cost: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.semibold,
   },
   statusBadge: {
     backgroundColor: 'rgba(246, 163, 69, 0.15)',
@@ -647,8 +647,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   statusText: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.medium,
     color: '#C44510',
   },
   activityCard: {
@@ -669,11 +669,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   careerTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   careerStatus: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.medium,
   },
   careerProgressBar: {
     height: 8,
@@ -689,10 +689,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   careerProgressLeft: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
   },
   careerProgressRight: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
   },
   milestones: {
     marginBottom: 16,
@@ -720,12 +720,12 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   milestoneNumberText: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.bold,
     color: 'black',
   },
   milestoneText: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   currentGoalBadge: {
     backgroundColor: 'rgba(246, 163, 69, 0.15)',
@@ -734,8 +734,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   currentGoalText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.semibold,
     color: '#C44510',
   },
   futureBadge: {
@@ -744,8 +744,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   futureText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.semibold,
   },
   aiInsights: {
     backgroundColor: '#E8FDFC',
@@ -764,12 +764,12 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   aiInsightsTitle: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.semibold,
     color: '#0891B2',
   },
   aiInsightsText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: '#6b7280',
     marginBottom: 12,
   },
@@ -783,8 +783,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   aiInsightsButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.semibold,
     color: 'white',
     marginRight: 8,
   },
@@ -808,12 +808,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   recentLessonTitle: {
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: '#111827',
     marginBottom: 4,
   },
   recentLessonDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.sm,
     color: '#6b7280',
     marginBottom: 8,
   },
@@ -826,8 +826,8 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   recentLessonDetailText: {
-    fontSize: 12,
-    fontFamily: 'monospace',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.mono,
     textTransform: 'uppercase',
     color: '#6b7280',
     marginLeft: 4,
@@ -839,8 +839,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   gradeText: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.xs,
+    fontFamily: Typography.fontFamily.medium,
     color: '#004D47',
   },
   flightStats: {
@@ -863,7 +863,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   flightStatValue: {
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: '#111827',
   },
 });

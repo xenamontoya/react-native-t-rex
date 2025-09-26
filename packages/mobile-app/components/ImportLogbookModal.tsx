@@ -665,7 +665,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
   headerSubtitle: {
@@ -695,7 +695,7 @@ const styles = StyleSheet.create({
   },
   stepTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
     textAlign: 'center',
   },
@@ -737,7 +737,7 @@ const styles = StyleSheet.create({
   },
   continueButtonText: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.white,
   },
   continueButtonTextDisabled: {
@@ -756,7 +756,7 @@ const styles = StyleSheet.create({
   },
   uploadTitle: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
   },
   uploadDescription: {
@@ -800,7 +800,7 @@ const styles = StyleSheet.create({
   },
   summaryTitle: {
     fontSize: 18,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
     marginBottom: 12,
   },
@@ -813,7 +813,7 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 24,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.status.info,
   },
   statLabel: {
@@ -861,7 +861,7 @@ const styles = StyleSheet.create({
   },
   selectAllText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray700,
   },
   flightItem: {
@@ -899,7 +899,7 @@ const styles = StyleSheet.create({
   },
   flightDate: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray900,
   },
   flightAircraft: {
@@ -961,12 +961,12 @@ const styles = StyleSheet.create({
   },
   secondaryButtonText: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray700,
   },
   primaryButtonText: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.white,
   },
   primaryButtonTextDisabled: {

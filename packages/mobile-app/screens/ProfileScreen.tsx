@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, ImageBackg
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
 import { PilotbaseIcon } from '../components/svgs';
-import { ScreenHeader } from '../../components/src';
+import { ScreenHeader, Typography } from '../../components/src';
 // Using direct require() instead of broken asset imports
 
 // Project T-Rex Brand Colors
@@ -277,13 +277,13 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary.white,
   },
   profileAvatarText: {
-    fontSize: 36,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.xl4,
+    fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.black,
   },
   profileName: {
-    fontSize: 32,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.xl3,
+    fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.white,
     marginBottom: 8,
     textAlign: 'center',
@@ -297,9 +297,9 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   profileLocation: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     color: Colors.primary.white,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     letterSpacing: 1,
   },
   editButton: {
@@ -316,8 +316,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   editButtonText: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.base,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.white,
     marginRight: 8,
   },
@@ -371,8 +371,8 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.lg,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 16,
   },
@@ -385,17 +385,17 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   progressLabel: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.neutral.gray600,
   },
   progressValue: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
   progressHighlight: {
     color: Colors.secondary.orange2,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
   },
 
   // Info Rows
@@ -403,13 +403,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   infoLabel: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.sm,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray500,
     marginBottom: 4,
   },
   infoValue: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.primary.black,
   },
 
@@ -430,13 +430,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   achievementTitle: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.black,
     marginBottom: 2,
   },
   achievementDate: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     color: Colors.neutral.gray500,
   },
 
@@ -457,12 +457,12 @@ const styles = StyleSheet.create({
   },
   actionText: {
     flex: 1,
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: Typography.fontSize.md,
+    fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.black,
   },
   actionArrow: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     color: Colors.neutral.gray500,
   },
 
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   svgTestLabel: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     color: Colors.primary.white,
     opacity: 0.8,
   },

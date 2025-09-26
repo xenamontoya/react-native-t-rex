@@ -6,13 +6,16 @@ import {
   ScrollView, 
   TouchableOpacity, 
   Alert,
-  Image 
+  Image,
+  Modal 
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icon } from '../components/Icons';
-import { Colors } from '../../components/src';
+import { Colors, Typography } from '../../components/src';
 
 // Import stores
 import { useRoleStore, roleConfig } from '../utils/roleStore';
+import { usePhaseStore, phaseConfig, type Phase } from '../utils/phaseStore';
 
 // Mock theme store for mobile
 const useThemeStore = () => ({
@@ -23,12 +26,18 @@ const useThemeStore = () => ({
 export default function MoreScreen({ navigation }: any) {
   const { isDark } = useThemeStore();
   const { currentRole, setRole, initializeStore, isInitialized } = useRoleStore();
-
+  const { currentPhase, setPhase, initializeStore: initializePhaseStore, isInitialized: isPhaseInitialized } = usePhaseStore();
+  const [showDeveloperOptions, setShowDeveloperOptions] = useState(false);
   useEffect(() => {
     if (!isInitialized) {
       initializeStore();
     }
-  }, [isInitialized, initializeStore]);
+    if (!isPhaseInitialized) {
+      initializePhaseStore();
+    }
+  }, [isInitialized, initializeStore, isPhaseInitialized, initializePhaseStore]);
+
+
 
   const handleNavigation = (path: string) => {
     // Convert web routes to mobile navigation
@@ -48,23 +57,40 @@ export default function MoreScreen({ navigation }: any) {
       '/profile': 'Profile',
       '/logbook': 'Logbook',
       '/student/my-flights?import=true': 'Logbook', // Import flights goes to logbook
-      '/my-flights?import=true': 'Logbook'
+      '/my-flights?import=true': 'Logbook',
+      '/component-library': 'ComponentLibrary',
+      '/home': 'Home' // Add missing home route mapping
     };
 
+    // Handle component library with section parameters
+    if (path.startsWith('/component-library')) {
+      const urlParams = new URLSearchParams(path.split('?')[1] || '');
+      const section = urlParams.get('section') || 'overview';
+      navigation?.navigate('ComponentLibrary', { section });
+      return;
+    }
+
     const screen = routeMap[path];
+    console.log('MoreScreen: handleNavigation called with path:', path, '-> screen:', screen);
     if (screen) {
+      console.log('MoreScreen: Navigating to screen:', screen);
       navigation?.navigate(screen);
     } else {
+      console.log('MoreScreen: No route mapping found for path:', path);
       Alert.alert('Coming Soon', 'This feature will be available in a future update.');
     }
   };
 
   const handleRoleSwitch = (role: 'student' | 'instructor' | 'prospective') => {
     setRole(role);
-    // Navigate back to Home to show the new dashboard
-    navigation.navigate('Home');
     Alert.alert('Role Changed', `Switched to ${roleConfig[role].title} experience`);
   };
+
+  const handlePhaseSwitch = (phase: Phase) => {
+    setPhase(phase);
+    Alert.alert('Phase Changed', `Switched to ${phaseConfig[phase].title}`);
+  };
+
 
   const menuCategories = [
     {
@@ -181,169 +207,7 @@ export default function MoreScreen({ navigation }: any) {
     }
   ];
 
-  // Role Selector Component  
-  const RoleSelector = () => (
-    <View style={[styles.card, { backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }]}>
-      <Text style={[styles.cardTitle, { color: isDark ? '#ffffff' : '#111827' }]}>
-        Experience Mode
-      </Text>
-      <Text style={[styles.cardDescription, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
-        Switch between different user experiences for testing and prototyping purposes.
-      </Text>
-      
-      <View style={styles.roleOptions}>
-        {/* Student Mode */}
-        <TouchableOpacity 
-          style={[
-            styles.roleOption,
-            { 
-              borderColor: currentRole === 'student' ? '#3b82f6' : (isDark ? '#404040' : '#e5e7eb'),
-              backgroundColor: currentRole === 'student' 
-                ? (isDark ? 'rgba(59, 130, 246, 0.1)' : '#eff6ff')
-                : (isDark ? '#333333' : '#ffffff')
-            }
-          ]}
-          onPress={() => handleRoleSwitch('student')}
-        >
-          <View style={styles.roleOptionContent}>
-            <View style={styles.roleOptionLeft}>
-              <View style={[
-                styles.roleIcon,
-                { 
-                  backgroundColor: currentRole === 'student' 
-                    ? (isDark ? 'rgba(59, 130, 246, 0.2)' : '#dbeafe')
-                    : (isDark ? '#555555' : '#f3f4f6')
-                }
-              ]}>
-                <Icon 
-                  name="graduationCap" 
-                  size={20} 
-                  color={currentRole === 'student' ? '#3b82f6' : Colors.neutral.gray500} 
-                />
-              </View>
-              <View style={styles.roleTextContent}>
-                <Text style={[styles.roleTitle, { color: isDark ? '#ffffff' : '#111827' }]}>
-                  {roleConfig.student.title}
-                </Text>
-                <Text style={[styles.roleDescription, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
-                  {roleConfig.student.description}
-                </Text>
-              </View>
-            </View>
-            <Icon 
-              name={currentRole === 'student' ? 'toggleOn' : 'toggleOff'} 
-              size={24} 
-              color={currentRole === 'student' ? '#3b82f6' : Colors.neutral.gray400} 
-            />
-          </View>
-        </TouchableOpacity>
 
-        {/* Instructor Mode */}
-        <TouchableOpacity 
-          style={[
-            styles.roleOption,
-            { 
-              borderColor: currentRole === 'instructor' ? '#FE652A' : (isDark ? '#404040' : '#e5e7eb'),
-              backgroundColor: currentRole === 'instructor' 
-                ? (isDark ? 'rgba(254, 101, 42, 0.1)' : 'rgba(254, 101, 42, 0.1)')
-                : (isDark ? '#333333' : '#ffffff')
-            }
-          ]}
-          onPress={() => handleRoleSwitch('instructor')}
-        >
-          <View style={styles.roleOptionContent}>
-            <View style={styles.roleOptionLeft}>
-              <View style={[
-                styles.roleIcon,
-                { 
-                  backgroundColor: currentRole === 'instructor' 
-                    ? (isDark ? 'rgba(254, 101, 42, 0.2)' : 'rgba(254, 101, 42, 0.2)')
-                    : (isDark ? '#555555' : '#f3f4f6')
-                }
-              ]}>
-                <Icon 
-                  name="userTie" 
-                  size={20} 
-                  color={currentRole === 'instructor' ? '#FE652A' : Colors.neutral.gray500} 
-                />
-              </View>
-              <View style={styles.roleTextContent}>
-                <Text style={[styles.roleTitle, { color: isDark ? '#ffffff' : '#111827' }]}>
-                  {roleConfig.instructor.title}
-                </Text>
-                <Text style={[styles.roleDescription, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
-                  {roleConfig.instructor.description}
-                </Text>
-              </View>
-            </View>
-            <Icon 
-              name={currentRole === 'instructor' ? 'toggleOn' : 'toggleOff'} 
-              size={24} 
-              color={currentRole === 'instructor' ? '#FE652A' : Colors.neutral.gray400} 
-            />
-          </View>
-        </TouchableOpacity>
-
-        {/* Prospective Mode */}
-        <TouchableOpacity 
-          style={[
-            styles.roleOption,
-            { 
-              borderColor: currentRole === 'prospective' ? '#8b5cf6' : (isDark ? '#404040' : '#e5e7eb'),
-              backgroundColor: currentRole === 'prospective' 
-                ? (isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(139, 92, 246, 0.1)')
-                : (isDark ? '#333333' : '#ffffff')
-            }
-          ]}
-          onPress={() => handleRoleSwitch('prospective')}
-        >
-          <View style={styles.roleOptionContent}>
-            <View style={styles.roleOptionLeft}>
-              <View style={[
-                styles.roleIcon,
-                { 
-                  backgroundColor: currentRole === 'prospective' 
-                    ? (isDark ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.2)')
-                    : (isDark ? '#555555' : '#f3f4f6')
-                }
-              ]}>
-                <Icon 
-                  name="search" 
-                  size={20} 
-                  color={currentRole === 'prospective' ? '#8b5cf6' : Colors.neutral.gray500} 
-                />
-              </View>
-              <View style={styles.roleTextContent}>
-                <Text style={[styles.roleTitle, { color: isDark ? '#ffffff' : '#111827' }]}>
-                  {roleConfig.prospective.title}
-                </Text>
-                <Text style={[styles.roleDescription, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
-                  {roleConfig.prospective.description}
-                </Text>
-              </View>
-            </View>
-            <Icon 
-              name={currentRole === 'prospective' ? 'toggleOn' : 'toggleOff'} 
-              size={24} 
-              color={currentRole === 'prospective' ? '#8b5cf6' : Colors.neutral.gray400} 
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      {/* Testing URLs */}
-      <View style={[styles.testingSection, { backgroundColor: isDark ? '#404040' : '#f9fafb' }]}>
-        <Text style={[styles.testingText, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
-          <Text style={{ fontWeight: 'bold' }}>For Testing:</Text> Use these direct URLs for unmoderated testing:
-        </Text>
-        <View style={styles.testingUrls}>
-          <Text style={[styles.testingUrl, { color: '#3b82f6' }]}>/student - Student pilot experience</Text>
-          <Text style={[styles.testingUrl, { color: '#10b981' }]}>/instructor - Flight instructor experience</Text>
-          <Text style={[styles.testingUrl, { color: '#8b5cf6' }]}>/prospective - Prospective student experience</Text>
-        </View>
-      </View>
-    </View>
-  );
 
   return (
     <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#ffffff' }]}>
@@ -376,18 +240,45 @@ export default function MoreScreen({ navigation }: any) {
                 </Text>
               </TouchableOpacity>
             </View>
+
+            {/* Developer Options Toggle */}
+            <TouchableOpacity
+              onPress={() => setShowDeveloperOptions(!showDeveloperOptions)}
+              style={[
+                styles.developerToggle, 
+                { backgroundColor: isDark ? '#404040' : '#f3f4f6' }
+              ]}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <View 
+                style={{ 
+                  transform: [{ rotate: showDeveloperOptions ? '270deg' : '90deg' }]
+                }}
+              >
+                <Icon 
+                  name="chevronRight" 
+                  size={16} 
+                  color={isDark ? '#a0a0a0' : '#6b7280'}
+                />
+              </View>
+            </TouchableOpacity>
           </View>
+
         </View>
         
-        {/* Categorized Menu Items */}
+        {/* Navigation - Always shows full app menu */}
         <View style={styles.menuSections}>
+          {(() => {
+            console.log('MoreScreen: RENDER - Always showing FULL APP MENU (component library nav is in hamburger menu)');
+            return null;
+          })()}
           {menuCategories.map((category, categoryIndex) => (
             <View key={categoryIndex} style={styles.menuSection}>
               {/* Category Header */}
               <Text style={[styles.sectionTitle, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
                 {category.title.toUpperCase()}
               </Text>
-              
+
               {/* Category Items */}
               <View style={styles.menuItems}>
                 {category.items.map((item, itemIndex) => (
@@ -396,7 +287,7 @@ export default function MoreScreen({ navigation }: any) {
                     onPress={() => handleNavigation(item.path)}
                     style={[
                       styles.menuItem,
-                      { 
+                      {
                         backgroundColor: isDark ? '#2a2a2a' : '#ffffff',
                         borderColor: isDark ? '#404040' : '#e5e7eb'
                       }
@@ -404,10 +295,10 @@ export default function MoreScreen({ navigation }: any) {
                   >
                     <View style={styles.menuItemContent}>
                       <View style={[styles.menuItemIcon, { backgroundColor: isDark ? '#404040' : '#f9fafb' }]}>
-                        <Icon 
-                          name={item.icon as any} 
-                          size={16} 
-                          color={isDark ? '#a0a0a0' : '#6b7280'} 
+                        <Icon
+                          name={item.icon as any}
+                          size={16}
+                          color={isDark ? '#a0a0a0' : '#6b7280'}
                         />
                       </View>
                       <View style={styles.menuItemText}>
@@ -426,12 +317,184 @@ export default function MoreScreen({ navigation }: any) {
           ))}
         </View>
         
-        {/* Role Selector - Moved to bottom */}
-        <RoleSelector />
 
         {/* Bottom Padding for Tab Navigation */}
         <View style={styles.bottomPadding} />
       </ScrollView>
+
+      {/* Developer Options Modal */}
+      <Modal
+        visible={showDeveloperOptions}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowDeveloperOptions(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowDeveloperOptions(false)}
+        >
+          <View style={[styles.developerModal, { backgroundColor: isDark ? '#2a2a2a' : '#ffffff' }]}>
+            <Text style={[styles.modalTitle, { color: isDark ? '#ffffff' : '#111827' }]}>Developer Options</Text>
+            
+            {/* Mode Switcher */}
+            <View style={styles.modalSection}>
+              <Text style={[styles.modalSectionTitle, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
+                SWITCH INTERFACE
+              </Text>
+              <TouchableOpacity
+                style={[styles.modalMenuItem, { backgroundColor: isDark ? '#333333' : '#f9fafb' }]}
+                onPress={async () => {
+                  setShowDeveloperOptions(false);
+                  try {
+                    // Always switch to Component Library from MoreScreen (prototype)
+                    console.log('MoreScreen: Switching to Component Library mode');
+                    
+                    // Set AsyncStorage to component library mode
+                    await AsyncStorage.removeItem('componentLibraryMode');
+                    await AsyncStorage.setItem('componentLibraryMode', 'true');
+                    console.log('MoreScreen: AsyncStorage updated to true, navigating to component library');
+                    
+                    handleNavigation('/component-library');
+                  } catch (error) {
+                    console.error('MoreScreen: Error switching to component library:', error);
+                  }
+                }}
+              >
+                <View style={[styles.modalMenuIcon, { backgroundColor: isDark ? '#555555' : '#e5e7eb' }]}>
+                  <Icon
+                    name="bookOpen"
+                    size={16}
+                    color={isDark ? '#a0a0a0' : '#6b7280'}
+                  />
+                </View>
+                <View style={styles.modalMenuContent}>
+                  <Text style={[styles.modalMenuTitle, { color: isDark ? '#ffffff' : '#111827' }]}>
+                    Switch to Component Library
+                  </Text>
+                  <Text style={[styles.modalMenuDescription, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
+                    View design system & components
+                  </Text>
+                </View>
+                <Icon
+                  name="arrowRight"
+                  size={18}
+                  color={isDark ? '#555555' : '#d1d5db'}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* Always show prototype sections */}
+                {/* Experience Mode */}
+                <View style={styles.modalSection}>
+                  <Text style={[styles.modalSectionTitle, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
+                    EXPERIENCE MODE
+                  </Text>
+                  {Object.entries(roleConfig).map(([role, config]) => (
+                    <TouchableOpacity
+                      key={role}
+                      style={[
+                        styles.modalMenuItem,
+                        { 
+                          backgroundColor: currentRole === role 
+                            ? `${config.color}10` 
+                            : (isDark ? '#333333' : '#f9fafb')
+                        }
+                      ]}
+                      onPress={() => {
+                        setShowDeveloperOptions(false);
+                        handleRoleSwitch(role as any);
+                      }}
+                    >
+                      <View style={[
+                        styles.modalMenuIcon,
+                        { 
+                          backgroundColor: currentRole === role 
+                            ? `${config.color}20` 
+                            : (isDark ? '#555555' : '#e5e7eb')
+                        }
+                      ]}>
+                        <Icon
+                          name={
+                            role === 'student' ? 'graduationCap' : 
+                            role === 'instructor' ? 'userTie' : 'search'
+                          }
+                          size={16}
+                          color={currentRole === role ? config.color : (isDark ? '#a0a0a0' : '#6b7280')}
+                        />
+                      </View>
+                      <View style={styles.modalMenuContent}>
+                        <Text style={[styles.modalMenuTitle, { color: isDark ? '#ffffff' : '#111827' }]}>
+                          {config.title}
+                        </Text>
+                        <Text style={[styles.modalMenuDescription, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
+                          {config.description}
+                        </Text>
+                      </View>
+                      <Icon
+                        name={currentRole === role ? 'checkCircle' : 'check'}
+                        size={18}
+                        color={currentRole === role ? config.color : (isDark ? '#555555' : '#d1d5db')}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                {/* Development Phase */}
+                <View style={styles.modalSection}>
+                  <Text style={[styles.modalSectionTitle, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
+                    DEVELOPMENT PHASE
+                  </Text>
+                  {(Object.keys(phaseConfig) as Phase[]).map((phase) => (
+                    <TouchableOpacity
+                      key={phase}
+                      style={[
+                        styles.modalMenuItem,
+                        { 
+                          backgroundColor: currentPhase === phase 
+                            ? `${phaseConfig[phase].color}10` 
+                            : (isDark ? '#333333' : '#f9fafb')
+                        }
+                      ]}
+                      onPress={() => {
+                        setShowDeveloperOptions(false);
+                        handlePhaseSwitch(phase);
+                      }}
+                    >
+                      <View style={[
+                        styles.modalMenuIcon,
+                        { 
+                          backgroundColor: currentPhase === phase 
+                            ? `${phaseConfig[phase].color}20` 
+                            : (isDark ? '#555555' : '#e5e7eb')
+                        }
+                      ]}>
+                        <Text style={[
+                          styles.modalPhaseNumber,
+                          { color: currentPhase === phase ? phaseConfig[phase].color : (isDark ? '#a0a0a0' : '#6b7280') }
+                        ]}>
+                          {phase.replace('phase', '')}
+                        </Text>
+                      </View>
+                      <View style={styles.modalMenuContent}>
+                        <Text style={[styles.modalMenuTitle, { color: isDark ? '#ffffff' : '#111827' }]}>
+                          {phaseConfig[phase].title}
+                        </Text>
+                        <Text style={[styles.modalMenuDescription, { color: isDark ? '#a0a0a0' : '#6b7280' }]}>
+                          {phaseConfig[phase].description}
+                        </Text>
+                      </View>
+                      <Icon
+                        name={currentPhase === phase ? 'checkCircle' : 'check'}
+                        size={18}
+                        color={currentPhase === phase ? phaseConfig[phase].color : (isDark ? '#555555' : '#d1d5db')}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -459,7 +522,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     marginBottom: 8,
   },
   cardDescription: {
@@ -480,10 +543,11 @@ const styles = StyleSheet.create({
   },
   profileInfo: {
     flex: 1,
+    marginRight: 12, // Ensure space for the dropdown toggle on tablet
   },
   profileName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
     marginBottom: 4,
   },
   profileDetails: {
@@ -498,7 +562,7 @@ const styles = StyleSheet.create({
   },
   profileButtonText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
   },
   
   // Menu Sections
@@ -510,7 +574,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Typography.fontFamily.medium,
     marginBottom: 12,
     marginHorizontal: 24,
     letterSpacing: 1,
@@ -541,7 +605,7 @@ const styles = StyleSheet.create({
   },
   menuItemTitle: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: Typography.fontFamily.semibold,
     marginBottom: 2,
   },
   menuItemDescription: {
@@ -549,43 +613,6 @@ const styles = StyleSheet.create({
   },
   
   // Role Selector
-  roleOptions: {
-    gap: 12,
-  },
-  roleOption: {
-    borderWidth: 2,
-    borderRadius: 12,
-    padding: 16,
-  },
-  roleOptionContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  roleOptionLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  roleIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  roleTextContent: {
-    flex: 1,
-  },
-  roleTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 2,
-  },
-  roleDescription: {
-    fontSize: 14,
-  },
   
   // Testing URLs
   testingSection: {
@@ -602,10 +629,102 @@ const styles = StyleSheet.create({
   },
   testingUrl: {
     fontSize: 12,
-    fontFamily: 'monospace',
+    fontFamily: Typography.fontFamily.mono,
   },
+  testingBold: {
+    fontFamily: Typography.fontFamily.bold,
+  },
+
+
+  // Developer options styles
+  developerToggle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0, // Prevent the button from being squeezed out on tablet
+  },
+
 
   bottomPadding: {
     height: 100,
+  },
+
+  // Modal Styles (positioned relative to dropdown trigger)
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+    paddingTop: 80, // Reduced to give more space for taller modal
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingBottom: 40, // Add bottom padding for safety
+  },
+  developerModal: {
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    maxWidth: 320,
+    width: '90%',
+    maxHeight: '85%', // Increased from 70% to 85% to fit all content
+    backgroundColor: Colors.neutral.white,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontFamily: Typography.fontFamily.semibold,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  modalSection: {
+    marginBottom: 16,
+  },
+  modalSectionTitle: {
+    fontSize: 11,
+    fontFamily: Typography.fontFamily.semibold,
+    letterSpacing: 0.5,
+    marginBottom: 8,
+    textTransform: 'uppercase',
+    color: Colors.neutral.gray600,
+  },
+  modalMenuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    marginBottom: 6,
+    backgroundColor: Colors.neutral.gray50,
+  },
+  modalMenuIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    backgroundColor: Colors.neutral.gray200,
+  },
+  modalMenuContent: {
+    flex: 1,
+  },
+  modalMenuTitle: {
+    fontSize: 14,
+    fontFamily: Typography.fontFamily.semibold,
+    marginBottom: 2,
+  },
+  modalMenuDescription: {
+    fontSize: 12,
+    fontFamily: Typography.fontFamily.regular,
+  },
+  modalPhaseNumber: {
+    fontSize: 16,
+    fontFamily: Typography.fontFamily.bold,
   },
 });

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, ScreenHeader } from '../../components/src';
 
 interface Reservation {
   id: string;
@@ -178,21 +178,18 @@ export default function ReservationDetailsScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-        <View style={styles.headerTitleContainer}>
-          <Text style={styles.headerTitle}>Reservation Details</Text>
-          <Text style={styles.headerSubtitle}>{reservation.aircraft}</Text>
-        </View>
-        <TouchableOpacity onPress={() => setShowDropdown(!showDropdown)} style={styles.menuButton}>
-          <Icon name="ellipsisV" size={20} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-        
-        {/* Dropdown Menu */}
-        {showDropdown && (
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="detail"
+        title="Reservation Details"
+        subtitle={reservation.aircraft}
+        onBackPress={() => navigation.goBack()}
+        onRightPress={() => setShowDropdown(!showDropdown)}
+        rightIcon="ellipsisV"
+      />
+      
+      {/* Dropdown Menu - positioned below header */}
+      {showDropdown && (
           <View style={styles.dropdown}>
             <TouchableOpacity style={styles.dropdownItem} onPress={() => {
               setShowDropdown(false);
@@ -245,7 +242,6 @@ export default function ReservationDetailsScreen() {
             </TouchableOpacity>
           </View>
         )}
-      </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.contentPadding}>
@@ -534,61 +530,20 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary.white,
   },
   loadingText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     color: Colors.neutral.gray600,
     fontFamily: Typography.fontFamily.regular,
   },
   errorText: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     color: Colors.neutral.gray900,
     fontFamily: Typography.fontFamily.bold,
     marginBottom: 8,
   },
   goBackText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     color: Colors.tertiary.denimBlue,
     fontFamily: Typography.fontFamily.medium,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-    backgroundColor: Colors.primary.white,
-  },
-  backButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.neutral.gray100,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitleContainer: {
-    flex: 1,
-    marginLeft: 12,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.neutral.gray900,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-    marginTop: 2,
-  },
-  menuButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.neutral.gray50,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   dropdown: {
     position: 'absolute',
@@ -620,7 +575,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   dropdownText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray700,
   },
@@ -648,7 +603,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
   },
@@ -667,7 +622,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   viewButtonText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray600,
     marginLeft: 4,
@@ -685,21 +640,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dateText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray700,
     marginBottom: 4,
     textTransform: 'uppercase',
   },
   timeText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray700,
     marginBottom: 4,
     textTransform: 'uppercase',
   },
   sessionType: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },
@@ -709,7 +664,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   statusText: {
-    fontSize: 12,
+    fontSize: Typography.fontSize.sm,
     fontFamily: Typography.fontFamily.semibold,
   },
   detailsGrid: {
@@ -730,12 +685,12 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   detailLabel: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },
   detailValue: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
   },
@@ -757,13 +712,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   preflightTitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.bold,
     color: '#0891B2',
     marginBottom: 4,
   },
   preflightSubtitle: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginBottom: 12,
@@ -776,7 +731,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   preflightButtonText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.primary.white,
   },
@@ -799,13 +754,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   personName: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.xl,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 4,
   },
   personType: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginBottom: 12,
@@ -823,7 +778,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   contactButtonText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray700,
     marginLeft: 4,
@@ -832,13 +787,13 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   lessonTitle: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
     marginBottom: 4,
   },
   lessonDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginBottom: 12,
@@ -868,7 +823,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   actionButtonText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.white,
     marginLeft: 8,
@@ -894,12 +849,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   modalTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
   },
   modalText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     marginBottom: 16,
@@ -911,13 +866,13 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   modalReservationText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray900,
     marginBottom: 4,
   },
   modalReservationDate: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray500,
   },
@@ -934,7 +889,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalCancelText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.neutral.gray700,
   },
@@ -946,7 +901,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalDeleteText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.semibold,
     color: Colors.primary.white,
   },

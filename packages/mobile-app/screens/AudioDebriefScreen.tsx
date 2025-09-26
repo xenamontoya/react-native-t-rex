@@ -9,7 +9,7 @@ import {
   Modal,
 } from 'react-native';
 import { Icon } from '../components/Icons';
-import { Colors, Typography } from '../../components/src';
+import { Colors, Typography, ScreenHeader } from '../../components/src';
 
 interface DebriefData {
   transcription: string;
@@ -178,25 +178,15 @@ export default function AudioDebriefScreen({ navigation, route }: any) {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={handleCancel}
-        >
-          <Icon name="arrowLeft" size={20} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-        <View style={styles.headerInfo}>
-          <Text style={styles.headerTitle}>Audio Debrief</Text>
-          <Text style={styles.headerSubtitle}>{lessonData.title}</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.helpButton}
-          onPress={() => setShowInstructions(true)}
-        >
-          <Icon name="questionCircle" size={20} color={Colors.neutral.gray600} />
-        </TouchableOpacity>
-      </View>
+      {/* Standardized Header */}
+      <ScreenHeader 
+        variant="detail"
+        title="Audio Debrief"
+        subtitle={lessonData.title}
+        onBackPress={handleCancel}
+        onRightPress={() => setShowInstructions(true)}
+        rightIcon="questionCircle"
+      />
 
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
         {/* Lesson Info */}
@@ -363,43 +353,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.primary.white,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.neutral.gray200,
-  },
-  backButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.neutral.gray100,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  headerInfo: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: Typography.fontFamily.bold,
-    color: Colors.neutral.gray900,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    fontFamily: Typography.fontFamily.regular,
-    color: Colors.neutral.gray500,
-  },
-  helpButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.neutral.gray100,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   content: {
     flex: 1,
   },
@@ -413,19 +366,19 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   lessonTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 8,
   },
   studentName: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.brand.cyan,
     marginBottom: 4,
   },
   lessonDetails: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
   },
@@ -443,7 +396,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   recordingTitle: {
-    fontSize: 20,
+    fontSize: Typography.fontSize.xl,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 16,
@@ -461,13 +414,13 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   recordingDuration: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.mono,
     color: '#ef4444',
-    fontWeight: 'bold',
+    fontFamily: Typography.fontFamily.bold,
   },
   recordingDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     textAlign: 'center',
@@ -488,7 +441,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   recordButtonText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.white,
   },
@@ -502,7 +455,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   stopButtonText: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.primary.white,
   },
@@ -513,13 +466,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   skipTitle: {
-    fontSize: 16,
+    fontSize: Typography.fontSize.base,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 8,
   },
   skipDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     textAlign: 'center',
@@ -533,7 +486,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   skipButtonText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.medium,
     color: Colors.neutral.gray700,
   },
@@ -561,13 +514,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   processingTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
     marginBottom: 8,
   },
   processingDescription: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     textAlign: 'center',
@@ -607,7 +560,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.neutral.gray200,
   },
   instructionsTitle: {
-    fontSize: 18,
+    fontSize: Typography.fontSize.lg,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.neutral.gray900,
   },
@@ -621,7 +574,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   instructionsText: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     lineHeight: 20,
@@ -636,7 +589,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   instructionBullet: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.bold,
     color: Colors.brand.cyan,
     marginRight: 12,
@@ -644,13 +597,13 @@ const styles = StyleSheet.create({
   },
   instructionText: {
     flex: 1,
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     lineHeight: 20,
   },
   instructionsTip: {
-    fontSize: 14,
+    fontSize: Typography.fontSize.md,
     fontFamily: Typography.fontFamily.regular,
     color: Colors.neutral.gray600,
     lineHeight: 20,
